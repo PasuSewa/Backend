@@ -31,6 +31,7 @@ class PermissionSeeder extends Seeder
             '2fa_secret' => Crypt::encryptString($google2fa->generateSecretKey()),
             'anti_fishing_secret' => Crypt::encryptString('anti fishing secret word'),
             'preferred_lang' => 'ESP',
+            'slots_available' => 5
         ]); 
 
         $adminRole = Role::create(['name' => 'admin']);

@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('2fa_code_phone', 250)->nullable();
             $table->string('anti_fishing_secret', 250);
             $table->string('preferred_lang', 3);
+            $table->integer('slots_available');
             $table->rememberToken();
             $table->timestamps();
         });
