@@ -13,15 +13,15 @@ class Email extends Model
     protected $table = "emails";
 
     protected $fillable = [
-        'slot_id',
-        'email',
-        'opening',
-        'char_count',
-        'ending',
+        "slot_id",
+        "email",
+        "opening",
+        "char_count",
+        "ending",
     ];
 
     public function slot()
     {
-        return $this->belongsTo(Slot::class, 'slot_id');
+        return $this->belongsTo(Slot::class, "slot_id");
     }
 }

@@ -22,16 +22,16 @@ class Slot extends Model
     protected $table = "slots";
 
     protected $fillable = [
-        'user_id',
-        'company_id',
-        'company_name',
-        'name',
-        'description',
+        "user_id",
+        "company_id",
+        "company_name",
+        "name",
+        "description",
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, "user_id");
     }
 
     public function company()

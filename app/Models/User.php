@@ -20,15 +20,15 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
-        'email',
-        'recovery_email',
-        'phone_number',
-        '2fa_secret',
-        '2fa_code_email',
-        '2fa_code_phone',
-        'anti_fishing_secret',
-        'preferred_lang',
+        "name",
+        "email",
+        "recovery_email",
+        "phone_number",
+        "2fa_secret",
+        "2fa_code_email",
+        "2fa_code_phone",
+        "anti_fishing_secret",
+        "preferred_lang",
     ];
 
     /**
@@ -37,11 +37,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        '2fa_secret',
-        '2fa_code_email',
-        '2fa_code_phone',
-        'anti_fishing_secret',
-        'remember_token',
+        "2fa_secret",
+        "2fa_code_email",
+        "2fa_code_phone",
+        "anti_fishing_secret",
+        "remember_token",
     ];
 
     /**
@@ -50,7 +50,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        "email_verified_at" => "datetime",
     ];
 
     public function slots()

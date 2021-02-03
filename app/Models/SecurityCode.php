@@ -21,6 +21,6 @@ class SecurityCode extends Model
 
     public function slot()
     {
-        return $this->belongsTo(Slot::class, 'slot_id');
+        return $this->belongsTo(Slot::class, "slot_id");
     }
 }
