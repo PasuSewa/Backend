@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
+use App\Models\Slot;
+
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles;
@@ -20,7 +22,13 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'recovery_email',
+        'phone_number',
+        '2fa_secret',
+        '2fa_code_email',
+        '2fa_code_phone',
+        'anti_fishing_secret',
+        'preferred_lang',
     ];
 
     /**
@@ -29,7 +37,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
+        '2fa_secret',
+        '2fa_code_email',
+        '2fa_code_phone',
+        'anti_fishing_secret',
         'remember_token',
     ];
 
@@ -41,4 +52,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function slots()
+    {
+        return $this->hasMany(Slot::class);
+    }
 }
