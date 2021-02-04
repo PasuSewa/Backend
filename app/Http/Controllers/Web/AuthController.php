@@ -24,11 +24,11 @@ class AuthController extends Controller
 
         $google2fa = new Google2FA();
 
+        $user = User::find(1);
+
         $validG2FA = $google2fa->verifyKey(Crypt::decryptString($user->two_factor_secret), $data['2fa_code'], 0);
 
         $validEmail2FA = $data['2fa_code_email'] === Crypt::decryptString($user->two_factor_code_email);
-
-        dd($validEmail2FA);
 
         if ($validEmail2FA && $validG2FA) 
         {

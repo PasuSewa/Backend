@@ -8,7 +8,7 @@
                 <div class="card">
     
                     <div class="card-body">
-                        <form method="POST" action="">
+                        <form method="POST" action="{{route('login')}}">
                             @csrf
 
                             <div class="form-group row">
@@ -17,9 +17,10 @@
                                 <div class="col-md-6">
                                     <div class="input-group mb-3">
                                         <input 
-                                            type="text" 
+                                            type="number" 
                                             class="form-control" 
                                             aria-describedby="send-code"
+                                            name="2fa_code_email"
                                         >
 
                                         <div class="input-group-append">
@@ -36,18 +37,17 @@
                             </div>
     
                             <div class="form-group row">
-                                <label for="password" class="col-md-4 col-form-label text-md-right">6 Digit Code:</label>
+                                <label for="2fa_code" class="col-md-4 col-form-label text-md-right">6 Digit Code:</label>
     
                                 <div class="col-md-6">
                                     <input 
                                         type="number" 
-                                        class="form-control @error('password') is-invalid @enderror" 
-                                        name="password" 
+                                        class="form-control @error('2fa_code') is-invalid @enderror" 
+                                        name="2fa_code" 
                                         required
-                                        autocomplete="current-password"
                                     >
     
-                                    @error('password')
+                                    @error('2fa_code')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -100,6 +100,7 @@
             }),
             body: JSON.stringify({
                 email: "mr.corvy@gmail.com",
+                isSecondary: false
             })
         })
         .then(res => res.json())
