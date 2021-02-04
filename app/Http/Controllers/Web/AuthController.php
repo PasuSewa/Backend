@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Crypt;
 
 use PragmaRX\Google2FA\Google2FA;
 
+use Auth;
+
 class AuthController extends Controller
 {
     public function login(Request $request)
@@ -36,9 +38,16 @@ class AuthController extends Controller
         if (!$validEmail2FA || !$validG2FA || !$validSecretAntiFishing) 
         {
             return back()->withError('At least one of the credentials was incorrect.');
-        } else
+
+        } elseif (Auth::loginUsingId(1)) 
         {
-            dd('Logged in!');
+            request()->session()->regenerate();
+
+            $user->two_factor_code_email = null;
+
+            $user->save();
+
+            return redirect()->route('home');
         }
     }
 }
