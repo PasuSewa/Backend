@@ -1,5 +1,5 @@
-@include('layout.head')
+@extends('layout.app', ['class' => 'register-page'])
 
-<a href="{{route('logout')}}">Logout</a>
-
-@include('layout.foot')
+@section('content')
+    {{dd(Auth::user())}}
+@endsection
