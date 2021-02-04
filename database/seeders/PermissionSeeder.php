@@ -30,7 +30,7 @@ class PermissionSeeder extends Seeder
             'phone_number' => Crypt::encryptString('+5401150488031'),
             'two_factor_secret' => Crypt::encryptString($google2fa->generateSecretKey()),
             'anti_fishing_secret' => Crypt::encryptString('anti fishing secret word'),
-            'preferred_lang' => 'ES',
+            'preferred_lang' => 'es',
         ]); 
 
         $adminRole = Role::create(['name' => 'admin']);

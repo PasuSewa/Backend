@@ -17,6 +17,27 @@ class EmailTwoFactorAuth extends Notification
 
     public $lang;
 
+    protected $translations = [
+        "es" => [
+            "greeting" => "Hola!",
+            "anti_fishing" => "Este es un correo oficial de PasuSewa, y aquí está la prueba: ",
+            "code" => "El Código de Autenticación es: ",
+            "thanks" => "Gracias por confiar en PasuSewa."
+        ],
+        "en" => [
+            "greeting" => "Hello!",
+            "anti_fishing" => "This is an official PasuSewa email and this is the proof: ",
+            "code" => "The Authentication Code is: ",
+            "thanks" => "Thank you for trusting in PsauSewa"
+        ],
+        "jp" => [
+            "greeting" => "こんにちは!",
+            "anti_fishing" => "これはパス世話からの公式メールであり、その proof は次のとおりです。",
+            "code" => "認証コードは次のとおりです。",
+            "thanks" => "パス世話を信頼していただきありがとうございます。"
+        ],
+    ];
+
     /**
      * Create a new notification instance.
      *
@@ -51,10 +72,10 @@ class EmailTwoFactorAuth extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->greeting('Hello!')
-                    ->line('This is an official PasuSewa email and this is the proof: ' . $this->secretAntiFishing)
-                    ->line('The 2 Factor Authentication Code is: ' . $this->code)
-                    ->line('Your preferred language was: ' . $this->lang);
+                    ->greeting($this->translations[$this->lang]["greeting"])
+                    ->line($this->translations[$this->lang]["anti_fishing"] . $this->secretAntiFishing)
+                    ->line($this->translations[$this->lang]["code"] . $this->code)
+                    ->line($this->translations[$this->lang]["thanks"]);
     }
 
     /**
