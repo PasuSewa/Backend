@@ -156,6 +156,7 @@
                             </div>
 
                             <div class="form-group mb-3">
+
                                 <div class="input-group input-group-alternative">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-email-83"></i></span>
@@ -163,9 +164,9 @@
                                     <input class="form-control" name="2fa_code_email" placeholder="Email 2FA Code" type="number">
                                 </div>
                                 @error('2fa_code_email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                    <small class="text-danger">
+                                        {{$message}}
+                                    </small>
                                 @enderror
                             </div>
 
@@ -179,9 +180,9 @@
                             </div>
 
                             @error('anti_fishing_secret')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                <small class="text-danger">
+                                    {{$message}}
+                                </small>
                             @enderror
 
                             <div class="form-group">
@@ -193,9 +194,9 @@
                                 </div>
 
                                 @error('2fa_code')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                    <small class="text-danger">
+                                        {{$message}}
+                                    </small>
                                 @enderror
 
                             </div>
