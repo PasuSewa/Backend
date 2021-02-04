@@ -10,29 +10,20 @@
                     <div class="card-body">
                         <form method="POST" action="">
                             @csrf
-    
-                            <div class="form-group row">
-                                <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail:</label>
-    
-                                <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-    
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
 
                             <div class="form-group row">
                                 <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail 2FA:</label>
     
                                 <div class="col-md-6">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            aria-describedby="send-code"
+                                        >
+
                                         <div class="input-group-append">
-                                          <button class="btn btn-outline-primary" type="button" id="button-addon2">Button</button>
+                                          <button class="btn btn-outline-primary" type="button" id="send-code">Send Code</button>
                                         </div>
                                       </div>
     
@@ -48,7 +39,13 @@
                                 <label for="password" class="col-md-4 col-form-label text-md-right">6 Digit Code:</label>
     
                                 <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                    <input 
+                                        type="number" 
+                                        class="form-control @error('password') is-invalid @enderror" 
+                                        name="password" 
+                                        required
+                                        autocomplete="current-password"
+                                    >
     
                                     @error('password')
                                         <span class="invalid-feedback" role="alert">
@@ -71,7 +68,47 @@
             </div>
         </div>
     </div>
-
 </div>
+
+<script>
+    const emailButton = document.getElementById('send-code')
+
+    window.addEventListener('load', () => 
+    {
+        emailButton.addEventListener('click', e => 
+        {
+            e.preventDefault()
+
+            sendCodeByEmail()
+        })
+    })
+
+    async function sendCodeByEmail()
+    {
+        emailButton.innerHTML = `
+            <div class="spinner-border" role="status" style="width: 1rem; height: 1rem;">
+                <span class="sr-only">Loading...</span>
+            </div>
+        `
+
+        await fetch("/api/send-code-by-email", {
+            method: 'POST',
+            headers: new Headers({
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+            }),
+            body: JSON.stringify({
+                email: "mr.corvy@gmail.com",
+                isSecondary: false
+            })
+        })
+        .then(res => res.json())
+        .then(response => {
+            console.log(response)
+
+            emailButton.innerHTML = 'Send Code'
+        })
+    }
+</script>
 
 @include('layout.foot')
