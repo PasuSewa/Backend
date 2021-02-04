@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'welcome');
+Route::group(['middleware' => 'guest'], function()
+{
+    Route::view('/', 'welcome')->middleware('guest');
 
-Route::post('/login', 'AuthController@login')->name('login');
+    Route::post('/login', 'AuthController@login')->name('login');
+});
