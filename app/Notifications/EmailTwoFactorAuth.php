@@ -11,14 +11,24 @@ class EmailTwoFactorAuth extends Notification
 {
     use Queueable;
 
+    public $code;
+
+    public $secretAntiFishing;
+
+    public $lang;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($twoFactorCode, $secretAntiFishing, $preferredLang)
     {
-        //
+        $this->code = $twoFactorCode;
+
+        $this->secretAntiFishing = $secretAntiFishing;
+
+        $this->lang = $preferredLang;
     }
 
     /**
@@ -41,9 +51,10 @@ class EmailTwoFactorAuth extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->greeting('Hello!')
+                    ->line('This is an official PasuSewa email and this is the proof: ' . $this->secretAntiFishing)
+                    ->line('The 2 Factor Authentication Code is: ' . $this->code)
+                    ->line('Your preferred language was: ' . $this->lang);
     }
 
     /**
