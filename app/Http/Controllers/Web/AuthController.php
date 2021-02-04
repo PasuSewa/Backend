@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Notifications\EmailTwoFactorAuth;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -15,5 +17,15 @@ class AuthController extends Controller
             '2fa_code_email' => $rules,
             '2fa_code' => $rules
         ]);
+    }
+
+    public function index()
+    {
+
+        $user = User::find(1);
+
+        $user->notify(new EmailTwoFactorAuth);
+
+        return view('welcome');
     }
 }
