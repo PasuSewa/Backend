@@ -17,7 +17,7 @@ Route::group(['middleware' => ['guest', 'Localization']], function()
 {
     Route::view('/', 'welcome');
 
-    Route::view('/login', 'welcome');
+    Route::view('/login', 'welcome')->name('login');
 
     Route::post('/login', 'AuthController@login')->name('login');
 });
