@@ -24,7 +24,7 @@ class AuthController extends Controller
 
         $google2fa = new Google2FA();
 
-        $user = User::find(1);
+        $user = User::find(1); // only the admin can pass this authentication
 
         $validG2FA = $google2fa->verifyKey(Crypt::decryptString($user->two_factor_secret), $data['2fa_code'], 0);
 
