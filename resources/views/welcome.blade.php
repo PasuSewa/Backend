@@ -99,7 +99,6 @@
             }),
             body: JSON.stringify({
                 email: "mr.corvy@gmail.com",
-                isSecondary: false
             })
         })
         .then(res => res.json())

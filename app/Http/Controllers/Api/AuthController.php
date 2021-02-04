@@ -24,11 +24,6 @@ class AuthController extends Controller
         $validation = Validator::make($data, [
             'email' => 'required|email|exists:users,email',
             'isSecondary' => 'required|boolean',
-        ], [
-            'rquired' => 'El campo es obligatorio',
-            'email' => 'El campo ingresado no es un email válido',
-            'exists' => 'El email ingresado no existe',
-            'boolean' => 'El tipo de valor recibido no es correcto'
         ]);
 
         if($validation->fails())
