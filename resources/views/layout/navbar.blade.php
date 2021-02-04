@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-6 collapse-brand"> 
                         <a href="index.html">
-                            <img src="assets/img/brand/blue.png">
+                            Dashboard
                         </a>
                     </div>
                     <div class="col-6 collapse-close">
@@ -22,6 +22,9 @@
             </div>
             
             <ul class="navbar-nav ml-lg-auto">
+                <li class="nav-item">
+                    <a href="/statistics" class="nav-link">Statistics</a>
+                </li>
                 <li class="nav-item">
                     <a 
                         class="nav-link nav-link-icon" 

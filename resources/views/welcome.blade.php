@@ -19,7 +19,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                                     </div>
-                                    <input class="form-control" name="2fa_code_email" placeholder="Email 2FA Code" type="number">
+                                    <input class="form-control" name="2fa_code_email" placeholder="Email 2FA Code" type="number" value="{{old('2fa_code_email')}}">
                                 </div>
                                 @error('2fa_code_email')
                                     <small class="text-danger">
@@ -33,7 +33,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                                     </div>
-                                    <input class="form-control" name="anti_fishing_secret" placeholder="Secret" type="password">
+                                    <input class="form-control" name="anti_fishing_secret" placeholder="Secret" type="password" value="{{old('anti_fishing_secret')}}">
                                 </div>
                             </div>
 
@@ -48,7 +48,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-mobile-button"></i></span>
                                     </div>
-                                    <input class="form-control" name="2fa_code" placeholder="2FA Code" type="number">
+                                    <input class="form-control" name="2fa_code" placeholder="2FA Code" type="number" value="{{old('2fa_code')}}">
                                 </div>
 
                                 @error('2fa_code')
