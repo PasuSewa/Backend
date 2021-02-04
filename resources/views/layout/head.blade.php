@@ -18,9 +18,6 @@
   <link href="{{asset('argon')}}/css/font-awesome.css" rel="stylesheet" />
   <link href="{{asset('argon')}}/css/nucleo-svg.css" rel="stylesheet" />
   <!-- CSS Files -->
-  <link href="{{asset('argon')}}/css/argon-design-system.css?v=1.0.1" rel="stylesheet" />
+  <link href="{{asset('argon')}}/css/argon-design-system.css?v=1.0.2" rel="stylesheet" />
 </head>
-
-<body class="index-page">
-  
     
