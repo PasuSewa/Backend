@@ -18,4 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/send-code-by-email', 'AuthController@sendCodeByEmail');
+Route::group(['middleware' => 'Localization'], function()
+{
+    Route::post('/send-code-by-email', 'AuthController@sendCodeByEmail');
+});
