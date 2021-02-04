@@ -1,5 +1,5 @@
 @extends('layout.app', ['class' => 'register-page'])
 
 @section('content')
-    {{dd(Auth::user())}}
+    @include('layout.navbar')
 @endsection
