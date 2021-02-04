@@ -96,6 +96,7 @@
             headers: new Headers({
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'Accept-Language': 'es',
             }),
             body: JSON.stringify({
                 email: "mr.corvy@gmail.com",
