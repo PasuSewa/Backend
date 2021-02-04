@@ -19,12 +19,12 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('recovery_email');
             $table->string('phone_number');
-            $table->string('2fa_secret', 250);
-            $table->string('2fa_code_email', 250)->nullable();
-            $table->string('2fa_code_phone', 250)->nullable();
+            $table->string('two_factor_secret', 250);
+            $table->string('two_factor_code_email', 250)->nullable();
+            $table->string('two_factor_code_phone', 250)->nullable();
             $table->string('anti_fishing_secret', 250);
-            $table->string('preferred_lang', 3);
-            $table->integer('slots_available');
+            $table->string('preferred_lang', 2);
+            $table->integer('slots_available')->default(5);
             $table->rememberToken();
             $table->timestamps();
         });
