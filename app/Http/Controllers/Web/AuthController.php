@@ -19,7 +19,8 @@ class AuthController extends Controller
 
         $data = $request->validate([
             '2fa_code_email' => $rules,
-            '2fa_code' => $rules
+            '2fa_code' => $rules,
+            'anti_fishing_secret' => ['required', 'string', 'min:4', 'max:10', 'alpha']
         ]);
 
         $google2fa = new Google2FA();
@@ -30,12 +31,14 @@ class AuthController extends Controller
 
         $validEmail2FA = $data['2fa_code_email'] === Crypt::decryptString($user->two_factor_code_email);
 
-        if ($validEmail2FA && $validG2FA) 
+        $validSecretAntiFishing = $data['anti_fishing_secret'] === Crypt::decryptString($user->anti_fishing_secret);
+
+        if (!$validEmail2FA || !$validG2FA || !$validSecretAntiFishing) 
         {
-            dd('logged in!');
-        } else 
+            return back()->withError('At least one of the credentials was incorrect.');
+        } else
         {
-            return back()->withError('At least one of the codes has failed the validation.');
+            dd('Logged in!');
         }
     }
 }

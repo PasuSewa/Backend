@@ -29,7 +29,7 @@ class PermissionSeeder extends Seeder
             'recovery_email' => 'gonzalosalvadorcorvalan@gmail.com',
             'phone_number' => Crypt::encryptString('+5401150488031'),
             'two_factor_secret' => Crypt::encryptString("2YXIJ4AE6RP4HTW3"),
-            'anti_fishing_secret' => Crypt::encryptString('anti fishing secret word'),
+            'anti_fishing_secret' => Crypt::encryptString('secret'),
             'preferred_lang' => 'es',
         ]); 
 
