@@ -62,5 +62,8 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+
+        // the custom middleware to know what language prefers the user
+        'Localization' => \App\Http\Middleware\Localization::class,
     ];
 }
