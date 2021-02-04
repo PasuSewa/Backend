@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['guest', 'Localization']], function()
 {
-    Route::view('/', 'welcome');
+    Route::view('/', 'welcome')->name('welcome');
 
     Route::view('/login', 'welcome')->name('login');
 
@@ -25,4 +25,6 @@ Route::group(['middleware' => ['guest', 'Localization']], function()
 Route::group(['middleware' => ['auth', 'Localization']], function()
 {
     Route::view('/dashboard', 'dashboard')->name('home');
+
+    Route::get('logout', 'AuthController@logout')->name('logout');
 });
