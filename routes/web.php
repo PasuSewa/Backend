@@ -13,4 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'Web\AuthController@index');
+Route::get('/', 'AuthController@index');
