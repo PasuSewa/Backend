@@ -34,7 +34,14 @@ class AuthController extends Controller
             ], 400);
         }
 
-        $user = User::where('email', $data['email'])->first();
+        if ($data['isSecondary']) 
+        {
+            $user = User::where('recovery_email', $data['email'])->first();
+        } else 
+        {
+            $user = User::where('email', $data['email'])->first();
+        }
+        
 
         $code = rand(100000, 999999);
 
