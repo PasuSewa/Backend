@@ -8,7 +8,7 @@
             <div class="navbar-collapse-header">
                 <div class="row">
                     <div class="col-6 collapse-brand"> 
-                        <a href="index.html">
+                        <a href="{{route('home')}}">
                             Dashboard
                         </a>
                     </div>
@@ -23,7 +23,7 @@
             
             <ul class="navbar-nav ml-lg-auto">
                 <li class="nav-item">
-                    <a href="/statistics" class="nav-link">Statistics</a>
+                    <a href="{{route('statistics')}}" class="nav-link">Statistics</a>
                 </li>
                 <li class="nav-item">
                     <a 

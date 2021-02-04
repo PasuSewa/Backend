@@ -27,4 +27,6 @@ Route::group(['middleware' => ['auth', 'Localization']], function()
     Route::view('/dashboard', 'dashboard')->name('home');
 
     Route::get('logout', 'AuthController@logout')->name('logout');
+
+    Route::view('statistics', 'statistics')->name('statistics');
 });
