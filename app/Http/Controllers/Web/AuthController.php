@@ -9,33 +9,33 @@ use App\Models\User;
 
 use Illuminate\Support\Facades\Crypt;
 
+use PragmaRX\Google2FA\Google2FA;
+
 class AuthController extends Controller
 {
     public function login(Request $request)
     {
         $rules = ['required', 'integer', 'min:100000', 'max:999999'];
 
-        $request->validate([
+        $data = $request->validate([
             '2fa_code_email' => $rules,
             '2fa_code' => $rules
         ]);
-    }
 
-    public function index()
-    {
+        $google2fa = new Google2FA();
 
-        $user = User::find(1);
+        $validG2FA = $google2fa->verifyKey(Crypt::decryptString($user->two_factor_secret), $data['2fa_code'], 0);
 
-        $code = rand(100000, 999999);
+        $validEmail2FA = $data['2fa_code_email'] === Crypt::decryptString($user->two_factor_code_email);
 
-        $user->two_factor_code_email = Crypt::encryptString($code);
+        dd($validEmail2FA);
 
-        $user->save();
-
-        $antiFishingSecret = Crypt::decryptString($user->anti_fishing_secret);
-
-        $user->notify(new EmailTwoFactorAuth($code, $antiFishingSecret, $user->preferred_lang));
-
-        return view('welcome');
+        if ($validEmail2FA && $validG2FA) 
+        {
+            dd('logged in!');
+        } else 
+        {
+            dd('one of the codes was incorrect');
+        }
     }
 }
