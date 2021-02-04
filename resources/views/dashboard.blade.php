@@ -85,6 +85,34 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-12">
+                    <div class="card">
+                        <form action="" method="post" class="card-body pt-4 pb-3">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="company_logo">Company Name</label>
+                                        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="company_logo">Select Logo</label>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="company_logo" lang="en">
+                                            <label class="custom-file-label" for="company_logo"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 pt-4">
+                                    <button class="btn btn-success mt-2">
+                                        Create Company
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
