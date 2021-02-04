@@ -91,6 +91,8 @@
             </div>
         `
 
+        emailButton.setAttribute('disabled', '')
+
         await fetch("/api/send-code-by-email", {
             method: 'POST',
             headers: new Headers({
@@ -108,6 +110,8 @@
             console.log(response)
 
             emailButton.innerHTML = 'Send Code'
+
+            emailButton.removeAttribute('disabled')
         })
     }
 </script>
