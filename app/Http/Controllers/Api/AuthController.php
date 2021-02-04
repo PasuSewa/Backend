@@ -42,7 +42,6 @@ class AuthController extends Controller
             $user = User::where('email', $data['email'])->first();
         }
         
-
         $code = rand(100000, 999999);
 
         $user->two_factor_code_email = Crypt::encryptString($code);
@@ -54,7 +53,7 @@ class AuthController extends Controller
         $user->notify(new EmailTwoFactorAuth($code, $antiFishingSecret, $user->preferred_lang));
 
         return response()->json([
-            'message' => 'Email enviado con éxito.'
+            'message' => 'Email sent successfully.'
         ], 200);
     }
 }

@@ -35,7 +35,7 @@ class AuthController extends Controller
             dd('logged in!');
         } else 
         {
-            dd('one of the codes was incorrect');
+            return back()->withError('At least one of the codes has failed the validation.');
         }
     }
 }

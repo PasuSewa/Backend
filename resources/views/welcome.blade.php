@@ -6,6 +6,14 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
+
+                    @if (Session::has('error'))
+                        <div class="card-header">
+                            <div class="alert alert-danger" role="alert">
+                                <strong>Error!</strong> {{Session::get('error')}}
+                              </div>
+                        </div>
+                    @endif
     
                     <div class="card-body">
                         <form method="POST" action="{{route('login')}}">
