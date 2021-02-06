@@ -16,7 +16,6 @@
                 @foreach ($statistics as $data)
                     <div class="col-lg-6">
                         <div class="card card-stats">
-                            <!-- Card body -->
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
