@@ -41,6 +41,10 @@ class PermissionSeeder extends Seeder
         array_push($adminPermissions, Permission::create(['name' => 'create_companies']));
         array_push($adminPermissions, Permission::create(['name' => 'update_companies']));
         array_push($adminPermissions, Permission::create(['name' => 'delete_companies']));
+        array_push($adminPermissions, Permission::create(['name' => 'discard_suggestions']));
+        array_push($adminPermissions, Permission::create(['name' => 'publish_suggestions']));
+        array_push($adminPermissions, Permission::create(['name' => 'discard_ratings']));
+        array_push($adminPermissions, Permission::create(['name' => 'publish_ratings']));
 
         $adminRole->syncPermissions($adminPermissions);
 
