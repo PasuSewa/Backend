@@ -49,6 +49,6 @@ class AdminController extends Controller
 
         $company->delete();
 
-        return back();
+        return back()->withMessage('Company deleted successfully.');
     }
 }

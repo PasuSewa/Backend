@@ -78,6 +78,13 @@
                         </div>
                         <div class="card-footer">
                             {{ $companies->links() }}
+                            @if (Session::has('message'))
+                                <div class="col-lg-12">
+                                    <div class="alert alert-success" role="alert">
+                                        <strong>{{Session::get('message')}}</strong>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -125,13 +132,6 @@
                                 </div>
                             </div>
                         </form>
-                        @if (Session::has('message'))
-                            <div class="card-footer">
-                                <div class="alert alert-success" role="alert">
-                                    <strong>{{Session::get('message')}}</strong>
-                                </div>
-                            </div>
-                        @endif
                     </div>
                 </div>
             </div>
