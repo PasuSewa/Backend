@@ -21,6 +21,8 @@ class AdminController extends Controller
             'company_name' => ['required', 'text', 'max:190'],
             'company_logo' => ['required', 'file'],
         ]);
+
+        $path = $request->file('company_logo')->store();
     }
 
     public function update()
