@@ -44,4 +44,26 @@ Route::group(['middleware' => ['auth', 'Localization', 'role:admin']], function(
                 ->name('update_company')
                 ->middleware('can:update_companies');
     });
+
+    Route::group(['prefix' => 'suggestion'], function() 
+    {
+        Route::get('discard/{id}', 'AdminController@discardSuggestion')
+                ->name('discard_suggestion')
+                ->middleware('can:discard_suggestions');
+        
+        Route::get('publish/{id}', 'AdminController@publishSuggestion')
+                ->name('publish_suggestion')
+                ->middleware('can:publish_suggestions');
+    });
+    
+    Route::group(['prefix' => 'rating'], function() 
+    {
+        Route::get('discard/{id}', 'AdminController@discardRating')
+                ->name('discard_rating')
+                ->middleware('can:discard_ratings');
+        
+        Route::get('publish/{id}', 'AdminController@publishRating')
+                ->name('publish_rating')
+                ->middleware('can:publish_ratings');
+    });
 });
