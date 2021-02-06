@@ -29,4 +29,9 @@ Route::group(['middleware' => ['auth', 'Localization', 'role:admin']], function(
     Route::get('logout', 'AuthController@logout')->name('logout');
 
     Route::view('statistics', 'statistics')->name('statistics');
+
+    Route::group(['prefix' => 'companiy'], function()
+    {
+        Route::get('delete/{id}', 'AdminController@deleteCompany')->name('delete_company')->middleware('can:delete_companies');
+    });
 });

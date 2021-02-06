@@ -25,8 +25,10 @@ class AdminController extends Controller
         //
     }
 
-    public function delete()
+    public function deleteCompany($id)
     {
-        //
+        Company::find($id)->delete();
+
+        return back();
     }
 }

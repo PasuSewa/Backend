@@ -3,7 +3,7 @@
 @section('content')
     @include('layout.navbar')
 
-    <section class="section">
+    <section class="section mt-5">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-12">
@@ -60,17 +60,16 @@
                                                     >
                                                     </i>
                                                 </button>
-                                                <button 
-                                                        type="button" 
-                                                        rel="tooltip" 
-                                                        class="btn btn-danger btn-icon btn-sm " 
-                                                        data-original-title=""
-                                                        data-toggle="tooltip" 
-                                                        data-placement="right" 
-                                                        title="Delete Company" 
-                                                    >
+                                                <a 
+                                                    rel="tooltip" 
+                                                    class="btn btn-danger btn-icon btn-sm text-white"
+                                                    data-toggle="tooltip" 
+                                                    data-placement="right" 
+                                                    title="Delete Company"
+                                                    href="{{route('delete_company', $company->id)}}" 
+                                                >
                                                     <i class="ni ni-fat-remove pt-1"></i>
-                                                </button>
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
