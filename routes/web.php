@@ -22,7 +22,7 @@ Route::group(['middleware' => ['guest', 'Localization']], function()
     Route::post('/login', 'AuthController@login')->name('login');
 });
 
-Route::group(['middleware' => ['auth', 'Localization']], function()
+Route::group(['middleware' => ['auth', 'Localization', 'role:admin']], function()
 {
     Route::view('/dashboard', 'dashboard')->name('home');
 
