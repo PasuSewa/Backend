@@ -89,6 +89,7 @@
                             method="post" 
                             class="card-body pt-4 pb-3"
                         >
+                        @csrf
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">

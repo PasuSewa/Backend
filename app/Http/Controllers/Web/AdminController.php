@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Company;
+use Storage;
 
 class AdminController extends Controller
 {
@@ -15,14 +16,22 @@ class AdminController extends Controller
         return view('dashboard', compact('companies'));
     }
 
-    public function create(Request $request)
+    public function createCompany(Request $request)
     {
         $companyData = $request->validate([
-            'company_name' => ['required', 'text', 'max:190'],
+            'company_name' => ['required', 'string', 'max:190'],
             'company_logo' => ['required', 'file'],
         ]);
 
-        $path = $request->file('company_logo')->store();
+        $path = $request->file('company_logo')->store('logos', 's3');
+
+        Storage::disk('s3')->setVisibility($path, 'public');
+
+        Company::create([
+            'name' => $companyData['company_name'],
+            'file_name' => basename($path),
+            'url_logo' => Storage::disk('s3')->url($path),
+        ]);
     }
 
     public function update()
