@@ -15,5 +15,6 @@ class Rating extends Model
         "user_name",
         "body",
         "rating",
+        "is_public"
     ];
 }

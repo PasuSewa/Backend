@@ -18,6 +18,7 @@ class CreateRatingsTable extends Migration
             $table->string('user_name');
             $table->string('body');
             $table->integer('rating');
+            $table->boolean('is_public');
             $table->timestamps();
         });
     }

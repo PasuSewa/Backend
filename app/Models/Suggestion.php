@@ -14,5 +14,6 @@ class Suggestion extends Model
     protected $fillable = [
         "user_name",
         "body",
+        "is_public"
     ];
 }
