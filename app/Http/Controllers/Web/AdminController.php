@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Feedback;
 use App\Models\Company;
+use App\Models\Slot;
+use App\Models\User;
 use Storage;
 
 class AdminController extends Controller
@@ -116,5 +118,53 @@ class AdminController extends Controller
         $rating->save();
 
         return back()->withMessage('Rating published.');
+    }
+/************************************************************************************************* statistics */
+    public function showStatistics()
+    {
+        $statistics = array();
+
+        array_push($statistics, [
+            'count' => User::role('free')->count(),
+            'icon' => 'single-02',
+            'title' => 'Total Amount of free users',
+        ]);
+        array_push($statistics, [
+            'count' => User::role('semi-premium')->count(),
+            'icon' => 'money-coins',
+            'title' => 'total amount of semi-premium users',
+        ]);
+        array_push($statistics, [
+            'count' => User::role('premium')->count(),
+            'icon' => 'trophy',
+            'title' => 'total amount of premium users',
+        ]);
+        array_push($statistics, [
+            'count' => $statistics[0]['count'] + $statistics[1]['count'] + $statistics[2]['count'],
+            'icon' => 'circle-08',
+            'title' => 'total amount of users',
+        ]);
+        array_push($statistics, [
+            'count' => Feedback::where('feedback_type', 'suggestion')->count(),
+            'icon' => 'air-baloon',
+            'title' => 'total amount of suggestions',
+        ]);
+        array_push($statistics, [
+            'count' => Feedback::where('feedback_type', 'rating')->count(),
+            'icon' => 'book-bookmark',
+            'title' => 'total amount of ratings',
+        ]);
+        array_push($statistics, [
+            'count' => Slot::count(),
+            'icon' => 'badge',
+            'title' => 'total amount of registered slots',
+        ]);
+        array_push($statistics, [
+            'count' => Slot::whereNull('company_id')->whereNotNull('company_name')->count(),
+            'icon' => 'shop',
+            'title' => "total amount of slots that doesn't have an existing company associated",
+        ]);
+
+        return view('statistics', compact('statistics'));
     }
 }

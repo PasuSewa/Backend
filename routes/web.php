@@ -28,7 +28,7 @@ Route::group(['middleware' => ['auth', 'Localization', 'role:admin']], function(
 
     Route::get('logout', 'AuthController@logout')->name('logout');
 
-    Route::view('statistics', 'statistics')->name('statistics');
+    Route::get('statistics', 'AdminController@showStatistics')->name('statistics');
 
     Route::group(['prefix' => 'company'], function()
     {

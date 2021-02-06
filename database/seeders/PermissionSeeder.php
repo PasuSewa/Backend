@@ -34,6 +34,10 @@ class PermissionSeeder extends Seeder
         ]); 
 
         $adminRole = Role::create(['name' => 'admin']);
+        
+        Role::create(['name' => 'free']);
+        Role::create(['name' => 'semi-premium']);
+        Role::create(['name' => 'premium']);
 
         $adminPermissions = array();
 
