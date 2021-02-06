@@ -125,6 +125,13 @@
                                 </div>
                             </div>
                         </form>
+                        @if (Session::has('message'))
+                            <div class="card-footer">
+                                <div class="alert alert-success" role="alert">
+                                    <strong>{{Session::get('message')}}</strong>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

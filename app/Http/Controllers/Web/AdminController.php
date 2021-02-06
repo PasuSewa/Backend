@@ -32,6 +32,8 @@ class AdminController extends Controller
             'file_name' => basename($path),
             'url_logo' => Storage::disk('s3')->url($path),
         ]);
+
+        return back()->withMessage('Company added successfully.');
     }
 
     public function update()
@@ -41,7 +43,11 @@ class AdminController extends Controller
 
     public function deleteCompany($id)
     {
-        Company::find($id)->delete();
+        $company = Company::find($id);
+
+        Storage::disk('s3')->delete('logos/' . $company->file_name);
+
+        $company->delete();
 
         return back();
     }
