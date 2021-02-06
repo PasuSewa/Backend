@@ -35,6 +35,15 @@ class PermissionSeeder extends Seeder
 
         $adminRole = Role::create(['name' => 'admin']);
 
+        $adminPermissions = array();
+
+        array_push($adminPermissions, Permission::create(['name' => 'access_dashboard']));
+        array_push($adminPermissions, Permission::create(['name' => 'create_companies']));
+        array_push($adminPermissions, Permission::create(['name' => 'update_companies']));
+        array_push($adminPermissions, Permission::create(['name' => 'delete_companies']));
+
+        $adminRole->syncPermissions($adminPermissions);
+
         $admin->assignRole('admin');
     }
 }
