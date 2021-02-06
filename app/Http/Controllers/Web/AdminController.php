@@ -21,7 +21,7 @@ class AdminController extends Controller
 
         return view('dashboard', compact('companies', 'ratings', 'suggestions'));
     }
-
+/************************************************************************************************* manage companies */
     public function createCompany(Request $request)
     {
         $companyData = $request->validate([
@@ -81,5 +81,41 @@ class AdminController extends Controller
         $company->delete();
 
         return back()->withMessage('Company deleted successfully.');
+    }
+/************************************************************************************************* ratings & suggestions */
+    public function discardSuggestion($id)
+    {
+        Suggestion::find($id)->delete();
+
+        return back()->withMessage('Suggestion discarded.');
+    }
+
+    public function publishSuggestion($id)
+    {
+        $suggestion = Suggestion::find($id);
+
+        $suggestion->is_public = true;
+
+        $suggestion->save();
+
+        return back()->withMessage('Suggestion published.');
+    }
+
+    public function discardRating($id)
+    {
+        Rating::find($id)->delete();
+
+        return back()->withMessage('Rating discarded.');
+    }
+
+    public function publishRating($id)
+    {
+        $rating = Rating::find($id);
+
+        $rating->is_public = true;
+
+        $rating->save();
+
+        return back()->withMessage('Rating published.');
     }
 }
