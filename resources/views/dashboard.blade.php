@@ -27,25 +27,39 @@
                                     @foreach ($companies as $company)
                                         <tr>
                                             <td class="text-center">{{$company->id}}</td>
-                                            <td>{{$company->name}}</td>
-                                            <td><a href="{{$company->url_logo}}" target="_blank" class="btn-link text-primary">See Logo</a></td>
-                                            <td class="td-actions text-right">
-                                                <span
-                                                    data-toggle="modal" 
-                                                    data-target="#modal-edit-company"
+                                            <td>
+                                                {{$company->name}}
+                                            </td>
+                                            <td>
+                                                <a 
+                                                    href="{{$company->url_logo}}" 
+                                                    target="_blank" 
+                                                    class="btn-link text-primary"
                                                 >
-                                                    <button 
-                                                        type="button" 
-                                                        rel="tooltip" 
-                                                        class="btn btn-info btn-icon btn-sm " 
-                                                        data-original-title="" 
-                                                        data-toggle="tooltip" 
-                                                        data-placement="left" 
-                                                        title="Edit Company" 
+                                                    See Logo
+                                                </a>
+                                            </td>
+                                            <td class="td-actions text-right">
+                                                <button 
+                                                    type="button" 
+                                                    rel="tooltip" 
+                                                    class="btn btn-info btn-icon btn-sm open-modal" 
+                                                    data-original-title="" 
+                                                    data-toggle="tooltip" 
+                                                    data-placement="left" 
+                                                    title="Edit Company" 
+                                                    company-name="{{$company->name}}"
+                                                    company-id="{{$company->id}}"
+                                                    company-logo="{{$company->url_logo}}"
+                                                >
+                                                    <i 
+                                                        class="ni ni-zoom-split-in pt-1"
+                                                        company-name="{{$company->name}}"
+                                                        company-id="{{$company->id}}"
+                                                        company-logo="{{$company->url_logo}}"
                                                     >
-                                                        <i class="ni ni-zoom-split-in pt-1"></i>
-                                                    </button>
-                                                </span>
+                                                    </i>
+                                                </button>
                                                 <button 
                                                         type="button" 
                                                         rel="tooltip" 
@@ -282,7 +296,8 @@
         aria-hidden="true"
     >
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <form class="modal-content" method="POST">
+                @csrf
                 <div class="modal-header">
                     <h5 class="modal-title">Edit Company</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -290,10 +305,15 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form class="row justify-content-around">
+                    <div class="row justify-content-around">
                         <div class="form-group col-lg-12">
                             <label for="company-name" class="col-form-label">Company Name:</label>
-                            <input type="text" class="form-control" value="" id="company-name">
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                value=""
+                                id="company-name"
+                            />
                         </div>
                         <div class="form-group col-lg-12">
                             <label for="company_logo">Select Logo</label>
@@ -303,15 +323,64 @@
                             </div>
                         </div>
                         <div class="col-lg-3">
-                            <td><a href="#" target="_blank" class="btn-link text-primary">See Old Logo</a></td>
+                            <td>
+                                <a 
+                                    href="#" 
+                                    target="_blank"
+                                    class="btn-link text-primary"
+                                    id="company-old-logo"
+                                >
+                                    See Old Logo
+                                </a>
+                            </td>
                         </div>
-                    </form>
+                        <input type="hidden" name="company_id" value="" id="company-id">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-primary" type="submit">Save</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            const buttons = document.querySelectorAll('.open-modal')
+
+            buttons.forEach(button => {
+                button.addEventListener('click', e => {
+                    let companyName = e.target.getAttribute('company-name')
+
+                    let companyId = e.target.getAttribute('company-id')
+
+                    let companyLogo = e.target.getAttribute('company-logo')
+
+                    editCompany(companyName, companyId, companyLogo)
+                })
+            });
+        })
+
+        function editCompany(name, id, logo)
+        {
+            console.log({
+                name,
+                id,
+                logo
+            })
+            document.getElementById('company-id').setAttribute('value', id)
+
+            document.getElementById('company-name').setAttribute('value', name)
+
+            document.getElementById('company-old-logo').setAttribute('href', logo)
+
+            openModal()
+        }
+
+        function openModal()
+        {
+            $('#modal-edit-company').modal('show')
+        }
+    </script>
 @endsection
