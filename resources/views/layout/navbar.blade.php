@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-default py-0">
+<nav class="navbar navbar-expand-lg navbar-dark bg-default py-0 fixed-top">
     <div class="container">
         <a class="navbar-brand" href="{{route('home')}}">Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-default" aria-controls="navbar-default" aria-expanded="false" aria-label="Toggle navigation">
