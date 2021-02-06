@@ -10,7 +10,7 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $companies = Company::select('id', 'name', 'url_logo')->paginate(2);
+        $companies = Company::select('id', 'name', 'url_logo')->paginate(25);
 
         return view('dashboard', compact('companies'));
     }

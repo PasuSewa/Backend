@@ -28,7 +28,7 @@
                                         <tr>
                                             <td class="text-center">{{$company->id}}</td>
                                             <td>{{$company->name}}</td>
-                                            <td><a href="{{$company->url_logo}}" target="_blank">{{$company->name}}</a></td>
+                                            <td><a href="{{$company->url_logo}}" target="_blank" class="btn-link text-primary">See Logo</a></td>
                                             <td class="td-actions text-right">
                                                 <button 
                                                     type="button" 
