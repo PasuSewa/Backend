@@ -16,7 +16,8 @@ class CreateCompaniesTable extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('url_logo')->nullable();
+            $table->string('url_logo');
+            $table->string('file_name');
             $table->timestamps();
         });
     }

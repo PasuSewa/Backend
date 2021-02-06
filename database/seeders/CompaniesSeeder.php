@@ -16,7 +16,8 @@ class CompaniesSeeder extends Seeder
     {
         Company::create([
             'name' => 'AFIP',
-            'url_logo' => 'https://www.afip.gob.ar/frameworkAFIP/v1/img/logo_afip.png'
+            'url_logo' => 'https://www.afip.gob.ar/frameworkAFIP/v1/img/logo_afip.png',
+            'file_name' => 'hsdfbksdfhb'
         ]);
     }
 }
