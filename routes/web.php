@@ -30,7 +30,7 @@ Route::group(['middleware' => ['auth', 'Localization', 'role:admin']], function(
 
     Route::view('statistics', 'statistics')->name('statistics');
 
-    Route::group(['prefix' => 'companiy'], function()
+    Route::group(['prefix' => 'company'], function()
     {
         Route::get('delete/{id}', 'AdminController@deleteCompany')
                 ->name('delete_company')
