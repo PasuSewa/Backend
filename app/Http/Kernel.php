@@ -65,5 +65,9 @@ class Kernel extends HttpKernel
 
         // the custom middleware to know what language prefers the user
         'Localization' => \App\Http\Middleware\Localization::class,
+
+        // spatie middlewares
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
     ];
 }
