@@ -2,13 +2,19 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12 mx-auto text-center">
-                <h3 class="desc mt-5 text-capitalize">There are {{$ratings->count()}} ratings</h3>
+                <h3 class="desc mt-5 text-capitalize">There are <u>{{$ratings->count()}}</u> ratings</h3>
             </div>
 
-            <div 
-                class="col-lg-12 d-flex justify-content-between pt-5"
-                style="overflow-x: scroll; white-space: nowrap; position: relative;"
-            >
+            @if ($ratings->count() === 0)
+                <div 
+                    class="col-lg-12 d-flex justify-content-between pt-5"
+                >
+            @else
+                <div 
+                    class="col-lg-12 d-flex justify-content-between pt-5"
+                    style="overflow-x: scroll; white-space: nowrap; position: relative;"
+                >
+            @endif
                 @foreach ($ratings as $rating)
                     <div class="col-lg-5">
                         <div class="card" style="white-space: normal !important;">
