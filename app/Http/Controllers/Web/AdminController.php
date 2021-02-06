@@ -36,9 +36,34 @@ class AdminController extends Controller
         return back()->withMessage('Company added successfully.');
     }
 
-    public function update()
+    public function updateCompany(Request $request)
     {
-        //
+        $companyData = $request->validate([
+            'company_name' => ['required', 'string', 'max:190'],
+            'company_logo' => ['nullable', 'file'],
+            'company_id' => ['required', 'integer', 'exists:companies,id'],
+        ]);
+
+        $updateCompany = Company::find($companyData['company_id']);
+
+        $updateCompany->name = $companyData['company_name'];
+
+        if (isset($companyData['company_logo'])) 
+        {
+            Storage::disk('s3')->delete('logos/' . $updateCompany->file_name);
+
+            $path = $request->file('company_logo')->store('logos', 's3');
+
+            Storage::disk('s3')->setVisibility($path, 'public');
+
+            $updateCompany->file_name = basename($path);
+
+            $updateCompany->url_logo = Storage::disk('s3')->url($path);
+        }
+
+        $updateCompany->save();
+
+        return back()->withMessage('Company updated successfully.');
     }
 
     public function deleteCompany($id)

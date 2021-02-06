@@ -7,7 +7,12 @@
     aria-hidden="true"
 >
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <form class="modal-content" method="POST">
+        <form 
+            class="modal-content" 
+            action="{{route('update_company')}}" 
+            enctype="multipart/form-data" 
+            method="post" 
+        >
             @csrf
             <div class="modal-header">
                 <h5 class="modal-title">Edit Company</h5>
@@ -57,7 +62,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success" type="submit">Save</button>
+                <input class="btn btn-success" type="submit" value="Save">
             </div>
         </form>
     </div>

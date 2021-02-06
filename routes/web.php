@@ -39,5 +39,9 @@ Route::group(['middleware' => ['auth', 'Localization', 'role:admin']], function(
         Route::post('create', 'AdminController@createCompany')
                 ->name('create_company')
                 ->middleware('can:create_companies');
+        
+        Route::post('update', 'AdminController@updateCompany')
+                ->name('update_company')
+                ->middleware('can:update_companies');
     });
 });
