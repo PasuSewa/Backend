@@ -3,6 +3,18 @@
 @section('content')
     @include('layout.navbar')
 
+    @if (Session::has('message'))
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 mt-8">
+                    <div class="alert alert-success" role="alert">
+                        {{Session::get('message')}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <section class="section mt-5">
         <div class="container">
             <div class="row justify-content-center">
@@ -78,13 +90,6 @@
                         </div>
                         <div class="card-footer">
                             {{ $companies->links() }}
-                            @if (Session::has('message'))
-                                <div class="col-lg-12">
-                                    <div class="alert alert-success" role="alert">
-                                        <strong>{{Session::get('message')}}</strong>
-                                    </div>
-                                </div>
-                            @endif
                         </div>
                     </div>
                 </div>

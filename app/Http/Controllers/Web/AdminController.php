@@ -14,9 +14,9 @@ class AdminController extends Controller
     {
         $companies = Company::select('id', 'name', 'url_logo')->paginate(25);
 
-        $suggestions = Feedback::where('feedback_type', 'suggestion')->select('id', 'user_name', 'body')->get();
+        $suggestions = Feedback::where('feedback_type', 'suggestion')->select('id', 'user_name', 'body', 'is_public')->get();
 
-        $ratings = Feedback::where('feedback_type', 'rating')->select('id', 'user_name', 'body', 'rating')->get();
+        $ratings = Feedback::where('feedback_type', 'rating')->select('id', 'user_name', 'body', 'is_public', 'rating')->get();
 
         return view('dashboard', compact('companies', 'ratings', 'suggestions'));
     }
@@ -84,14 +84,14 @@ class AdminController extends Controller
 /************************************************************************************************* ratings & suggestions */
     public function discardSuggestion($id)
     {
-        Suggestion::find($id)->delete();
+        Feedback::find($id)->delete();
 
         return back()->withMessage('Suggestion discarded.');
     }
 
     public function publishSuggestion($id)
     {
-        $suggestion = Suggestion::find($id);
+        $suggestion = Feedback::find($id);
 
         $suggestion->is_public = true;
 
@@ -102,14 +102,14 @@ class AdminController extends Controller
 
     public function discardRating($id)
     {
-        Rating::find($id)->delete();
+        Feedback::find($id)->delete();
 
         return back()->withMessage('Rating discarded.');
     }
 
     public function publishRating($id)
     {
-        $rating = Rating::find($id);
+        $rating = Feedback::find($id);
 
         $rating->is_public = true;
 

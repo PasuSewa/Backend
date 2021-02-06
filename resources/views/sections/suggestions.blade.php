@@ -24,9 +24,11 @@
                                 <a href="{{route('discard_suggestion', $suggestion->id)}}">
                                     <button class="btn btn-outline-warning">Discard Suggestion</button>
                                 </a>
-                                <a href="{{route('publish_suggestion', $suggestion->id)}}">
-                                    <button class="btn btn-outline-success">Publish Suggestion</button>
-                                </a>
+                                @if (!$suggestion->is_public)
+                                    <a href="{{route('publish_suggestion', $suggestion->id)}}">
+                                        <button class="btn btn-outline-success">Publish Suggestion</button>
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     </div>

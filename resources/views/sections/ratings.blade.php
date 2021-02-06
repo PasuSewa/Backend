@@ -29,9 +29,11 @@
                                 <a href="{{route('discard_rating', $rating->id)}}">
                                     <button class="btn btn-outline-warning">Discard rating</button>
                                 </a>
-                                <a href="{{route('publish_rating', $rating->id)}}">
-                                    <button class="btn btn-outline-success">Publish rating</button>
-                                </a>
+                                @if (!$rating->is_public)
+                                    <a href="{{route('publish_rating', $rating->id)}}">
+                                        <button class="btn btn-outline-success">Publish rating</button>
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     </div>
