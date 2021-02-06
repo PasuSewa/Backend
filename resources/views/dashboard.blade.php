@@ -30,17 +30,22 @@
                                             <td>{{$company->name}}</td>
                                             <td><a href="{{$company->url_logo}}" target="_blank" class="btn-link text-primary">See Logo</a></td>
                                             <td class="td-actions text-right">
-                                                <button 
-                                                    type="button" 
-                                                    rel="tooltip" 
-                                                    class="btn btn-info btn-icon btn-sm " 
-                                                    data-original-title="" 
-                                                    data-toggle="tooltip" 
-                                                    data-placement="left" 
-                                                    title="Edit Company" 
+                                                <span
+                                                    data-toggle="modal" 
+                                                    data-target="#modal-edit-company"
                                                 >
-                                                    <i class="ni ni-zoom-split-in pt-1"></i>
-                                                </button>
+                                                    <button 
+                                                        type="button" 
+                                                        rel="tooltip" 
+                                                        class="btn btn-info btn-icon btn-sm " 
+                                                        data-original-title="" 
+                                                        data-toggle="tooltip" 
+                                                        data-placement="left" 
+                                                        title="Edit Company" 
+                                                    >
+                                                        <i class="ni ni-zoom-split-in pt-1"></i>
+                                                    </button>
+                                                </span>
                                                 <button 
                                                         type="button" 
                                                         rel="tooltip" 
@@ -59,31 +64,6 @@
                             </table>
                         </div>
                         <div class="card-footer">
-                            {{-- <nav aria-label="...">
-                                <ul class="pagination">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1">
-                                            <i class="fa fa-angle-left"></i>
-                                            <span class="sr-only">Previous</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">1</a>
-                                    </li>
-                                    <li class="page-item active">
-                                        <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">3</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">
-                                            <i class="fa fa-angle-right"></i>
-                                            <span class="sr-only">Next</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav> --}}
                             {{ $companies->links() }}
                         </div>
                     </div>
@@ -293,5 +273,45 @@
             </div>
         </div>
     </section>
-
+    <div 
+        class="modal fade" 
+        id="modal-edit-company" 
+        tabindex="-1" 
+        role="dialog" 
+        aria-labelledby="modal-edit-company-title" 
+        aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Company</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="row justify-content-around">
+                        <div class="form-group col-lg-12">
+                            <label for="company-name" class="col-form-label">Company Name:</label>
+                            <input type="text" class="form-control" value="" id="company-name">
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <label for="company_logo">Select Logo</label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="company_logo" lang="en">
+                                <label class="custom-file-label" for="company_logo"></label>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <td><a href="#" target="_blank" class="btn-link text-primary">See Old Logo</a></td>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
