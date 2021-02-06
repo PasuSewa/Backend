@@ -83,19 +83,36 @@
                 </div>
                 <div class="col-lg-12">
                     <div class="card">
-                        <form action="" method="post" class="card-body pt-4 pb-3">
+                        <form 
+                            action="{{route('create_company')}}" 
+                            enctype="multipart/form-data" 
+                            method="post" 
+                            class="card-body pt-4 pb-3"
+                        >
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="company_logo">Company Name</label>
-                                        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="exampleFormControlInput1" 
+                                            placeholder="name@example.com"
+                                            name="company_name"
+                                        />
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="company_logo">Select Logo</label>
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="company_logo" lang="en">
+                                            <input 
+                                                type="file" 
+                                                class="custom-file-input" 
+                                                id="company_logo" 
+                                                lang="en"
+                                                name="company_logo"
+                                            >
                                             <label class="custom-file-label" for="company_logo"></label>
                                         </div>
                                     </div>

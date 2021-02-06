@@ -32,6 +32,12 @@ Route::group(['middleware' => ['auth', 'Localization', 'role:admin']], function(
 
     Route::group(['prefix' => 'companiy'], function()
     {
-        Route::get('delete/{id}', 'AdminController@deleteCompany')->name('delete_company')->middleware('can:delete_companies');
+        Route::get('delete/{id}', 'AdminController@deleteCompany')
+                ->name('delete_company')
+                ->middleware('can:delete_companies');
+        
+        Route::post('create', 'AdminController@createCompany')
+                ->name('create_company')
+                ->middleware('can:create_companies');
     });
 });

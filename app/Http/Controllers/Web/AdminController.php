@@ -15,9 +15,12 @@ class AdminController extends Controller
         return view('dashboard', compact('companies'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        // 
+        $companyData = $request->validate([
+            'company_name' => ['required', 'text', 'max:190'],
+            'company_logo' => ['required', 'file'],
+        ]);
     }
 
     public function update()
