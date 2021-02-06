@@ -24,40 +24,42 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-center">1</td>
-                                        <td>Andrew Mike</td>
-                                        <td>Develop</td>
-                                        <td class="td-actions text-right">
-                                            <button 
-                                                type="button" 
-                                                rel="tooltip" 
-                                                class="btn btn-info btn-icon btn-sm " 
-                                                data-original-title="" 
-                                                data-toggle="tooltip" 
-                                                data-placement="left" 
-                                                title="Edit Company" 
-                                            >
-                                                <i class="ni ni-zoom-split-in pt-1"></i>
-                                            </button>
-                                            <button 
+                                    @foreach ($companies as $company)
+                                        <tr>
+                                            <td class="text-center">{{$company->id}}</td>
+                                            <td>{{$company->name}}</td>
+                                            <td><a href="{{$company->url_logo}}" target="_blank">{{$company->name}}</a></td>
+                                            <td class="td-actions text-right">
+                                                <button 
                                                     type="button" 
                                                     rel="tooltip" 
-                                                    class="btn btn-danger btn-icon btn-sm " 
-                                                    data-original-title=""
+                                                    class="btn btn-info btn-icon btn-sm " 
+                                                    data-original-title="" 
                                                     data-toggle="tooltip" 
-                                                    data-placement="right" 
-                                                    title="Delete Company" 
+                                                    data-placement="left" 
+                                                    title="Edit Company" 
                                                 >
-                                                <i class="ni ni-fat-remove pt-1"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                                    <i class="ni ni-zoom-split-in pt-1"></i>
+                                                </button>
+                                                <button 
+                                                        type="button" 
+                                                        rel="tooltip" 
+                                                        class="btn btn-danger btn-icon btn-sm " 
+                                                        data-original-title=""
+                                                        data-toggle="tooltip" 
+                                                        data-placement="right" 
+                                                        title="Delete Company" 
+                                                    >
+                                                    <i class="ni ni-fat-remove pt-1"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
                         <div class="card-footer">
-                            <nav aria-label="...">
+                            {{-- <nav aria-label="...">
                                 <ul class="pagination">
                                     <li class="page-item disabled">
                                         <a class="page-link" href="#" tabindex="-1">
@@ -81,7 +83,8 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </nav>
+                            </nav> --}}
+                            {{ $companies->links() }}
                         </div>
                     </div>
                 </div>
