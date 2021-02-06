@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Suggestion;
 use App\Models\Company;
+use App\Models\Rating;
 use Storage;
 
 class AdminController extends Controller
@@ -13,7 +15,11 @@ class AdminController extends Controller
     {
         $companies = Company::select('id', 'name', 'url_logo')->paginate(25);
 
-        return view('dashboard', compact('companies'));
+        $suggestions = Suggestion::select('id', 'user_name', 'body')->get();
+
+        $ratings = Rating::select('id', 'user_name', 'body', 'rating')->get();
+
+        return view('dashboard', compact('companies', 'ratings', 'suggestions'));
     }
 
     public function createCompany(Request $request)
