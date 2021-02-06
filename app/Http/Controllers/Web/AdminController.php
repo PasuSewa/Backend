@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Suggestion;
+use App\Models\Feedback;
 use App\Models\Company;
-use App\Models\Rating;
 use Storage;
 
 class AdminController extends Controller
@@ -15,9 +14,9 @@ class AdminController extends Controller
     {
         $companies = Company::select('id', 'name', 'url_logo')->paginate(25);
 
-        $suggestions = Suggestion::select('id', 'user_name', 'body')->get();
+        $suggestions = Feedback::where('feedback_type', 'suggestion')->select('id', 'user_name', 'body')->get();
 
-        $ratings = Rating::select('id', 'user_name', 'body', 'rating')->get();
+        $ratings = Feedback::where('feedback_type', 'rating')->select('id', 'user_name', 'body', 'rating')->get();
 
         return view('dashboard', compact('companies', 'ratings', 'suggestions'));
     }
