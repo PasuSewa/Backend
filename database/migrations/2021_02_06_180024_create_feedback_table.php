@@ -19,7 +19,7 @@ class CreateFeedbackTable extends Migration
             $table->string('body');
             $table->integer('rating')->nullable();
             $table->string('feedback_type');
-            $table->boolean('is_public');
+            $table->boolean('is_public')->default(false);
             $table->timestamps();
         });
     }

@@ -22,8 +22,8 @@ class AuthController extends Controller
         $data = $request->only('email', 'isSecondary');
 
         $validation = Validator::make($data, [
-            'email' => 'required|email|exists:users,email',
-            'isSecondary' => 'required|boolean',
+            'email' => ['required', 'email', 'exists:users,email'],
+            'isSecondary' => ['required', 'boolean'],
         ]);
 
         if($validation->fails())
@@ -34,13 +34,9 @@ class AuthController extends Controller
             ], 400);
         }
 
-        if ($data['isSecondary']) 
-        {
-            $user = User::where('recovery_email', $data['email'])->first();
-        } else 
-        {
-            $user = User::where('email', $data['email'])->first();
-        }
+        $user = $data['isSecondary'] 
+                    ? User::where('recovery_email', $data['email'])->first() 
+                    : User::where('email', $data['email'])->first();
         
         $code = rand(100000, 999999);
 
