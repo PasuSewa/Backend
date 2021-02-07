@@ -40,7 +40,7 @@ class AdminController extends Controller
             'url_logo' => Storage::disk('s3')->url($path),
         ]);
 
-        return back()->withMessage('Company added successfully.');
+        return redirect()->route('home')->withMessage('Company added successfully.');
     }
 
     public function updateCompany(Request $request)
@@ -70,7 +70,7 @@ class AdminController extends Controller
 
         $updateCompany->save();
 
-        return back()->withMessage('Company updated successfully.');
+        return redirect()->route('home')->withMessage('Company updated successfully.');
     }
 
     public function deleteCompany($id)
@@ -81,14 +81,14 @@ class AdminController extends Controller
 
         $company->delete();
 
-        return back()->withMessage('Company deleted successfully.');
+        return redirect()->route('home')->withMessage('Company deleted successfully.');
     }
 /************************************************************************************************* ratings & suggestions */
     public function discardSuggestion($id)
     {
         Feedback::find($id)->delete();
 
-        return back()->withMessage('Suggestion discarded.');
+        return redirect()->route('home')->withMessage('Suggestion discarded.');
     }
 
     public function publishSuggestion($id)
@@ -99,14 +99,14 @@ class AdminController extends Controller
 
         $suggestion->save();
 
-        return back()->withMessage('Suggestion published.');
+        return redirect()->route('home')->withMessage('Suggestion published.');
     }
 
     public function discardRating($id)
     {
         Feedback::find($id)->delete();
 
-        return back()->withMessage('Rating discarded.');
+        return redirect()->route('home')->withMessage('Rating discarded.');
     }
 
     public function publishRating($id)
@@ -117,7 +117,7 @@ class AdminController extends Controller
 
         $rating->save();
 
-        return back()->withMessage('Rating published.');
+        return redirect()->route('home')->withMessage('Rating published.');
     }
 /************************************************************************************************* statistics */
     public function showStatistics()
