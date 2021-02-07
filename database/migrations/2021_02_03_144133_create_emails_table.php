@@ -16,8 +16,7 @@ class CreateEmailsTable extends Migration
         Schema::create('emails', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedInteger('slot_id');
-            $table->foreign('slot_id')->references('id')->on('slots')->onDelete('cascade');
+            $table->foreignId('slot_id')->constrained()->onDelete('cascade');
 
             $table->string('email', 250);
             $table->string('opening', 1);

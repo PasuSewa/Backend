@@ -16,8 +16,7 @@ class CreatePhoneNumbersTable extends Migration
         Schema::create('phone_numbers', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedInteger('slot_id');
-            $table->foreign('slot_id')->references('id')->on('slots')->onDelete('cascade');
+            $table->foreignId('slot_id')->constrained()->onDelete('cascade');
 
             $table->string('phone_number', 250);
             $table->string('opening', 3); // the country code

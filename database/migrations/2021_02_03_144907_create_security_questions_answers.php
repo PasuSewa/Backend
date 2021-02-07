@@ -16,8 +16,7 @@ class CreateSecurityQuestionsAnswers extends Migration
         Schema::create('security_questions_answers', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedInteger('slot_id');
-            $table->foreign('slot_id')->references('id')->on('slots')->onDelete('cascade');
+            $table->foreignId('slot_id')->constrained()->onDelete('cascade');
 
             $table->string('security_question', 250);
             $table->string('security_answer', 250);
