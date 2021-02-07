@@ -8,7 +8,7 @@ use Tests\TestCase;
 use App\Models\Feedback;
 use App\Models\User;
 
-class FeedbackTest extends TestCase
+class FeedbackWebTest extends TestCase
 {
     use WithFaker;
 
@@ -90,7 +90,7 @@ class FeedbackTest extends TestCase
     }
 
     /** @test */
-    public function feedback_test_is_working_correctly()
+    public function feedback_web_test_is_working_correctly()
     {
         $feedback = Feedback::all();
 
