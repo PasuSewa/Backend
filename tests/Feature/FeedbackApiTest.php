@@ -11,7 +11,7 @@ class FeedbackApiTest extends TestCase
     /** @test */
     public function user_can_send_suggestions()
     {
-        $response = $this->post();
+        $response = $this->post(); // para esperar un json, hay que hacer postJson()
 
         $response->assertJson([
             'message' => "Thank you for your suggestion, we will take it into count."
