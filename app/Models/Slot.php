@@ -25,7 +25,6 @@ class Slot extends Model
         "user_id",
         "company_id",
         "company_name",
-        "name",
         "description",
         "last_seen",
     ];
