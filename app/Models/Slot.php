@@ -28,6 +28,7 @@ class Slot extends Model
         "description",
         "last_seen",
         "user_name",
+        "char_count",
     ];
 
     public function user()
