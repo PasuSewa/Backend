@@ -20,6 +20,7 @@ class CreateSlotsTable extends Migration
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
 
             $table->date('last_seen')->nullable();
+            $table->string('user_name')->nullable();
             $table->string('company_name');
             $table->string('description', 250)->nullable();
             $table->timestamps();

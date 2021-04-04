@@ -27,6 +27,7 @@ class Slot extends Model
         "company_name",
         "description",
         "last_seen",
+        "user_name",
     ];
 
     public function user()
