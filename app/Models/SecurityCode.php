@@ -16,7 +16,9 @@ class SecurityCode extends Model
         "slot_id",
         "unique_security_code",
         "multiple_security_code",
+        "multiple_code_length",
         "crypto_currency_access_code",
+        "crypto_code_length",
     ];
 
     public function slot()
