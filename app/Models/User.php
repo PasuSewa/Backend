@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
 use App\Models\Slot;
+use App\Models\OpenPayment;
 
 class User extends Authenticatable
 {
@@ -56,5 +57,10 @@ class User extends Authenticatable
     public function slots()
     {
         return $this->hasMany(Slot::class);
+    }
+    
+    public function openPayments()
+    {
+        return $this->hasMany(OpenPayment::class);
     }
 }
