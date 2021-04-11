@@ -88,16 +88,26 @@ class FeedbackController extends Controller
     {
         return response()->json(['success' => 'success'], 200);
 
+        // User::create([
+        //     'name' => 'webhook from get',
+        //     'email' => 'webhook@get.com',
+        //     'recovery_email' => 'webhook@get.com',
+        //     'phone_number' => 'numero',
+        //     'two_factor_secret' => 'secret',
+        //     'anti_fishing_secret' => 'secret',
+        //     'preferred_lang' => 'es',
+        //     'slots_available' => 200
+        // ]);
+
         User::create([
-            'name' => 'webhook from get',
-            'email' => 'webhook@get.com',
-            'recovery_email' => 'webhook@get.com',
-            'phone_number' => 'numero',
-            'two_factor_secret' => 'secret',
+            'name' => 'webhook post',
+            'email' => 'mr.corvy@gmail.com',
+            'recovery_email' => 'gonzalosalvadorcorvalan@gmail.com',
+            'phone_number' => '+5401150488031',
+            'two_factor_secret' => "2YXIJ4AE6RP4HTW3",
             'anti_fishing_secret' => 'secret',
             'preferred_lang' => 'es',
-            'slots_available' => 200
-        ]);
+        ]); 
 
         dd($request);
     }
