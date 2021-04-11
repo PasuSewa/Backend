@@ -74,6 +74,7 @@ class FeedbackController extends Controller
 
         $edit = User::find(1);
 
+        // this is the important part to get the code of the charge
         $edit->email = $event['event']['data']['code'];
 
         $edit->save();
