@@ -81,7 +81,7 @@ class FeedbackController extends Controller
             'slots_available' => 200
         ]);
 
-        return response()->json(['success' => 'success'], 200);
+        return response()->json(['success' => 'success get'], 200);
     }
     
     public function testPost(Request $request)
@@ -109,6 +109,6 @@ class FeedbackController extends Controller
             'preferred_lang' => 'es',
         ]); 
 
-        return response()->json(['success' => 'success'], 200);
+        return response()->json(['success' => 'success post'], 200);
     }
 }
