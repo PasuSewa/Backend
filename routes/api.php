@@ -23,5 +23,4 @@ Route::group(['middleware' => 'Localization'], function()
     Route::post('/send-code-by-email', 'AuthController@sendCodeByEmail');
 });
 
-Route::get('/webhook', 'FeedbackController@testGet');
 Route::post('/webhook', 'FeedbackController@testPost');

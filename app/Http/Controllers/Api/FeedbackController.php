@@ -67,11 +67,6 @@ class FeedbackController extends Controller
             'message' => 'Thank you for your feedback, we will take it in count.',
         ], 200);
     }
-
-    public function testGet()
-    {
-        return response()->json(['success' => 'success get'], 200);
-    }
     
     public function testPost(Request $request)
     {
@@ -83,6 +78,6 @@ class FeedbackController extends Controller
 
         $edit->save();
 
-        return response()->json(['success' => $event], 200);
+        return response()->json(['testing' => $event['event']['data']], 200);
     }
 }
