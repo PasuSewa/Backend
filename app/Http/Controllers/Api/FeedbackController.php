@@ -86,7 +86,7 @@ class FeedbackController extends Controller
     
     public function testPost(Request $request)
     {
-        return response()->json(['success' => 'success'], 200);
+        
 
         // User::create([
         //     'name' => 'webhook from get',
@@ -101,14 +101,14 @@ class FeedbackController extends Controller
 
         User::create([
             'name' => 'webhook post',
-            'email' => 'mr.corvy@gmail.com',
-            'recovery_email' => 'gonzalosalvadorcorvalan@gmail.com',
+            'email' => 'mr.corvy2@gmail.com',
+            'recovery_email' => 'gonzalosalvadorcorvalan2@gmail.com',
             'phone_number' => '+5401150488031',
             'two_factor_secret' => "2YXIJ4AE6RP4HTW3",
             'anti_fishing_secret' => 'secret',
             'preferred_lang' => 'es',
         ]); 
 
-        dd($request);
+        return response()->json(['success' => 'success'], 200);
     }
 }
