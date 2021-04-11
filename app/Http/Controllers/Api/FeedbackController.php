@@ -75,17 +75,14 @@ class FeedbackController extends Controller
     
     public function testPost(Request $request)
     {
+        $edit = User::find(1);
 
-        dd($request);
+        $edit->email = 'post@webhoo.coinbase';
 
-        // $edit = User::find(1);
+        $edit->recovery_email = $request['event']['data']['code'];
 
-        // $edit->email = 'post@webhoo.coinbase';
+        $edit->save();
 
-        // $edit->recovery_email = $request['event']['data']['code'];
-
-        // $edit->save();
-
-        // return response()->json(['success' => 'success post'], 200);
+        return response()->json(['success' => 'success post'], 200);
     }
 }
