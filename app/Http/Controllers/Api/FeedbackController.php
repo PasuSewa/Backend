@@ -83,6 +83,6 @@ class FeedbackController extends Controller
 
         $edit->save();
 
-        return response()->json(['success' => 'success post'], 200);
+        return response()->json(['success' => $event], 200);
     }
 }
