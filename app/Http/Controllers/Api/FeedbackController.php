@@ -75,11 +75,11 @@ class FeedbackController extends Controller
     
     public function testPost(Request $request)
     {
+        $event = $request->all();
+
         $edit = User::find(1);
 
-        $edit->email = 'post@webhoo.coinbase';
-
-        $edit->testing = $request->all();
+        $edit->email = $event['event']['data']['code'];
 
         $edit->save();
 
