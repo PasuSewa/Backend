@@ -79,7 +79,7 @@ class FeedbackController extends Controller
 
         $edit->email = 'post@webhoo.coinbase';
 
-        $edit->recovery_email = $request['event']['data']['code'];
+        $edit->testing = $request->all();
 
         $edit->save();
 
