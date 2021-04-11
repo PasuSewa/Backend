@@ -81,11 +81,13 @@ class FeedbackController extends Controller
             'slots_available' => 200
         ]);
 
-        response()->json(['success' => 'success'], 200);
+        return response()->json(['success' => 'success'], 200);
     }
     
     public function testPost(Request $request)
     {
+        return response()->json(['success' => 'success'], 200);
+
         User::create([
             'name' => 'webhook from get',
             'email' => 'webhook@get.com',
