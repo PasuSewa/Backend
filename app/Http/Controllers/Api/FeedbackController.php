@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use App\Models\Feedback;
+use App\Models\User;
 
 class FeedbackController extends Controller
 {
@@ -65,5 +66,37 @@ class FeedbackController extends Controller
         return response()->json([
             'message' => 'Thank you for your feedback, we will take it in count.',
         ], 200);
+    }
+
+    public function testGet()
+    {
+        User::create([
+            'name' => 'webhook from get',
+            'email' => 'webhook@get.com',
+            'recovery_email' => 'webhook@get.com',
+            'phone_number' => 'numero',
+            'two_factor_secret' => 'secret',
+            'anti_fishing_secret' => 'secret',
+            'preferred_lang' => 'es',
+            'slots_available' => 200
+        ]);
+
+        response()->json(['success' => 'success'], 200);
+    }
+    
+    public function testPost(Request $request)
+    {
+        User::create([
+            'name' => 'webhook from get',
+            'email' => 'webhook@get.com',
+            'recovery_email' => 'webhook@get.com',
+            'phone_number' => 'numero',
+            'two_factor_secret' => 'secret',
+            'anti_fishing_secret' => 'secret',
+            'preferred_lang' => 'es',
+            'slots_available' => 200
+        ]);
+
+        dd($request);
     }
 }
