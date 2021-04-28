@@ -25,6 +25,7 @@ class User extends Authenticatable
         "email",
         "recovery_email",
         "phone_number",
+        "invitation_code",
         "2fa_secret",
         "2fa_code_email",
         "2fa_code_phone",
