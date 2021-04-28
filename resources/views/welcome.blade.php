@@ -14,7 +14,7 @@
                             </div>
 
                             <div class="form-group mb-3">
-
+ƒ
                                 <div class="input-group input-group-alternative">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-email-83"></i></span>
@@ -69,8 +69,8 @@
                                 <p>
                                     Only the admin has access beyond this point.
                                 </p>
-                                <a href="https://pasusewa.com">
-                                    <button type="button" class="btn btn-outline-info">Go back to PasuSewa</button>
+                                <a href="https://pasunashi.com">
+                                    <button type="button" class="btn btn-outline-info">Go back to PasuNashi</button>
                                 </a>
 
                                 @if (Session::has('error'))
