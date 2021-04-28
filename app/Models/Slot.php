@@ -27,6 +27,8 @@ class Slot extends Model
         "company_name",
         "description",
         "last_seen",
+        "accessing_device",
+        "accessing_platform",
         "user_name",
         "char_count",
     ];
