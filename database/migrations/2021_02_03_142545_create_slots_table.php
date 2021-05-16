@@ -26,7 +26,7 @@ class CreateSlotsTable extends Migration
             $table->string('user_name')->nullable();
             $table->integer('char_count')->nullable();
             $table->string('company_name');
-            $table->string('description', 250)->nullable();
+            $table->string('description', 500)->nullable();
             $table->timestamps();
         });
     }
