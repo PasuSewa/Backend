@@ -6,12 +6,18 @@
             <div class="page-header-image" style="background-image: url('{{asset('argon')}}/img/register_bg.png');"></div>
                 <div class="container" id="container">
                     <div class="form-container sign-in-container">
-                        <form method="POST" action="{{route('login')}}" role="form">
-                            @csrf
+
+                        <div class="w-100 justify-center text-center mt-4">
                             <h2>Sign in</h2>
-                            <div class="social-container mb-5">
+
+                            <div class="social-container">
                                 <button class="btn btn-primary" id="send-code">Send Code</button>
                             </div>
+                            
+                        </div>
+
+                        <form method="POST" action="{{route('login')}}" role="form" style="height: auto !important;">
+                            @csrf
 
                             <div class="form-group mb-3">
                                 <div class="input-group input-group-alternative">
@@ -68,7 +74,7 @@
                                 <p>
                                     Only the admin has access beyond this point.
                                 </p>
-                                <a href="https://pasunashi.com">
+                                <a href="https://pasunashi.xyz">
                                     <button type="button" class="btn btn-outline-info">Go back to PasuNashi</button>
                                 </a>
 
@@ -125,8 +131,6 @@
                 console.log(response)
 
                 emailButton.innerHTML = 'Send Code'
-
-                emailButton.removeAttribute('disabled')
             })
         }
     </script>
