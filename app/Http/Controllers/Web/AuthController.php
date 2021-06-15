@@ -27,13 +27,19 @@ class AuthController extends Controller
 
         $google2fa = new Google2FA();
 
-        $user = User::find(1); // only the admin can pass this authentication
+        try 
+        {
+            $user = User::findOrFail(1); // only the admin can pass this authentication
 
-        $validG2FA = $google2fa->verifyKey(Crypt::decryptString($user->two_factor_secret), $data['2fa_code'], 0);
+            $validG2FA = $google2fa->verifyKey(Crypt::decryptString($user->two_factor_secret), $data['2fa_code'], 0);
 
-        $validEmail2FA = $data['2fa_code_email'] === Crypt::decryptString($user->two_factor_code_email);
+            $validEmail2FA = $data['2fa_code_email'] === Crypt::decryptString($user->two_factor_code_email);
 
-        $validSecretAntiFishing = $data['anti_fishing_secret'] === Crypt::decryptString($user->anti_fishing_secret);
+            $validSecretAntiFishing = $data['anti_fishing_secret'] === Crypt::decryptString($user->anti_fishing_secret);
+        } catch (\Throwable $th) 
+        {
+            return response()->view("errors.500");
+        }
 
         if (!$validEmail2FA || !$validG2FA || !$validSecretAntiFishing) 
         {
