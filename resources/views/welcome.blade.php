@@ -132,6 +132,7 @@
 
                 emailButton.innerHTML = 'Send Code'
             })
+            .catch(response => console.error(response))
         }
     </script>
 @endsection

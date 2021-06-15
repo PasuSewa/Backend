@@ -49,7 +49,8 @@ class AuthController extends Controller
         $user->notify(new EmailTwoFactorAuth($code, $antiFishingSecret, $user->preferred_lang));
 
         return response()->json([
-            'message' => 'Email sent successfully.'
+            'message' => 'Email sent successfully.',
+            'test_locale' => __('prueba')
         ], 200);
     }
 }
