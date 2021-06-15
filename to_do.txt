@@ -1,0 +1,1 @@
+1) Antes de terminar el pryecto, dentro de App/Http/Kernel.php, habilitar dentro de web y api el HttpsProtocol
