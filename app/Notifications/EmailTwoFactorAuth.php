@@ -19,25 +19,25 @@ class EmailTwoFactorAuth extends Notification
 
     protected $translations = [
         "es" => [
-            "subject" => "Códico de Autenticación PasuSewa",
+            "subject" => "Códico de Autenticación PasuNashi",
             "greeting" => "Hola!",
-            "anti_fishing" => "Este es un correo oficial de PasuSewa, y aquí está la prueba: ",
-            "code" => "El Código de Autenticación es: ",
-            "thanks" => "Gracias por confiar en PasuSewa."
+            "anti_fishing" => "Este es un correo oficial de PasuNashi, y aquí está la prueba: ",
+            "code" => "Tu Código de Autenticación es: ",
+            "thanks" => "Gracias por confiar en PasuNashi."
         ],
         "en" => [
-            "subject" => "Authentication Code PasuSewa",
+            "subject" => "Authentication Code PasuNashi",
             "greeting" => "Hello!",
-            "anti_fishing" => "This is an official PasuSewa email and this is the proof: ",
-            "code" => "The Authentication Code is: ",
+            "anti_fishing" => "This is an official PasuNashi email and this is the proof: ",
+            "code" => "Your Authentication Code is: ",
             "thanks" => "Thank you for trusting in PsauSewa"
         ],
         "jp" => [
-            "subject" => "パス世話からの認証コード",
+            "subject" => "パスなしからの認証コード",
             "greeting" => "こんにちは!",
-            "anti_fishing" => "これはパス世話からの公式メールであり、その proof は次のとおりです。",
+            "anti_fishing" => "これはパスなしからの公式メールであり、その proof は次のとおりです。",
             "code" => "認証コードは次のとおりです。",
-            "thanks" => "パス世話を信頼していただきありがとうございます。"
+            "thanks" => "パスなしを信頼していただきありがとうございます。"
         ],
     ];
 

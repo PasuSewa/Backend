@@ -14,7 +14,6 @@
                             </div>
 
                             <div class="form-group mb-3">
-ƒ
                                 <div class="input-group input-group-alternative">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-email-83"></i></span>
