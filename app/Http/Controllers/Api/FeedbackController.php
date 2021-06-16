@@ -39,7 +39,7 @@ class FeedbackController extends Controller
         if($validation->fails())
         {
             return response()->json([
-                'message' => 'There was an Error in the validation.',
+                'message' => __('api_messages.error.validation'),
                 'errors' => $validation->errors()
             ], 400);
         }
@@ -64,7 +64,7 @@ class FeedbackController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Thank you for your feedback, we will take it in count.',
+            'message' => __('api_messages.success.feedback.received'),
         ], 200);
     }
     
