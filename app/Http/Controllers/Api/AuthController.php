@@ -29,7 +29,7 @@ class AuthController extends Controller
         if($validation->fails())
         {
             return response()->json([
-                'message' => 'There was an Error in the validation.',
+                'message' => __('api_messages.error.validation'),
                 'errors' => $validation->errors()
             ], 400);
         }
@@ -49,8 +49,7 @@ class AuthController extends Controller
         $user->notify(new EmailTwoFactorAuth($code, $antiFishingSecret, $user->preferred_lang));
 
         return response()->json([
-            'message' => 'Email sent successfully.',
-            'test_locale' => __('messages.prueba_1')
+            'message' => __('api_messages.success.auth.email_sent')
         ], 200);
     }
 }
