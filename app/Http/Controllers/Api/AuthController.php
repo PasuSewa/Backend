@@ -50,7 +50,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Email sent successfully.',
-            'test_locale' => __('prueba')
+            'test_locale' => __('messages.prueba_1')
         ], 200);
     }
 }
