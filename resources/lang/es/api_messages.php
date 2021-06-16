@@ -10,6 +10,6 @@ return [
         ]
     ],
     'error' => [
-        'validation' => 'Hubo un error validando la información enviada.'
+        'generic' => 'Oops... Parece que hubo un error... Por favor, intente nuevamente más tarde.'
     ]
 ];

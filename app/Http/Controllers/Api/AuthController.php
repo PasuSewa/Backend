@@ -22,34 +22,44 @@ class AuthController extends Controller
         $data = $request->only('email', 'isSecondary');
 
         $validation = Validator::make($data, [
-            'email' => ['required', 'email', 'exists:users,email'],
+            'email' => ['required', 'email'],
             'isSecondary' => ['required', 'boolean'],
         ]);
 
         if($validation->fails())
         {
             return response()->json([
-                'message' => __('api_messages.error.validation'),
+                'message' => __('auth.failed'),
                 'errors' => $validation->errors()
-            ], 400);
+            ], 200);
         }
 
-        $user = $data['isSecondary'] 
-                    ? User::where('recovery_email', $data['email'])->first() 
-                    : User::where('email', $data['email'])->first();
-        
-        $code = rand(100000, 999999);
+        try 
+        {
+            $user = $data['isSecondary'] 
+                        ? User::where('recovery_email', $data['email'])->firstOrFail() 
+                        : User::where('email', $data['email'])->firstOrFail();
+            
+            $code = rand(100000, 999999);
 
-        $user->two_factor_code_email = Crypt::encryptString($code);
+            $user->two_factor_code_email = Crypt::encryptString($code);
 
-        $user->save();
+            $user->save();
 
-        $antiFishingSecret = Crypt::decryptString($user->anti_fishing_secret);
+            $antiFishingSecret = Crypt::decryptString($user->anti_fishing_secret);
 
-        $user->notify(new EmailTwoFactorAuth($code, $antiFishingSecret, $user->preferred_lang));
+            $user->notify(new EmailTwoFactorAuth($code, $antiFishingSecret, $user->preferred_lang));
 
-        return response()->json([
-            'message' => __('api_messages.success.auth.email_sent')
-        ], 200);
+            return response()->json([
+                'message' => __('api_messages.success.auth.email_sent')
+            ], 200);
+
+        } catch (\Throwable $th) 
+        {
+            return response()->json([
+                'message' => __('api_message.error.generic'),
+                'error' => $th
+            ], 500);
+        }
     }
 }
