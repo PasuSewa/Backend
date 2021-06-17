@@ -62,4 +62,58 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+    public function createUser(Request $request)
+    {
+        $data = $request->only(
+            'name', 
+            'phoneNumber', 
+            'mainEmail', 
+            'secondaryEmail', 
+            'secretAntiFishing',
+            'secretAntiFishing_confirmation',
+            'invitationCode'
+        );
+
+        $validation = Validation::make($data, [
+            'name' => ['string', 'min:5', 'max:100', 'required'], 
+            'phoneNumber' => ['string', 'min:6', 'max:20', 'required'], 
+            'mainEmail' => ['email', 'min:5', 'max:190', 'unique:users,email', 'unique:users,recovery_email', 'required'], 
+            'secondaryEmail' => ['email', 'min:5', 'max:190', 'unique:users,email', 'unique:users,recovery_email', 'required'], 
+            'secretAntiFishing' => ['string', 'min:5', 'max:190', 'required'],
+            'secretAntiFishing_confirmation' => ['string', 'min:5', 'max:190', 'required'],
+            'invitationCode' => ['string', 'min:10', 'max:10', 'exists:users,invitation_code', 'nullable']
+        ]);
+
+        return response()->json([
+            'message' => __('auth.failed'),
+            'errors' => $validation->errors()
+        ], 200);
+    }
+
+    public function loginByG2FA(Request $request)
+    {
+
+    }
+
+    public function loginByEmailCode(Request $request)
+    {
+
+    }
+
+    public function loginBySecurityCode(Request $request)
+    {
+
+    }
+
+    public function logout(Request $request)
+    {
+        
+    }
+
+    public function generateG2FASecretKey()
+    {
+        // ya que no se puede mostrar la secret key bajo ninguna circunstancia, voy a tener que hacer otro componente
+        // que genere una nueva secret key...
+    }
 }

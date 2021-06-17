@@ -15,7 +15,7 @@ use Auth;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function adminLogin(Request $request)
     {
         $rules = ['required', 'integer', 'min:100000', 'max:999999'];
 
@@ -36,6 +36,7 @@ class AuthController extends Controller
             $validEmail2FA = $data['2fa_code_email'] === Crypt::decryptString($user->two_factor_code_email);
 
             $validSecretAntiFishing = $data['anti_fishing_secret'] === Crypt::decryptString($user->anti_fishing_secret);
+
         } catch (\Throwable $th) 
         {
             return response()->view("errors.500");

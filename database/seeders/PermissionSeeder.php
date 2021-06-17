@@ -31,7 +31,7 @@ class PermissionSeeder extends Seeder
             'two_factor_secret' => Crypt::encryptString("2YXIJ4AE6RP4HTW3"),
             'anti_fishing_secret' => Crypt::encryptString('secret'),
             'preferred_lang' => 'es',
-        ]); 
+        ]);
 
         $adminRole = Role::create(['name' => 'admin']);
         
