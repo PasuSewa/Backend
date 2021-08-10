@@ -10,6 +10,9 @@ return [
         ]
     ],
     'error' => [
-        'generic' => 'Oops... Parece que hubo un error... Por favor, intente nuevamente más tarde.'
+        'generic' => 'Oops... Parece que hubo un error... Por favor, intente nuevamente más tarde.',
+        "user_was_not_found_or_isnt_allowed" => "El ususario que se supone está realizando esta acción no fue encontrado, o no tiene el permiso de realizarla",
+        "parameter_was_incorrect" => "El parámetro dado es incorrecto.",
+        "unauthorized" => "No estás autorizado/a a acceder a este recurso."
     ]
 ];
