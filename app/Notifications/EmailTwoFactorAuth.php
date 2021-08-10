@@ -78,7 +78,7 @@ class EmailTwoFactorAuth extends Notification implements ShouldQueue
             ->subject($this->translations[$this->lang]["subject"])
             ->greeting($this->translations[$this->lang]["greeting"])
             ->line($this->translations[$this->lang]["anti_fishing"] . $this->secretAntiFishing)
-            ->line($this->translations[$this->lang]["code"] . $this->code)
+            ->line($this->translations[$this->lang]["code"] . number_format($this->code, 0, ' ', ' '))
             ->salutation($this->translations[$this->lang]["thanks"]);
     }
 
