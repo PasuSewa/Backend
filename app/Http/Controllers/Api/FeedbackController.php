@@ -24,9 +24,9 @@ class FeedbackController extends Controller
         ], 200);
     }
 
-    public function store(Request $request, $feedbackType)
+    public function create(Request $request, $feedbackType)
     {
-        $data = $request->only('userName', 'body', 'rating');
+        $data = $request->only('userName', 'body', 'rating', 'email');
 
         $rules = ['required', 'string', 'min:10', 'max:190'];
 
@@ -34,28 +34,26 @@ class FeedbackController extends Controller
             'userName' => $rules,
             'body' => $rules,
             'rating' => [Rule::requiredIf($feedbackType === 'rating'), 'integer', 'min:1', 'max:10'],
+            'email' => ['required', 'email', 'exists:users,email']
         ]);
 
-        if($validation->fails())
-        {
+        // validar el rol del usuario
+
+        if ($validation->fails()) {
             return response()->json([
                 'message' => __('api_messages.error.validation'),
                 'errors' => $validation->errors()
             ], 400);
         }
 
-        if (!isset($data['rating']) && !$feedbackType === 'rating') 
-        {
+        if (!isset($data['rating']) && !$feedbackType === 'rating') {
             $type = 'suggestion';
-
-        } elseif ($feedbackType === 'rating' && isset($data['rating'])) 
-        {
+        } elseif ($feedbackType === 'rating' && isset($data['rating'])) {
             $type = 'rating';
-        }else 
-        {
+        } else {
             $type = '';
         }
-        
+
         Feedback::create([
             'user_name' => $data['userName'],
             'body' => $data['body'],
@@ -67,18 +65,20 @@ class FeedbackController extends Controller
             'message' => __('api_messages.success.feedback.received'),
         ], 200);
     }
-    
-    public function testPost(Request $request)
-    {
-        $event = $request->all();
 
-        $edit = User::find(1);
+    //coinbase
 
-        // this is the important part to get the code of the charge
-        $edit->email = $event['event']['data']['code'];
+    // public function testPost(Request $request)
+    // {
+    //     $event = $request->all();
 
-        $edit->save();
+    //     $edit = User::find(1);
 
-        return response()->json(['testing' => $event['event']['data']], 200);
-    }
+    //     // this is the important part to get the code of the charge
+    //     $edit->email = $event['event']['data']['code'];
+
+    //     $edit->save();
+
+    //     return response()->json(['testing' => $event['event']['data']], 200);
+    // }
 }

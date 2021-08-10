@@ -3,8 +3,6 @@
 
 Cosas pendientes:
 
-- agregar email con sendgrid
-
 - agregar feedback function en react
 
 - agregar los métodos de login

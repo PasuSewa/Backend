@@ -18,9 +18,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware' => 'Localization'], function()
-{
+Route::group(['middleware' => 'Localization'], function () {
     Route::post('/send-code-by-email', 'AuthController@sendCodeByEmail');
+
+    Route::group(['prefix' => 'feedback'], function () {
+        Route::get('index', 'FeedbackController@index');
+
+        Route::post('create', 'FeedbackController@create');
+    });
 });
 
-Route::post('/webhook', 'FeedbackController@testPost');
+//coinbase 
+
+// Route::post('/webhook', 'FeedbackController@testPost');
