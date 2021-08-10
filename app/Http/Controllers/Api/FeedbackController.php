@@ -26,6 +26,13 @@ class FeedbackController extends Controller
 
     public function create(Request $request, $feedbackType)
     {
+        if ($feedbackType !== 'suggestion' && $feedbackType !== 'rating') {
+            return response()->json([
+                'status' => 400,
+                'message' => __('api_responses.error.parameter_was_incorrect')
+            ], 400);
+        }
+
         $data = $request->only('userName', 'body', 'rating', 'email');
 
         $rules = ['required', 'string', 'min:10', 'max:190'];
@@ -37,8 +44,6 @@ class FeedbackController extends Controller
             'email' => ['required', 'email', 'exists:users,email']
         ]);
 
-        // validar el rol del usuario
-
         if ($validation->fails()) {
             return response()->json([
                 'message' => __('api_messages.error.validation'),
@@ -46,19 +51,11 @@ class FeedbackController extends Controller
             ], 400);
         }
 
-        if (!isset($data['rating']) && !$feedbackType === 'rating') {
-            $type = 'suggestion';
-        } elseif ($feedbackType === 'rating' && isset($data['rating'])) {
-            $type = 'rating';
-        } else {
-            $type = '';
-        }
-
         Feedback::create([
             'user_name' => $data['userName'],
             'body' => $data['body'],
-            'rating' => isset($data['rating']) ? $data['rating'] : null,
-            'feedback_type' => $type,
+            'rating' => $feedbackType === 'rating' ? 'rating' : null,
+            'feedback_type' => $feedbackType,
         ]);
 
         return response()->json([
