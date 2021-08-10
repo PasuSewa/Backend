@@ -34,11 +34,12 @@ class PermissionSeeder extends Seeder
         ]);
 
         $adminRole = Role::create(['name' => 'admin']);
-        
+
         Role::create(['name' => 'free']);
         Role::create(['name' => 'semi-premium']);
-        Role::create(['name' => 'premium']);
+        $premiumRole = Role::create(['name' => 'premium']);
 
+        $premiumPermissions = array();
         $adminPermissions = array();
 
         array_push($adminPermissions, Permission::create(['name' => 'access_dashboard']));
@@ -50,7 +51,18 @@ class PermissionSeeder extends Seeder
         array_push($adminPermissions, Permission::create(['name' => 'discard_ratings']));
         array_push($adminPermissions, Permission::create(['name' => 'publish_ratings']));
 
+        //user's feedback permissions
+        $permissionToGiveRatings = Permission::create(['name' => 'retrieve_ratings']);
+        $permissionToGiveSuggestions = Permission::create(['name' => 'retrieve_suggestions']);
+
+        array_push($adminPermissions, $permissionToGiveRatings);
+        array_push($adminPermissions, $permissionToGiveSuggestions);
+
+        array_push($premiumPermissions, $permissionToGiveRatings);
+        array_push($premiumPermissions, $permissionToGiveSuggestions);
+
         $adminRole->syncPermissions($adminPermissions);
+        $premiumRole->syncPermissions($premiumPermissions);
 
         $admin->assignRole('admin');
     }

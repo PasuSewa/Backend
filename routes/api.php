@@ -21,10 +21,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['middleware' => 'Localization'], function () {
     Route::post('/send-code-by-email', 'AuthController@sendCodeByEmail');
 
-    Route::group(['prefix' => 'feedback'], function () {
-        Route::get('index', 'FeedbackController@index');
+    Route::get('/feedback/index', 'FeedbackController@index');
 
-        Route::post('create', 'FeedbackController@create');
+    Route::group(['middleware' => 'auth'], function () {
+        Route::post('/feedback/create', 'FeedbackController@create')->middleware('role:premium');
     });
 });
 
