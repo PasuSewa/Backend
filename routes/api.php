@@ -23,7 +23,7 @@ Route::group(['middleware' => 'Localization'], function () {
 
     Route::get('/feedback/index', 'FeedbackController@index');
 
-    Route::group(['middleware' => 'auth'], function () {
+    Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/feedback/create', 'FeedbackController@create')->middleware('role:premium');
     });
 });
