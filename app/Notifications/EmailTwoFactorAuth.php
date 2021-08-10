@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class EmailTwoFactorAuth extends Notification
+class EmailTwoFactorAuth extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -75,11 +75,11 @@ class EmailTwoFactorAuth extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject($this->translations[$this->lang]["subject"])
-                    ->greeting($this->translations[$this->lang]["greeting"])
-                    ->line($this->translations[$this->lang]["anti_fishing"] . $this->secretAntiFishing)
-                    ->line($this->translations[$this->lang]["code"] . $this->code)
-                    ->salutation($this->translations[$this->lang]["thanks"]);
+            ->subject($this->translations[$this->lang]["subject"])
+            ->greeting($this->translations[$this->lang]["greeting"])
+            ->line($this->translations[$this->lang]["anti_fishing"] . $this->secretAntiFishing)
+            ->line($this->translations[$this->lang]["code"] . $this->code)
+            ->salutation($this->translations[$this->lang]["thanks"]);
     }
 
     /**
