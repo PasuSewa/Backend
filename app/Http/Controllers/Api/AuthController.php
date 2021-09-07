@@ -146,6 +146,9 @@ class AuthController extends Controller
 
         $slots_available = $data['invitationCode'] ? $this->spend_invitation_code($data['invitationCode']) : 5;
 
+        $google2fa = new Google2FA();
+        $two_factor_secret = $google2fa->generateSecretKey();
+
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['mainEmail'],
@@ -154,6 +157,7 @@ class AuthController extends Controller
             'anti_fishing_secret' => Crypt::encryptString($data['secretAntiFishing']),
             'slots_available' =>  $slots_available,
             'invitation_code' => strtoupper(Str::random(15)),
+            'two_factor_secret' => Crypt::encryptString($two_factor_secret),
             'two_factor_code_email' => Crypt::encryptString(rand(100000, 999999)),
             'two_factor_code_recovery' => Crypt::encryptString(rand(100000, 999999)),
             'preferred_lang' => app()->getLocale()
@@ -162,6 +166,7 @@ class AuthController extends Controller
         return response()->json([
             'status' => 200,
             'registered_main_email' => $user->email,
+            'token' => auth('api')->tokenById($user->id),
             'message' => __('api_messages.success.auth.user_created')
         ], 200);
     }
@@ -210,12 +215,8 @@ class AuthController extends Controller
             ], 400);
         }
 
-        $google2fa = new Google2FA();
-        $two_factor_secret = $google2fa->generateSecretKey();
-
         $user->two_factor_code_email = null;
         $user->two_factor_code_recovery = null;
-        $user->two_factor_secret = Crypt::encryptString($two_factor_secret);
         $user->save();
 
         if (Auth::loginUsingId($user->id)) {
@@ -283,5 +284,12 @@ class AuthController extends Controller
         }
 
         return 10;
+    }
+
+    public function get_user(Request $request)
+    {
+        return response()->json([
+            'user' => $request->user()
+        ], 200);
     }
 }

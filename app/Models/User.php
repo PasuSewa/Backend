@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 use App\Models\Slot;
 use App\Models\OpenPayment;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable, HasRoles;
 
@@ -20,18 +21,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        "name",
-        "email",
-        "recovery_email",
-        "phone_number",
-        "invitation_code",
-        "2fa_secret",
-        "2fa_code_email",
-        "2fa_code_phone",
-        "anti_fishing_secret",
-        "preferred_lang",
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -55,11 +45,21 @@ class User extends Authenticatable
         "email_verified_at" => "datetime",
     ];
 
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
     public function slots()
     {
         return $this->hasMany(Slot::class);
     }
-    
+
     public function openPayments()
     {
         return $this->hasMany(OpenPayment::class);

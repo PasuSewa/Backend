@@ -177,6 +177,8 @@ return [
 
         // spatie/laravel permission
         Spatie\Permission\PermissionServiceProvider::class,
+
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
     ],
 
     /*

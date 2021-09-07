@@ -15,6 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
+        //el 'web' habria que cambiarlo por 'api' para q funcione jwt
         'passwords' => 'users',
     ],
 
@@ -42,7 +43,7 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
+            'driver' => 'jwt',
             'provider' => 'users',
             'hash' => false,
         ],
