@@ -120,7 +120,8 @@ class AuthController extends Controller
             'invitation_code' => strtoupper(Str::random(15)),
             'two_factor_code_email' => Crypt::encryptString(rand(100000, 999999)),
             'two_factor_code_recovery' => Crypt::encryptString(rand(100000, 999999)),
-            'preferred_lang' => app()->getLocale()
+            'preferred_lang' => app()->getLocale(),
+            'recovery_code' => strtoupper(random_bytes(10))
         ]);
 
         return response()->json([
@@ -176,12 +177,12 @@ class AuthController extends Controller
 
         if (!$main_is_correct || !$second_is_correct) {
             return response()->json([
-                'status' => 400,
+                'status' => 401,
                 'errors' => [
                     'error_message' => __('api_messages.error.validation')
                 ],
                 'message' => __('api_messages.error.validation'),
-            ], 400);
+            ], 401);
         }
 
         $user->two_factor_code_email = null;
@@ -223,16 +224,32 @@ class AuthController extends Controller
     {
     }
 
-    public function refresh_2fa_secret()
+    public function refresh_2fa_secret(Request $request)
     {
+        $user = $request->user();
+
+        $secret = $this->generate_2fa_secret(true);
+
+        $user->two_factor_secret = Crypt::encryptString($secret);
+        $user->save();
+
+        return response()->json([
+            'status' => 200,
+            'message' => __('api_messages.success.auth.refresh_2fa_secret'),
+            'secret' => $secret
+        ], 200);
     }
 
-    private function generate_2fa_secret()
+    private function generate_2fa_secret($return_decrypted = false)
     {
         $google2fa = new Google2FA();
         $two_factor_secret = $google2fa->generateSecretKey();
 
-        return Crypt::encryptString($two_factor_secret);
+        if ($return_decrypted) {
+            return $two_factor_secret;
+        } else {
+            return Crypt::encryptString($two_factor_secret);
+        }
     }
 
     private function spend_invitation_code($code)
