@@ -53,7 +53,7 @@ class EmailTwoFactorAuth extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject(__('notifications.subject'))
             ->greeting(__('notifications.greeting'))
-            ->line(__('notification.anti_fishing') . $this->secretAntiFishing)
+            ->line(__('notifications.anti_fishing') . $this->secretAntiFishing)
             ->line(__('notifications.code') . number_format($this->code, 0, ' ', ' '))
             ->salutation(__('notifications.thanks'));
     }
