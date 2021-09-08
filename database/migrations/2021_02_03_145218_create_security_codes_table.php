@@ -15,15 +15,15 @@ class CreateSecurityCodesTable extends Migration
     {
         Schema::create('security_codes', function (Blueprint $table) {
             $table->id();
-            
+
             $table->foreignId('slot_id')->constrained()->onDelete('cascade');
 
             // this 3 are nullable because the user may have one, or the other, but most likely won't have all 3 at the same time
-            $table->string('unique_security_code', 250)->nullable(); // only 1 security code
-            $table->string('multiple_security_code', 250)->nullable(); // 10+ security codes
-            $table->integer('multiple_code_length')->nullable();
-            $table->text('crypto_currency_access_code')->nullable(); // the 27 words used to acces a crypto wallet
-            $table->integer('crypto_code_length')->nullable();
+            $table->string('unique_code')->nullable(); // only 1 security code
+            $table->string('multiple_codes', 250)->nullable(); // 10+ security codes
+            $table->integer('multiple_codes_length')->nullable();
+            $table->text('crypto_codes')->nullable(); // the 27 words used to acces a crypto wallet
+            $table->integer('crypto_codes_length')->nullable();
             $table->timestamps();
         });
     }
@@ -35,7 +35,7 @@ class CreateSecurityCodesTable extends Migration
      */
     public function down()
     {
-        Schema::table('security_codes', function(BluePrint $table){
+        Schema::table('security_codes', function (BluePrint $table) {
             $table->dropForeign(['slot_id']);
             $table->dropColumn('slot_id');
         });
