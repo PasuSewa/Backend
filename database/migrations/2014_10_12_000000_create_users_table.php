@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->string('anti_fishing_secret', 250);
             $table->string('preferred_lang', 2);
             $table->integer('slots_available')->default(5);
+            $table->string('recovery_code');
             $table->rememberToken();
             $table->timestamps();
         });
