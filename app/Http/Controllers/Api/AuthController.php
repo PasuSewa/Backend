@@ -52,8 +52,11 @@ class AuthController extends Controller
 
         $code = rand(100000, 999999);
 
-        $user->two_factor_code_email = Crypt::encryptString($code);
-
+        if ($data['isSecondary']) {
+            $user->two_factor_code_recovery = Crypt::encryptString($code);
+        } else {
+            $user->two_factor_code_email = Crypt::encryptString($code);
+        }
         $user->save();
 
         try {
@@ -241,7 +244,7 @@ class AuthController extends Controller
         $data = $request->only('email', 'twoFactorCode');
 
         $validation = Validator::make($data, [
-            'emaill' => ['required', 'email', 'min:3', 'max:190', 'exists:users,email'],
+            'email' => ['required', 'email', 'min:3', 'max:190', 'exists:users,email'],
             'twoFactorCode' => ['required', 'integer', 'min:100000', 'max:999999']
         ]);
 
@@ -254,25 +257,14 @@ class AuthController extends Controller
             ], 401);
         }
 
-        try {
-            $user = User::where('email', $data['email'])->firstOrFail();
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => __('api_messages.error.user_was_not_found_or_isnt_allowed'),
-                'errors' => [
-                    'exception' => $th
-                ],
-                'request' => $request->all(),
-                'status' => 404
-            ], 404);
-        }
+        $user = User::where('email', $data['email'])->firstOrFail();
 
         $is_valid = $this->validate_2fa_code($user->two_factor_secret, $data['twoFactorCode']);
 
         if ($is_valid) {
             return response()->json([
                 'status' => 200,
-                'token' => $request->bearerToken(),
+                'token' => auth('api')->tokenById($user->id),
                 'message' => __('api_messages.success.auth.2fa_code_is_correct')
             ], 200);
         } else {
@@ -289,6 +281,45 @@ class AuthController extends Controller
 
     public function login_by_email_code(Request $request)
     {
+        $data = $request->only('email', 'recoveryEmail', 'code');
+
+        $validation = Validator::make($data, [
+            'emaill' => ['required', 'email', 'min:3', 'max:190', 'exists:users,email'],
+            'recoveryEmail' => ['nullable', 'email', 'min:3', 'max:190', 'exists:users,recovery_email'],
+            'code' => ['required', 'integer', 'min:100000', 'max:999999']
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'status' => 401,
+                'errors' => $validation->errors(),
+                'request' => $request->all(),
+                'message' => __('api_messages.error.validation'),
+            ], 401);
+        }
+
+        $user = User::where('email', $data['email'])->firstOrFail();
+
+        $db_code = isset($data['recoveryEmail']) ? $user->two_factor_code_recovery : $user->two_factor_code_email;
+
+        $valid_email_code = $data['code'] === Crypt::decryptString($db_code);
+
+        if ($valid_email_code) {
+            return response()->json([
+                'status' => 200,
+                'token' => auth('api')->tokenById($user->id),
+                'message' => __('api_messages.success.auth.2fa_code_is_correct')
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 401,
+                'errors' => [
+                    'error' => __('api_messages.error.validation')
+                ],
+                'request' => $request->all(),
+                'message' => __('api_messages.error.validation'),
+            ], 401);
+        }
     }
 
     public function login_by_security_code(Request $request)
