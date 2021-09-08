@@ -2,15 +2,12 @@
 
 namespace Database\Seeders;
 
-use DB;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 use Illuminate\Support\Facades\Crypt;
-
-use PragmaRX\Google2FA\Google2FA;
 
 class PermissionSeeder extends Seeder
 {
@@ -21,8 +18,6 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-        $google2fa = new Google2FA();
-
         $admin = User::create([
             'name' => 'Gonzalo Salvador Corvalán',
             'email' => 'mr.corvy@gmail.com',
@@ -31,6 +26,7 @@ class PermissionSeeder extends Seeder
             'two_factor_secret' => Crypt::encryptString("2YXIJ4AE6RP4HTW3"),
             'anti_fishing_secret' => Crypt::encryptString('secret'),
             'preferred_lang' => 'es',
+            'invitation_code' => '4LGDR0COFFO8B1Z'
         ]);
 
         $adminRole = Role::create(['name' => 'admin']);

@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('recovery_email');
             $table->string('phone_number');
-            $table->string('invitation_code')->nullable();
+            $table->string('invitation_code');
             $table->string('two_factor_secret', 250)->nullable();
             $table->string('two_factor_code_email', 250)->nullable();
             $table->string('two_factor_code_recovery', 250)->nullable();
