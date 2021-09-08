@@ -12,12 +12,11 @@ class PhoneNumber extends Model
 
     protected $table = "phone_numbers";
 
-    protected $fillable = [
-        "slot_id",
-        "phone_number",
-        "opening",
-        "char_count",
-        "ending",
+    protected $guarded = [];
+
+    protected $hidden = [
+        'slot_id',
+        'phone_number',
     ];
 
     public function slot()

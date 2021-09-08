@@ -11,9 +11,5 @@ class Company extends Model
 
     protected $table = "companies";
 
-    protected $fillable = [
-        "name",
-        "url_logo",
-        "file_name",
-    ];
+    protected $guarded = [];
 }

@@ -12,10 +12,12 @@ class QuestionAnswer extends Model
 
     protected $table = "security_questions_answers";
 
-    protected $fillable = [
-        "slot_id",
-        "security_question",
-        "security_answer",
+    protected $guarded = [];
+
+    protected $hidden = [
+        'slot_id',
+        'security_question',
+        'security_answer',
     ];
 
     public function slot()

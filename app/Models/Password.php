@@ -12,10 +12,11 @@ class Password extends Model
 
     protected $table = "passwords";
 
-    protected $fillable = [
-        "slot_id",
-        "password",
-        "char_count",
+    protected $guarded = [];
+
+    protected $hidden = [
+        'slot_id',
+        'password'
     ];
 
     public function slot()

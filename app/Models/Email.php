@@ -9,15 +9,14 @@ use App\Models\Slot;
 class Email extends Model
 {
     use HasFactory;
-    
+
     protected $table = "emails";
 
-    protected $fillable = [
-        "slot_id",
-        "email",
-        "opening",
-        "char_count",
-        "ending",
+    protected $guarded = [];
+
+    protected $hidden = [
+        'slot_id',
+        'email',
     ];
 
     public function slot()

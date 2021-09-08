@@ -12,13 +12,13 @@ class SecurityCode extends Model
 
     protected $table = "security_codes";
 
-    protected $fillable = [
-        "slot_id",
-        "unique_security_code",
-        "multiple_security_code",
-        "multiple_code_length",
-        "crypto_currency_access_code",
-        "crypto_code_length",
+    protected $guarded = [];
+
+    protected $hidden = [
+        'slot_id',
+        'unique_code',
+        'multiple_codes',
+        'crypto_codes',
     ];
 
     public function slot()

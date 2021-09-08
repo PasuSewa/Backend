@@ -12,10 +12,11 @@ class Username extends Model
 
     protected $table = "usernames";
 
-    protected $fillable = [
-        "slot_id",
-        "username",
-        "char_count",
+    protected $guarded = [];
+
+    protected $hidden = [
+        'slot_id',
+        'username',
     ];
 
     public function slot()

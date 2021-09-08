@@ -11,11 +11,5 @@ class Feedback extends Model
 
     protected $table = "feedback";
 
-    protected $fillable = [
-        "user_name",
-        "body",
-        "rating",
-        "is_public",
-        "feedback_type",
-    ];
+    protected $guarded = [];
 }

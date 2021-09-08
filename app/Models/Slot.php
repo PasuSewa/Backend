@@ -21,16 +21,12 @@ class Slot extends Model
 
     protected $table = "slots";
 
-    protected $fillable = [
-        "user_id",
-        "company_id",
-        "company_name",
-        "description",
-        "last_seen",
-        "accessing_device",
-        "accessing_platform",
-        "user_name",
-        "char_count",
+    protected $guarded = [];
+
+    protected $hidden = [
+        'accessing_device',
+        'accessing_platform',
+        'user_name'
     ];
 
     public function user()
@@ -47,7 +43,7 @@ class Slot extends Model
     {
         return $this->hasOne(Email::class);
     }
-    
+
     public function password()
     {
         return $this->hasOne(Password::class);
@@ -62,12 +58,12 @@ class Slot extends Model
     {
         return $this->hasOne(QuestionAnswer::class);
     }
-    
+
     public function securityCodes()
     {
         return $this->hasOne(SecurityCode::class);
     }
-    
+
     public function username()
     {
         return $this->hasOne(Username::class);

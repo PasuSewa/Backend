@@ -11,11 +11,14 @@ class OpenPayment extends Model
 
     protected $table = "open_payments";
 
-    protected $fillable = [
-        "user_id",
-        "method",
-        "type",
-        "code",
+    protected $guarded = [];
+
+    protected $hidden = [
+        'user_id',
+        'method',
+        'amount',
+        'type',
+        'code'
     ];
 
     public function user()
