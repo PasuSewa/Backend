@@ -6,7 +6,8 @@ return [
             "email_sent" => "Email sent successfully.",
             "user_created" => "User was registered successuflly.",
             "email_verified" => "Email was verified successfully.",
-            "refresh_2fa_secret" => "Yuor secret key was regenerated successfully. Please scan the QR code, or copy and paste the secret key, in order to maintain access to your account."
+            "refresh_2fa_secret" => "Yuor secret key was regenerated successfully. Please scan the QR code, or copy and paste the secret key, in order to maintain access to your account.",
+            "2fa_code_is_correct" => "The second factor authentication succeeded, you may login now."
         ],
         "feedback" => [
             "received" => "Thank you for your feedback, we will take it in count."
@@ -18,5 +19,6 @@ return [
         "parameter_was_incorrect" => "The parameter given was incorrect.",
         "unauthorized" => "You are not allowed to make use of this resourse.",
         "validation" => "One or more of the credentials sent were incorrect.",
+        "2fa_code_invalid" => "The second factor authentication has failed. Please try again."
     ],
 ];

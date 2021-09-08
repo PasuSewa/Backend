@@ -121,7 +121,7 @@ class AuthController extends Controller
             'two_factor_code_email' => Crypt::encryptString(rand(100000, 999999)),
             'two_factor_code_recovery' => Crypt::encryptString(rand(100000, 999999)),
             'preferred_lang' => app()->getLocale(),
-            'recovery_code' => strtoupper(random_bytes(10))
+            'recovery_code' => strtoupper(Str::random(15))
         ]);
 
         return response()->json([
@@ -199,6 +199,45 @@ class AuthController extends Controller
 
     public function verify_2fa(Request $request)
     {
+        $data = $request->only('twoFactorCode');
+
+        $user = $request->user();
+
+        $validation = Validator::make($data, [
+            'twoFactorCode' => ['required', 'integer', 'min:100000', 'max:999999']
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'status' => 401,
+                'errors' => $validation->errors(),
+                'request' => $request->all(),
+                'message' => __('api_messages.error.validation'),
+            ], 401);
+        }
+
+        $google2fa = new Google2FA();
+
+        $window = 0;
+
+        $is_valid = $google2fa->verifyKey(Crypt::decryptString($user->two_factor_secret), $data['twoFactorCode'], $window);
+
+        if ($is_valid) {
+            return response()->json([
+                'status' => 200,
+                'token' => $request->bearerToken(),
+                'message' => __('api_messages.success.auth.2fa_code_is_correct')
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 401,
+                'errors' => [
+                    'error' => __('api_messages.error.2fa_code_invalid')
+                ],
+                'request' => $request->all(),
+                'message' => __('api_messages.error.2fa_code_invalid'),
+            ], 401);
+        }
     }
 
     public function login_by_g2fa(Request $request)
@@ -237,7 +276,6 @@ class AuthController extends Controller
             'status' => 200,
             'message' => __('api_messages.success.auth.refresh_2fa_secret'),
             'secret' => $secret,
-            'local' => app()->getLocale()
         ], 200);
     }
 
