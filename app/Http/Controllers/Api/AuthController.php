@@ -236,7 +236,8 @@ class AuthController extends Controller
         return response()->json([
             'status' => 200,
             'message' => __('api_messages.success.auth.refresh_2fa_secret'),
-            'secret' => $secret
+            'secret' => $secret,
+            'local' => app()->getLocale()
         ], 200);
     }
 
