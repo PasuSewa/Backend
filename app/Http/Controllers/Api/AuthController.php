@@ -5,69 +5,18 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-
-use Validator;
-use Auth;
-
-use App\Models\User;
-
 use Illuminate\Support\Facades\Crypt;
 
 use PragmaRX\Google2FA\Google2FA;
+
+use Validator;
+
+use App\Models\User;
 
 use App\Notifications\EmailTwoFactorAuth;
 
 class AuthController extends Controller
 {
-    private $name_rules = [
-        'string',
-        'min:5',
-        'max:100',
-        'required',
-    ];
-    private $phone_number_rules = [
-        'string',
-        'min:6',
-        'max:20',
-        'required',
-    ];
-    private $main_email_rules = [
-        'email',
-        'min:5',
-        'max:190',
-        'unique:users,email',
-        'unique:users,recovery_email',
-        'required',
-    ];
-    private $second_email_rules = [
-        'email',
-        'min:5',
-        'max:190',
-        'unique:users,email',
-        'unique:users,recovery_email',
-        'required',
-    ];
-    private $anti_fishing_rules = [
-        'string',
-        'min:5',
-        'max:190',
-        'required',
-        'confirmed'
-    ];
-    private $anti_fishing_rules_confirmation = [
-        'string',
-        'min:5',
-        'max:190',
-        'required',
-    ];
-    private $invitation_code_rules = [
-        'string',
-        'min:10',
-        'max:10',
-        'exists:users,invitation_code',
-        'nullable'
-    ];
-
     public function send_code_by_email(Request $request)
     {
         $data = $request->only('email', 'isSecondary');
@@ -82,35 +31,50 @@ class AuthController extends Controller
                 'message' => __('auth.failed'),
                 'errors' => $validation->errors(),
                 'request' => $request->all(),
-            ], 200);
+                'status' => 401
+            ], 401);
         }
 
         try {
             $user = $data['isSecondary']
                 ? User::where('recovery_email', $data['email'])->firstOrFail()
                 : User::where('email', $data['email'])->firstOrFail();
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => __('api_messages.error.user_was_not_found_or_isnt_allowed'),
+                'errors' => [
+                    'exception' => $th
+                ],
+                'request' => $request->all(),
+                'status' => 404
+            ], 404);
+        }
 
-            $code = rand(100000, 999999);
+        $code = rand(100000, 999999);
 
-            $user->two_factor_code_email = Crypt::encryptString($code);
+        $user->two_factor_code_email = Crypt::encryptString($code);
 
-            $user->save();
+        $user->save();
 
+        try {
             $antiFishingSecret = Crypt::decryptString($user->anti_fishing_secret);
 
             $user->notify(new EmailTwoFactorAuth($code, $antiFishingSecret, $user->preferred_lang));
-
-            return response()->json([
-                'message' => __('api_messages.success.auth.email_sent')
-            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => __('api_messages.error.generic'),
                 'errors' => [
                     'exception' => $th
-                ]
+                ],
+                'status' => 500,
+                'request' => null,
             ], 500);
         }
+
+        return response()->json([
+            'message' => __('api_messages.success.auth.email_sent'),
+            'status' => 200
+        ], 200);
     }
 
     public function create_user(Request $request)
@@ -126,28 +90,25 @@ class AuthController extends Controller
         );
 
         $validation = Validator::make($data, [
-            'name' => $this->name_rules,
-            'phoneNumber' => $this->phone_number_rules,
-            'mainEmail' => $this->main_email_rules,
-            'secondaryEmail' => $this->second_email_rules,
-            'secretAntiFishing' => $this->anti_fishing_rules,
-            'secretAntiFishing_confirmation' => $this->anti_fishing_rules_confirmation,
-            'invitationCode' => $this->invitation_code_rules
+            'name' => ['string', 'min:5', 'max:100', 'required'],
+            'phoneNumber' => ['string', 'min:6', 'max:20', 'required'],
+            'mainEmail' => ['email', 'min:5', 'max:190', 'unique:users,email', 'unique:users,recovery_email', 'required',],
+            'secondaryEmail' => ['email', 'min:5', 'max:190', 'unique:users,email', 'unique:users,recovery_email', 'required',],
+            'secretAntiFishing' => ['string', 'min:5', 'max:190', 'required', 'confirmed'],
+            'secretAntiFishing_confirmation' => ['string', 'min:5', 'max:190', 'required',],
+            'invitationCode' => ['string', 'min:10', 'max:10', 'exists:users,invitation_code', 'nullable'],
         ]);
 
         if ($validation->fails()) {
             return response()->json([
-                'status' => 418,
+                'status' => 401,
                 'errors' => $validation->errors(),
                 'request' => $request->all(),
                 'message' => __('api_messages.error.validation'),
-            ], 418);
+            ], 401);
         }
 
-        $slots_available = $data['invitationCode'] ? $this->spend_invitation_code($data['invitationCode']) : 5;
-
-        $google2fa = new Google2FA();
-        $two_factor_secret = $google2fa->generateSecretKey();
+        $slots_available = isset($data['invitationCode']) ? $this->spend_invitation_code($data['invitationCode']) : 5;
 
         $user = User::create([
             'name' => $data['name'],
@@ -157,7 +118,6 @@ class AuthController extends Controller
             'anti_fishing_secret' => Crypt::encryptString($data['secretAntiFishing']),
             'slots_available' =>  $slots_available,
             'invitation_code' => strtoupper(Str::random(15)),
-            'two_factor_secret' => Crypt::encryptString($two_factor_secret),
             'two_factor_code_email' => Crypt::encryptString(rand(100000, 999999)),
             'two_factor_code_recovery' => Crypt::encryptString(rand(100000, 999999)),
             'preferred_lang' => app()->getLocale()
@@ -166,8 +126,7 @@ class AuthController extends Controller
         return response()->json([
             'status' => 200,
             'registered_main_email' => $user->email,
-            'token' => auth('api')->tokenById($user->id),
-            'message' => __('api_messages.success.auth.user_created')
+            'message' => __('api_messages.success.auth.user_created'),
         ], 200);
     }
 
@@ -189,18 +148,28 @@ class AuthController extends Controller
 
         if ($validation->fails()) {
             return response()->json([
-                'status' => 418,
+                'status' => 401,
                 'errors' => $validation->errors(),
                 'request' => $request->all(),
                 'message' => __('api_messages.error.validation'),
-            ], 418);
+            ], 401);
         }
 
-        // try {
         $user = User::where('email', $data['mainEmail'])->firstOrFail();
 
-        $main_code = Crypt::decryptString($user->two_factor_code_email);
-        $second_code = Crypt::decryptString($user->two_factor_code_recovery);
+        try {
+            $main_code = Crypt::decryptString($user->two_factor_code_email);
+            $second_code = Crypt::decryptString($user->two_factor_code_recovery);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => __('api_messages.error.generic'),
+                'errors' => [
+                    'exception' => $th
+                ],
+                'status' => 500,
+                'request' => null
+            ], 500);
+        }
 
         $main_is_correct = $main_code === $data['mainEmailCode'];
         $second_is_correct = $second_code === $data['recoveryEmailCode'];
@@ -217,31 +186,18 @@ class AuthController extends Controller
 
         $user->two_factor_code_email = null;
         $user->two_factor_code_recovery = null;
+        $user->two_factor_secret = $this->generate_2fa_secret();
         $user->save();
 
-        if (Auth::loginUsingId($user->id)) {
+        return response()->json([
+            'status' => 200,
+            'message' => __('api_messages.success.auth.email_verified'),
+            'auth_token' => auth('api')->tokenById($user->id)
+        ], 200);
+    }
 
-            $auth_user = Auth::user();
-
-            return response()->json([
-                'status' => 200,
-                'message' => __('api_messages.success.auth.email_verified'),
-                'auth_token' => $auth_user->createToken('Auth Token')->accessToken
-            ], 200);
-        } else {
-            return response()->json([
-                'message' => 'Las credenciales son incorrectas',
-                'status' => 401
-            ], 401);
-        }
-        // } catch (\Throwable $th) {
-        //     return response()->json([
-        //         'message' => __('api_messages.error.generic'),
-        //         'errors' => [
-        //             'exception' => $th
-        //         ]
-        //     ], 500);
-        // }
+    public function verify_2fa(Request $request)
+    {
     }
 
     public function login_by_g2fa(Request $request)
@@ -267,10 +223,16 @@ class AuthController extends Controller
     {
     }
 
-    public function generate_2fa_secret()
+    public function refresh_2fa_secret()
     {
-        // ya que no se puede mostrar la secret key bajo ninguna circunstancia, voy a tener que hacer otro componente
-        // que genere una nueva secret key...
+    }
+
+    private function generate_2fa_secret()
+    {
+        $google2fa = new Google2FA();
+        $two_factor_secret = $google2fa->generateSecretKey();
+
+        return Crypt::encryptString($two_factor_secret);
     }
 
     private function spend_invitation_code($code)
@@ -284,12 +246,5 @@ class AuthController extends Controller
         }
 
         return 10;
-    }
-
-    public function get_user(Request $request)
-    {
-        return response()->json([
-            'user' => $request->user()
-        ], 200);
     }
 }
