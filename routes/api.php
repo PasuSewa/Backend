@@ -23,12 +23,17 @@ Route::group(['middleware' => 'Localization'], function () {
 
     Route::get('/feedback/index', 'FeedbackController@index');
 
-    Route::post('/register/step-1', 'AuthController@create_user');
+
+    Route::group(['middleware' => 'guest:api'], function () {
+        Route::post('/register/step-1', 'AuthController@create_user');
+
+        Route::post('/register/step-2', 'AuthController@verify_emails');
+
+        Route::post('/register/step-3', 'AuthController@verify_2fa');
+    });
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/feedback/create', 'FeedbackController@create')->middleware('role:premium');
-
-        Route::get('/prueba', 'AuthController@get_user');
     });
 });
 
