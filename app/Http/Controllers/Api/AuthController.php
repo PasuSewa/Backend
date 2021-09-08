@@ -216,11 +216,7 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $google2fa = new Google2FA();
-
-        $window = 0;
-
-        $is_valid = $google2fa->verifyKey(Crypt::decryptString($user->two_factor_secret), $data['twoFactorCode'], $window);
+        $is_valid = $this->validate_2fa_code($user->two_factor_secret, $data['twoFactorCode']);
 
         if ($is_valid) {
             return response()->json([
@@ -242,12 +238,52 @@ class AuthController extends Controller
 
     public function login_by_g2fa(Request $request)
     {
-        $data = $request->only('email', '2fa_code');
+        $data = $request->only('email', 'twoFactorCode');
+
+        $validation = Validator::make($data, [
+            'emaill' => ['required', 'email', 'min:3', 'max:190', 'exists:users,email'],
+            'twoFactorCode' => ['required', 'integer', 'min:100000', 'max:999999']
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'status' => 401,
+                'errors' => $validation->errors(),
+                'request' => $request->all(),
+                'message' => __('api_messages.error.validation'),
+            ], 401);
+        }
 
         try {
             $user = User::where('email', $data['email'])->firstOrFail();
         } catch (\Throwable $th) {
-            //throw $th;
+            return response()->json([
+                'message' => __('api_messages.error.user_was_not_found_or_isnt_allowed'),
+                'errors' => [
+                    'exception' => $th
+                ],
+                'request' => $request->all(),
+                'status' => 404
+            ], 404);
+        }
+
+        $is_valid = $this->validate_2fa_code($user->two_factor_secret, $data['twoFactorCode']);
+
+        if ($is_valid) {
+            return response()->json([
+                'status' => 200,
+                'token' => $request->bearerToken(),
+                'message' => __('api_messages.success.auth.2fa_code_is_correct')
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 401,
+                'errors' => [
+                    'error' => __('api_messages.error.2fa_code_invalid')
+                ],
+                'request' => $request->all(),
+                'message' => __('api_messages.error.2fa_code_invalid'),
+            ], 401);
         }
     }
 
@@ -277,6 +313,15 @@ class AuthController extends Controller
             'message' => __('api_messages.success.auth.refresh_2fa_secret'),
             'secret' => $secret,
         ], 200);
+    }
+
+    private function validate_2fa_code($secret_key, $code)
+    {
+        $google2fa = new Google2FA();
+
+        $window = 1; // 30 sec
+
+        return $google2fa->verifyKey(Crypt::decryptString($secret_key), $code, $window);
     }
 
     private function generate_2fa_secret($return_decrypted = false)
