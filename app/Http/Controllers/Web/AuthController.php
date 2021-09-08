@@ -27,27 +27,21 @@ class AuthController extends Controller
 
         $google2fa = new Google2FA();
 
-        try 
-        {
+        try {
             $user = User::findOrFail(1); // only the admin can pass this authentication
 
-            $validG2FA = $google2fa->verifyKey(Crypt::decryptString($user->two_factor_secret), $data['2fa_code'], 0);
+            $valid_g2fa = $google2fa->verifyKey(Crypt::decryptString($user->two_factor_secret), $data['2fa_code'], 0);
 
-            $validEmail2FA = $data['2fa_code_email'] === Crypt::decryptString($user->two_factor_code_email);
+            $valid_email_code = $data['2fa_code_email'] === Crypt::decryptString($user->two_factor_code_email);
 
-            $validSecretAntiFishing = $data['anti_fishing_secret'] === Crypt::decryptString($user->anti_fishing_secret);
-
-        } catch (\Throwable $th) 
-        {
+            $valid_secret_anti_fishing = $data['anti_fishing_secret'] === Crypt::decryptString($user->anti_fishing_secret);
+        } catch (\Throwable $th) {
             return response()->view("errors.500");
         }
 
-        if (!$validEmail2FA || !$validG2FA || !$validSecretAntiFishing) 
-        {
+        if (!$valid_email_code || !$valid_g2fa || !$valid_secret_anti_fishing) {
             return back()->withError('At least one of the credentials was incorrect.');
-
-        } elseif (Auth::loginUsingId(1)) 
-        {
+        } elseif (Auth::loginUsingId(1)) {
             request()->session()->regenerate();
 
             $user->two_factor_code_email = null;
