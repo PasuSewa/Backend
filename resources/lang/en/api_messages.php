@@ -6,6 +6,7 @@ return [
             "email_sent" => "Email sent successfully.",
             "user_created" => "User was registered successuflly.",
             "email_verified" => "Email was verified successfully.",
+            "refresh_2fa_secret" => "Yuor secret key was regenerated successfully. Please scan the QR code, or copy and paste the secret key, in order to maintain access to your account."
         ],
         "feedback" => [
             "received" => "Thank you for your feedback, we will take it in count."

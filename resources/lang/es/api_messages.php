@@ -5,7 +5,8 @@ return [
         "auth" => [
             "email_sent" => "Email enviado éxitosamente.",
             "user_created" => "El usuario fue registrado exitosamente.",
-            "email_verified" => "Email verificato exitosamente.",
+            "email_verified" => "Email verificado exitosamente.",
+            "refresh_2fa_secret" => "Llave secreta regenerada exitosamente. Porfavor escanee el código QR, o copie y pegue la llave secreta, para garantizar el acceso a su cuenta."
         ],
         "feedback" => [
             "received" => "Gracias por el feedback, lo tendremos en cuenta."
