@@ -17,30 +17,6 @@ class EmailTwoFactorAuth extends Notification implements ShouldQueue
 
     public $lang;
 
-    protected $translations = [
-        "es" => [
-            "subject" => "Códico de Autenticación PasuNashi",
-            "greeting" => "Hola!",
-            "anti_fishing" => "Este es un correo oficial de PasuNashi, y aquí está la prueba: ",
-            "code" => "Tu Código de Autenticación es: ",
-            "thanks" => "Gracias por confiar en PasuNashi."
-        ],
-        "en" => [
-            "subject" => "Authentication Code PasuNashi",
-            "greeting" => "Hello!",
-            "anti_fishing" => "This is an official PasuNashi email and this is the proof: ",
-            "code" => "Your Authentication Code is: ",
-            "thanks" => "Thank you for trusting in PsauSewa"
-        ],
-        "jp" => [
-            "subject" => "パスなしからの認証コード",
-            "greeting" => "こんにちは!",
-            "anti_fishing" => "これはパスなしからの公式メールであり、その proof は次のとおりです。",
-            "code" => "認証コードは次のとおりです。",
-            "thanks" => "パスなしを信頼していただきありがとうございます。"
-        ],
-    ];
-
     /**
      * Create a new notification instance.
      *
@@ -75,11 +51,11 @@ class EmailTwoFactorAuth extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject($this->translations[$this->lang]["subject"])
-            ->greeting($this->translations[$this->lang]["greeting"])
-            ->line($this->translations[$this->lang]["anti_fishing"] . $this->secretAntiFishing)
-            ->line($this->translations[$this->lang]["code"] . number_format($this->code, 0, ' ', ' '))
-            ->salutation($this->translations[$this->lang]["thanks"]);
+            ->subject(__('notifications.subject'))
+            ->greeting(__('notifications.greeting'))
+            ->line(__('notification.anti_fishing') . $this->secretAntiFishing)
+            ->line(__('notifications.code') . number_format($this->code, 0, ' ', ' '))
+            ->salutation(__('notifications.thanks'));
     }
 
     /**
