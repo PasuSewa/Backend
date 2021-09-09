@@ -36,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
             ], 200);
         });
 
-        Response::macro('user_was_authenticated', function ($data, $message) {
+        Response::macro('user_was_authenticated', function ($data, $message, $with_token = false) {
             return response()->json([
                 'status' => 200,
                 'message' => __('api_messages.success.auth.' . $message),
@@ -49,6 +49,7 @@ class AppServiceProvider extends ServiceProvider
                         'slots_available' => $data['user']->slots_available,
                         'invitation_code' => $data['user']->invitation_code,
                         'role' => $data['user']->getRoleNames()[0], // users only have 1 role
+                        'token' => $with_token ? auth('api')->setTTL(7200)->tokenById($data['user']->id) : null,
                     ],
                     'user_credentials' => $data['credentials']
                 ],

@@ -8,15 +8,15 @@ use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
+    public function user_can_register()
     {
-        $response = $this->get('/');
+    }
 
-        $response->assertStatus(200);
+    public function app_sends_emails()
+    {
+    }
+
+    public function user_can_refresh_2fa()
+    {
     }
 }

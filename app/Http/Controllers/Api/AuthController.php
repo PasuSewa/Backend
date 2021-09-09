@@ -159,7 +159,7 @@ class AuthController extends Controller
         $user->two_factor_secret = $this->generate_2fa_secret();
         $user->save();
 
-        return response()->success(['token' => auth('api')->tokenById($user->id)], 'auth.email_verified');
+        return response()->success(['token' => auth('api')->setTTL(7200)->tokenById($user->id)], 'auth.email_verified');
     }
 
     public function verify_2fa(Request $request)
@@ -205,7 +205,7 @@ class AuthController extends Controller
         if ($is_valid) {
             $credentials = Slot::where('user_id', $user->id)->get();
 
-            return response()->user_was_authenticated(['user' => $user, 'credentials' => $credentials], '2fa_code_is_correct');
+            return response()->user_was_authenticated(['user' => $user, 'credentials' => $credentials], '2fa_code_is_correct', true);
         } else {
             return $this->validation_error($request, null, 'api_messages.error.2fa_code_invalid');
         }
@@ -234,7 +234,7 @@ class AuthController extends Controller
         if ($valid_email_code) {
             $credentials = Slot::where('user_id', $user->id)->get();
 
-            return response()->user_was_authenticated(['user' => $user, 'credentials' => $credentials], '2fa_code_is_correct');
+            return response()->user_was_authenticated(['user' => $user, 'credentials' => $credentials], '2fa_code_is_correct', true);
         } else {
             return $this->validation_error($request);
         }
