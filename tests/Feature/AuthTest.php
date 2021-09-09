@@ -19,4 +19,16 @@ class AuthTest extends TestCase
     public function user_can_refresh_2fa()
     {
     }
+
+    public function login_by_g2fa()
+    {
+    }
+
+    public function login_by_email_code()
+    {
+    }
+
+    public function login_by_security_code()
+    {
+    }
 }
