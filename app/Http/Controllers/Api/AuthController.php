@@ -12,6 +12,7 @@ use PragmaRX\Google2FA\Google2FA;
 use Validator;
 
 use App\Models\User;
+use App\Models\Slot;
 
 use App\Notifications\EmailTwoFactorAuth;
 
@@ -293,7 +294,7 @@ class AuthController extends Controller
         return 10;
     }
 
-    private function validation_error(Request $request, Validator $validation = null, $message = null)
+    private function validation_error(Request $request, $validation = null, $message = null)
     {
         if (!is_null($validation)) {
             $data = [
@@ -308,6 +309,6 @@ class AuthController extends Controller
                 'request' => $request->all()
             ];
         }
-        return response()->error($data, 401, $message ? $message : 'auth.failed');
+        return response()->error($data, $message ? $message : 'auth.failed', 401);
     }
 }

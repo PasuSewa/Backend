@@ -39,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
         Response::macro('user_was_authenticated', function ($data, $message) {
             return response()->json([
                 'status' => 200,
-                'message' => __('api_responses.success.auth.' . $message),
+                'message' => __('api_messages.success.auth.' . $message),
                 'data' => [
                     'user_data' => [
                         'id' => $data['user']->id,
@@ -58,7 +58,7 @@ class AppServiceProvider extends ServiceProvider
         Response::macro('user_was_authorized', function ($message) {
             return response()->json([
                 'status' => 200,
-                'message' => __('api_responses.success.auth.' . $message),
+                'message' => __('api_messages.success.auth.' . $message),
                 'data' => [
                     'is_authorized' => true
                 ],
@@ -70,7 +70,7 @@ class AppServiceProvider extends ServiceProvider
                 'status' => $status_code,
                 'message' => __($message),
                 'errors' => $data['errors'],
-                'request' => isset($data['request']) ? $data['request'] : null
+                'request' => isset($data['request']) ? $data['request'] : null,
             ], $status_code);
         });
     }
