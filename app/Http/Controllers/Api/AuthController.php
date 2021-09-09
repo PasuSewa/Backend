@@ -27,12 +27,7 @@ class AuthController extends Controller
         ]);
 
         if ($validation->fails()) {
-            return response()->json([
-                'message' => __('auth.failed'),
-                'errors' => $validation->errors(),
-                'request' => $request->all(),
-                'status' => 401
-            ], 401);
+            return $this->validation_error($request, $validation);
         }
 
         try {
@@ -40,14 +35,12 @@ class AuthController extends Controller
                 ? User::where('recovery_email', $data['email'])->firstOrFail()
                 : User::where('email', $data['email'])->firstOrFail();
         } catch (\Throwable $th) {
-            return response()->json([
-                'message' => __('api_messages.error.user_was_not_found_or_isnt_allowed'),
+            $data = [
                 'errors' => [
                     'exception' => $th
-                ],
-                'request' => $request->all(),
-                'status' => 404
-            ], 404);
+                ]
+            ];
+            return response()->error($data, 404, 'api_messages.error.user_was_not_found_or_isnt_allowed');
         }
 
         $code = rand(100000, 999999);
@@ -64,20 +57,14 @@ class AuthController extends Controller
 
             $user->notify(new EmailTwoFactorAuth($code, $antiFishingSecret, $user->preferred_lang));
         } catch (\Throwable $th) {
-            return response()->json([
-                'message' => __('api_messages.error.generic'),
+            $data = [
                 'errors' => [
                     'exception' => $th
-                ],
-                'status' => 500,
-                'request' => null,
-            ], 500);
+                ]
+            ];
+            return response()->error($data, 500, 'api_messages.error.generic');
         }
-
-        return response()->json([
-            'message' => __('api_messages.success.auth.email_sent'),
-            'status' => 200
-        ], 200);
+        return response()->success(null, 'auth.email_sent');
     }
 
     public function create_user(Request $request)
@@ -103,12 +90,7 @@ class AuthController extends Controller
         ]);
 
         if ($validation->fails()) {
-            return response()->json([
-                'status' => 401,
-                'errors' => $validation->errors(),
-                'request' => $request->all(),
-                'message' => __('api_messages.error.validation'),
-            ], 401);
+            return $this->validation_error($request, $validation);
         }
 
         $slots_available = isset($data['invitationCode']) ? $this->spend_invitation_code($data['invitationCode']) : 5;
@@ -127,11 +109,7 @@ class AuthController extends Controller
             'recovery_code' => strtoupper(Str::random(15))
         ]);
 
-        return response()->json([
-            'status' => 200,
-            'registered_main_email' => $user->email,
-            'message' => __('api_messages.success.auth.user_created'),
-        ], 200);
+        return response()->success(['reegistered_email' => $user->email], 'auth.user_created');
     }
 
     public function verify_emails(Request $request)
@@ -151,12 +129,7 @@ class AuthController extends Controller
         ]);
 
         if ($validation->fails()) {
-            return response()->json([
-                'status' => 401,
-                'errors' => $validation->errors(),
-                'request' => $request->all(),
-                'message' => __('api_messages.error.validation'),
-            ], 401);
+            return $this->validation_error($request, $validation);
         }
 
         $user = User::where('email', $data['mainEmail'])->firstOrFail();
@@ -165,27 +138,19 @@ class AuthController extends Controller
             $main_code = Crypt::decryptString($user->two_factor_code_email);
             $second_code = Crypt::decryptString($user->two_factor_code_recovery);
         } catch (\Throwable $th) {
-            return response()->json([
-                'message' => __('api_messages.error.generic'),
+            $data = [
                 'errors' => [
                     'exception' => $th
-                ],
-                'status' => 500,
-                'request' => null
-            ], 500);
+                ]
+            ];
+            return response()->error($data, 500, 'api_messages.error.generic');
         }
 
         $main_is_correct = $main_code === $data['mainEmailCode'];
         $second_is_correct = $second_code === $data['recoveryEmailCode'];
 
         if (!$main_is_correct || !$second_is_correct) {
-            return response()->json([
-                'status' => 401,
-                'errors' => [
-                    'error_message' => __('api_messages.error.validation')
-                ],
-                'message' => __('api_messages.error.validation'),
-            ], 401);
+            return $this->validation_error($request);
         }
 
         $user->two_factor_code_email = null;
@@ -193,11 +158,7 @@ class AuthController extends Controller
         $user->two_factor_secret = $this->generate_2fa_secret();
         $user->save();
 
-        return response()->json([
-            'status' => 200,
-            'message' => __('api_messages.success.auth.email_verified'),
-            'auth_token' => auth('api')->tokenById($user->id)
-        ], 200);
+        return response()->success(['token' => auth('api')->tokenById($user->id)], 'auth.email_verified');
     }
 
     public function verify_2fa(Request $request)
@@ -211,42 +172,15 @@ class AuthController extends Controller
         ]);
 
         if ($validation->fails()) {
-            return response()->json([
-                'status' => 401,
-                'errors' => $validation->errors(),
-                'request' => $request->all(),
-                'message' => __('api_messages.error.validation'),
-            ], 401);
+            return $this->validation_error($request, $validation);
         }
 
         $is_valid = $this->validate_2fa_code($user->two_factor_secret, $data['twoFactorCode']);
 
         if ($is_valid) {
-            return response()->json([
-                'status' => 200,
-                'token' => $request->bearerToken(),
-                'message' => __('api_messages.success.auth.2fa_code_is_correct'),
-                'user_data' => [
-                    'roles' => $user->getRoleNames(),
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'recovery_email' => $user->recovery_email,
-                    'slots_available' => $user->slots_available,
-                    'invitation_code' => $user->invitation_code
-                ],
-                'user_credentials' => [],
-
-            ], 200);
+            return response()->user_was_authenticated(['user' => $user, 'credentials' => []], '2fa_code_is_correct');
         } else {
-            return response()->json([
-                'status' => 401,
-                'errors' => [
-                    'error' => __('api_messages.error.2fa_code_invalid')
-                ],
-                'request' => $request->all(),
-                'message' => __('api_messages.error.2fa_code_invalid'),
-            ], 401);
+            return $this->validation_error($request, null, 'api_messages.error.2fa_code_invalid');
         }
     }
 
@@ -260,12 +194,7 @@ class AuthController extends Controller
         ]);
 
         if ($validation->fails()) {
-            return response()->json([
-                'status' => 401,
-                'errors' => $validation->errors(),
-                'request' => $request->all(),
-                'message' => __('api_messages.error.validation'),
-            ], 401);
+            return $this->validation_error($request, $validation);
         }
 
         $user = User::where('email', $data['email'])->firstOrFail();
@@ -273,33 +202,11 @@ class AuthController extends Controller
         $is_valid = $this->validate_2fa_code($user->two_factor_secret, $data['twoFactorCode']);
 
         if ($is_valid) {
-
             $credentials = Slot::where('user_id', $user->id)->get();
 
-            return response()->json([
-                'status' => 200,
-                'token' => auth('api')->tokenById($user->id),
-                'message' => __('api_messages.success.auth.2fa_code_is_correct'),
-                'user_data' => [
-                    'roles' => $user->getRoleNames(),
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'recovery_email' => $user->recovery_email,
-                    'slots_available' => $user->slots_available,
-                    'invitation_code' => $user->invitation_code
-                ],
-                'user_credentials' => $credentials
-            ], 200);
+            return response()->user_was_authenticated(['user' => $user, 'credentials' => $credentials], '2fa_code_is_correct');
         } else {
-            return response()->json([
-                'status' => 401,
-                'errors' => [
-                    'error' => __('api_messages.error.2fa_code_invalid')
-                ],
-                'request' => $request->all(),
-                'message' => __('api_messages.error.2fa_code_invalid'),
-            ], 401);
+            return $this->validation_error($request, null, 'api_messages.error.2fa_code_invalid');
         }
     }
 
@@ -314,12 +221,7 @@ class AuthController extends Controller
         ]);
 
         if ($validation->fails()) {
-            return response()->json([
-                'status' => 401,
-                'errors' => $validation->errors(),
-                'request' => $request->all(),
-                'message' => __('api_messages.error.validation'),
-            ], 401);
+            return $this->validation_error($request, $validation);
         }
 
         $user = User::where('email', $data['email'])->firstOrFail();
@@ -329,33 +231,11 @@ class AuthController extends Controller
         $valid_email_code = $data['code'] === Crypt::decryptString($db_code);
 
         if ($valid_email_code) {
-
             $credentials = Slot::where('user_id', $user->id)->get();
 
-            return response()->json([
-                'status' => 200,
-                'token' => auth('api')->tokenById($user->id),
-                'message' => __('api_messages.success.auth.2fa_code_is_correct'),
-                'user_data' => [
-                    'roles' => $user->getRoleNames(),
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'recovery_email' => $user->recovery_email,
-                    'slots_available' => $user->slots_available,
-                    'invitation_code' => $user->invitation_code
-                ],
-                'user_credentials' => $credentials
-            ], 200);
+            return response()->user_was_authenticated(['user' => $user, 'credentials' => $credentials], '2fa_code_is_correct');
         } else {
-            return response()->json([
-                'status' => 401,
-                'errors' => [
-                    'error' => __('api_messages.error.validation')
-                ],
-                'request' => $request->all(),
-                'message' => __('api_messages.error.validation'),
-            ], 401);
+            return $this->validation_error($request);
         }
     }
 
@@ -376,11 +256,7 @@ class AuthController extends Controller
         $user->two_factor_secret = Crypt::encryptString($secret);
         $user->save();
 
-        return response()->json([
-            'status' => 200,
-            'message' => __('api_messages.success.auth.refresh_2fa_secret'),
-            'secret' => $secret,
-        ], 200);
+        return response()->success(['secret' => $secret], 'auth.refresh_2fa_secret');
     }
 
     private function validate_2fa_code($secret_key, $code)
@@ -415,5 +291,23 @@ class AuthController extends Controller
         }
 
         return 10;
+    }
+
+    private function validation_error(Request $request, Validator $validation = null, $message = null)
+    {
+        if (!is_null($validation)) {
+            $data = [
+                'errors' => $validation->errors(),
+                'request' => $request->all(),
+            ];
+        } else {
+            $data = [
+                'errors' => [
+                    'error' => __($message ? $message : 'auth.failed')
+                ],
+                'request' => $request->all()
+            ];
+        }
+        return response()->error($data, 401, $message ? $message : 'auth.failed');
     }
 }
