@@ -136,7 +136,7 @@ class AuthController extends Controller
 
     public function verify_emails(Request $request)
     {
-        $rules = ['required', 'integer', 'min:100000', 'max:999999'];
+        $rules = ['required', 'integer', 'min:000000', 'max:999999'];
 
         $data = $request->only(
             'mainEmailCode',
@@ -207,7 +207,7 @@ class AuthController extends Controller
         $user = $request->user();
 
         $validation = Validator::make($data, [
-            'twoFactorCode' => ['required', 'integer', 'min:100000', 'max:999999']
+            'twoFactorCode' => ['required', 'integer', 'min:000000', 'max:999999']
         ]);
 
         if ($validation->fails()) {
@@ -225,7 +225,18 @@ class AuthController extends Controller
             return response()->json([
                 'status' => 200,
                 'token' => $request->bearerToken(),
-                'message' => __('api_messages.success.auth.2fa_code_is_correct')
+                'message' => __('api_messages.success.auth.2fa_code_is_correct'),
+                'user_data' => [
+                    'roles' => $user->getRoleNames(),
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'recovery_email' => $user->recovery_email,
+                    'slots_available' => $user->slots_available,
+                    'invitation_code' => $user->invitation_code
+                ],
+                'user_credentials' => [],
+
             ], 200);
         } else {
             return response()->json([
@@ -245,7 +256,7 @@ class AuthController extends Controller
 
         $validation = Validator::make($data, [
             'email' => ['required', 'email', 'min:3', 'max:190', 'exists:users,email'],
-            'twoFactorCode' => ['required', 'integer', 'min:100000', 'max:999999']
+            'twoFactorCode' => ['required', 'integer', 'min:000000', 'max:999999']
         ]);
 
         if ($validation->fails()) {
@@ -262,10 +273,23 @@ class AuthController extends Controller
         $is_valid = $this->validate_2fa_code($user->two_factor_secret, $data['twoFactorCode']);
 
         if ($is_valid) {
+
+            $credentials = Slot::where('user_id', $user->id)->get();
+
             return response()->json([
                 'status' => 200,
                 'token' => auth('api')->tokenById($user->id),
-                'message' => __('api_messages.success.auth.2fa_code_is_correct')
+                'message' => __('api_messages.success.auth.2fa_code_is_correct'),
+                'user_data' => [
+                    'roles' => $user->getRoleNames(),
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'recovery_email' => $user->recovery_email,
+                    'slots_available' => $user->slots_available,
+                    'invitation_code' => $user->invitation_code
+                ],
+                'user_credentials' => $credentials
             ], 200);
         } else {
             return response()->json([
@@ -286,7 +310,7 @@ class AuthController extends Controller
         $validation = Validator::make($data, [
             'emaill' => ['required', 'email', 'min:3', 'max:190', 'exists:users,email'],
             'recoveryEmail' => ['nullable', 'email', 'min:3', 'max:190', 'exists:users,recovery_email'],
-            'code' => ['required', 'integer', 'min:100000', 'max:999999']
+            'code' => ['required', 'integer', 'min:000000', 'max:999999']
         ]);
 
         if ($validation->fails()) {
@@ -305,10 +329,23 @@ class AuthController extends Controller
         $valid_email_code = $data['code'] === Crypt::decryptString($db_code);
 
         if ($valid_email_code) {
+
+            $credentials = Slot::where('user_id', $user->id)->get();
+
             return response()->json([
                 'status' => 200,
                 'token' => auth('api')->tokenById($user->id),
-                'message' => __('api_messages.success.auth.2fa_code_is_correct')
+                'message' => __('api_messages.success.auth.2fa_code_is_correct'),
+                'user_data' => [
+                    'roles' => $user->getRoleNames(),
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'recovery_email' => $user->recovery_email,
+                    'slots_available' => $user->slots_available,
+                    'invitation_code' => $user->invitation_code
+                ],
+                'user_credentials' => $credentials
             ], 200);
         } else {
             return response()->json([

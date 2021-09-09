@@ -32,7 +32,7 @@ class PermissionSeeder extends Seeder
             ]);
         });
 
-        $adminRole = Role::create(['name' => 'admin']);
+        $adminRole = Role::create(['name' => 'admin', 'guard' => 'api']);
 
         Role::create(['name' => 'free']);
         Role::create(['name' => 'semi-premium']);
