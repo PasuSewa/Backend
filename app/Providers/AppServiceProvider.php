@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
 
-        Response::macro('succes', function ($data, $message) {
+        Response::macro('success', function ($data, $message) {
             return response()->json([
                 'status' => 200,
                 'message' => __('api_messages.success.' . $message),

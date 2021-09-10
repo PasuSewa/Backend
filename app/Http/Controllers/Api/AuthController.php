@@ -273,8 +273,11 @@ class AuthController extends Controller
         }
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
+        auth('api')->invalidate();
+
+        return response()->success([], 'auth.logged_out');
     }
 
     public function refresh_2fa_secret(Request $request)
