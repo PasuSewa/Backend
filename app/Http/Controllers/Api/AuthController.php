@@ -12,7 +12,6 @@ use PragmaRX\Google2FA\Google2FA;
 use Validator;
 
 use App\Models\User;
-use App\Models\Slot;
 
 use App\Notifications\EmailTwoFactorAuth;
 
