@@ -58,7 +58,7 @@ class AppServiceProvider extends ServiceProvider
                         'role' => $data['user']->getRoleNames()[0], // users only have 1 role
                         'token' => $with_token ? auth('api')->setTTL(7200)->tokenById($data['user']->id) : null,
                     ],
-                    'user_credentials' => user_credentials
+                    'user_credentials' => $user_credentials
                 ],
             ], 200);
         });

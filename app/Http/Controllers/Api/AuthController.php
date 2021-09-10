@@ -107,7 +107,7 @@ class AuthController extends Controller
             'two_factor_code_email' => Crypt::encryptString(rand(100000, 999999)),
             'two_factor_code_recovery' => Crypt::encryptString(rand(100000, 999999)),
             'preferred_lang' => app()->getLocale(),
-            'recovery_code' => strtoupper(Str::random(15))
+            'recovery_code' => Crypt::encryptString(strtoupper(Str::random(10)))
         ]);
 
         return response()->success(['reegistered_email' => $user->email], 'auth.user_created');
@@ -214,7 +214,7 @@ class AuthController extends Controller
         $data = $request->only('email', 'recoveryEmail', 'code');
 
         $validation = Validator::make($data, [
-            'emaill' => ['required', 'email', 'min:3', 'max:190', 'exists:users,email'],
+            'email' => ['required', 'email', 'min:3', 'max:190', 'exists:users,email'],
             'recoveryEmail' => ['nullable', 'email', 'min:3', 'max:190', 'exists:users,recovery_email'],
             'code' => ['required', 'integer', 'min:000000', 'max:999999']
         ]);
@@ -238,6 +238,39 @@ class AuthController extends Controller
 
     public function login_by_security_code(Request $request)
     {
+        $data = $request->only('email', 'recoveryEmail', 'antiFishingSecret', 'securityCode');
+
+        $validation = Validator::make($data, [
+            'email' => ['required', 'email', 'min:3', 'max:190', 'exists:users,email'],
+            'recoveryEmail' => ['required', 'email', 'min:3', 'max:190'],
+            'antiFishingSecret' => ['required', 'string', 'min:5', 'max:190'],
+            'securityCode' => ['required', 'string', 'min:10', 'max:10']
+        ]);
+
+        if ($validation->fails()) {
+            return $this->validation_error($request, $validation);
+        }
+
+        try {
+            $user = User::where('email', $data['email'])->first();
+        } catch (\Throwable $th) {
+            $data = [
+                'errors' => [
+                    'exception' => $th
+                ]
+            ];
+            return response()->error($data, 404, 'api_messages.error.user_was_not_found_or_isnt_allowed');
+        }
+
+        $second_email_is_valid = $data['recoveryEmail'] === $user->recovery_email;
+        $anti_fishing_is_valid = $data['antiFishingSecret'] === Crypt::decryptString($user->anti_fishing_secret);
+        $security_code_is_valid = $data['securityCode'] === Crypt::decryptString($user->recovery_code);
+
+        if ($second_email_is_valid && $anti_fishing_is_valid && $security_code_is_valid) {
+            return response()->user_was_authenticated(['user' => $user], '2fa_code_is_correct', true, true);
+        } else {
+            return $this->validation_error($request);
+        }
     }
 
     public function logout(Request $request)
