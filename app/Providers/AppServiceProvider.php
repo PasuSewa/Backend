@@ -36,7 +36,14 @@ class AppServiceProvider extends ServiceProvider
             ], 200);
         });
 
-        Response::macro('user_was_authenticated', function ($data, $message, $with_token = false) {
+        Response::macro('user_was_authenticated', function ($data, $message, $with_token = false, $with_credentials = false) {
+
+            if ($with_credentials) {
+                $user_credentials = [];
+            } else {
+                $user_credentials = [];
+            }
+
             return response()->json([
                 'status' => 200,
                 'message' => __('api_messages.success.auth.' . $message),
@@ -51,7 +58,7 @@ class AppServiceProvider extends ServiceProvider
                         'role' => $data['user']->getRoleNames()[0], // users only have 1 role
                         'token' => $with_token ? auth('api')->setTTL(7200)->tokenById($data['user']->id) : null,
                     ],
-                    'user_credentials' => $data['credentials']
+                    'user_credentials' => user_credentials
                 ],
             ], 200);
         });

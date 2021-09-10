@@ -179,7 +179,7 @@ class AuthController extends Controller
         $is_valid = $this->validate_2fa_code($user->two_factor_secret, $data['twoFactorCode']);
 
         if ($is_valid) {
-            return response()->user_was_authenticated(['user' => $user, 'credentials' => []], '2fa_code_is_correct');
+            return response()->user_was_authenticated(['user' => $user], '2fa_code_is_correct');
         } else {
             return $this->validation_error($request, null, 'api_messages.error.2fa_code_invalid');
         }
@@ -203,9 +203,7 @@ class AuthController extends Controller
         $is_valid = $this->validate_2fa_code($user->two_factor_secret, $data['twoFactorCode']);
 
         if ($is_valid) {
-            $credentials = Slot::where('user_id', $user->id)->get();
-
-            return response()->user_was_authenticated(['user' => $user, 'credentials' => $credentials], '2fa_code_is_correct', true);
+            return response()->user_was_authenticated(['user' => $user], '2fa_code_is_correct', true, true);
         } else {
             return $this->validation_error($request, null, 'api_messages.error.2fa_code_invalid');
         }
@@ -232,9 +230,7 @@ class AuthController extends Controller
         $valid_email_code = $data['code'] === Crypt::decryptString($db_code);
 
         if ($valid_email_code) {
-            $credentials = Slot::where('user_id', $user->id)->get();
-
-            return response()->user_was_authenticated(['user' => $user, 'credentials' => $credentials], '2fa_code_is_correct', true);
+            return response()->user_was_authenticated(['user' => $user], '2fa_code_is_correct', true, true);
         } else {
             return $this->validation_error($request);
         }
@@ -268,9 +264,9 @@ class AuthController extends Controller
 
         // I'm not really sure how to test this, and the package doesn't actually explain anything
         // I've already tested it manually, and it works. So (at least for now) I'll be leaving it like this
-        // If the env is "testing" it asumes that we are in a "testing environment"
+        // If the env is "local" it asumes that we are in a "testing environment"
 
-        if (env('APP_ENV') !== 'testing') {
+        if (env('APP_ENV') !== 'local') {
             return $google2fa->verifyKey(Crypt::decryptString($secret_key), $code, $window);
         } else {
             return true;
