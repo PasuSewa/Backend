@@ -73,7 +73,7 @@ class AuthController extends Controller
             'name',
             'phoneNumber',
             'mainEmail',
-            'secondaryEmail',
+            'recoveryEmail',
             'secretAntiFishing',
             'secretAntiFishing_confirmation',
             'invitationCode'
@@ -83,14 +83,15 @@ class AuthController extends Controller
             'name' => ['string', 'min:5', 'max:100', 'required'],
             'phoneNumber' => ['string', 'min:6', 'max:20', 'required'],
             'mainEmail' => ['email', 'min:5', 'max:190', 'unique:users,email', 'unique:users,recovery_email', 'required',],
-            'secondaryEmail' => ['email', 'min:5', 'max:190', 'unique:users,email', 'unique:users,recovery_email', 'required',],
+            'recoveryEmail' => ['email', 'min:5', 'max:190', 'unique:users,email', 'unique:users,recovery_email', 'required',],
             'secretAntiFishing' => ['string', 'min:5', 'max:190', 'required', 'confirmed'],
             'secretAntiFishing_confirmation' => ['string', 'min:5', 'max:190', 'required',],
             'invitationCode' => ['string', 'min:10', 'max:10', 'exists:users,invitation_code', 'nullable'],
         ]);
 
         if ($validation->fails()) {
-            return $this->validation_error($request, $validation);
+            // return $this->validation_error($request, $validation);
+            return response()->json(['request' => $request->all()], 401);
         }
 
         $slots_available = isset($data['invitationCode']) ? $this->spend_invitation_code($data['invitationCode']) : 5;
@@ -98,7 +99,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['mainEmail'],
-            'recovery_email' => $data['secondaryEmail'],
+            'recovery_email' => $data['recoveryEmail'],
             'phone_number' => Crypt::encryptString($data['phoneNumber']),
             'anti_fishing_secret' => Crypt::encryptString($data['secretAntiFishing']),
             'slots_available' =>  $slots_available,
