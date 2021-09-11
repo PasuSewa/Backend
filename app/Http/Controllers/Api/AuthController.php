@@ -90,8 +90,7 @@ class AuthController extends Controller
         ]);
 
         if ($validation->fails()) {
-            // return $this->validation_error($request, $validation);
-            return response()->json(['request' => $request->all()], 401);
+            return $this->validation_error($request, $validation);
         }
 
         $slots_available = isset($data['invitationCode']) ? $this->spend_invitation_code($data['invitationCode']) : 5;
