@@ -109,6 +109,8 @@ class AuthController extends Controller
             'recovery_code' => Crypt::encryptString(strtoupper(Str::random(10)))
         ]);
 
+        $user->assignRole('free');
+
         return response()->success(['registered_email' => $user->email], 'auth.user_created');
     }
 
@@ -178,7 +180,11 @@ class AuthController extends Controller
         $is_valid = $this->validate_2fa_code($user->two_factor_secret, $data['twoFactorCode']);
 
         if ($is_valid) {
-            return response()->user_was_authenticated(['user' => $user], '2fa_code_is_correct');
+            //in the react app, the token its not stored anywhere, so we need to destroy the old session
+            //in order to give the frontend another token
+            auth('api')->invalidate();
+
+            return response()->user_was_authenticated(['user' => $user], '2fa_code_is_correct', true);
         } else {
             return $this->validation_error($request, null, 'api_messages.error.2fa_code_invalid');
         }
