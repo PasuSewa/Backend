@@ -109,7 +109,7 @@ class AuthController extends Controller
             'recovery_code' => Crypt::encryptString(strtoupper(Str::random(10)))
         ]);
 
-        return response()->success(['reegistered_email' => $user->email], 'auth.user_created');
+        return response()->success(['registered_email' => $user->email], 'auth.user_created');
     }
 
     public function verify_emails(Request $request)
