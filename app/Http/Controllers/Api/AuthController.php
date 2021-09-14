@@ -288,7 +288,7 @@ class AuthController extends Controller
         $user->two_factor_secret = Crypt::encryptString($secret);
         $user->save();
 
-        return response()->success(['secret' => $secret], 'auth.refresh_2fa_secret');
+        return response()->success(['secret' => $secret, 'email' => $user->email], 'auth.refresh_2fa_secret');
     }
 
     private function validate_2fa_code($secret_key, $code)
@@ -300,7 +300,6 @@ class AuthController extends Controller
         // I'm not really sure how to test this, and the package doesn't actually explain anything
         // I've already tested it manually, and it works. So (at least for now) I'll be leaving it like this
         // If the env is "local" it asumes that we are in a "testing environment"
-
         if (env('APP_ENV') !== 'local') {
             return $google2fa->verifyKey(Crypt::decryptString($secret_key), $code, $window);
         } else {

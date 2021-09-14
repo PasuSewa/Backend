@@ -64,15 +64,15 @@ class AppServiceProvider extends ServiceProvider
                             'slots_available' => $data['user']->slots_available,
                             'invitation_code' => $data['user']->invitation_code,
                             'role' => $data['user']->getRoleNames()[0], // users only have 1 role
-                            'token' => $with_token
-                                ?
-                                auth('api')
-                                ->setTTL($mobile ? null : 60) // 60 mins if plattform is different from mobile
-                                ->tokenById($data['user']->id)
-                                :
-                                null,
                         ],
-                        'user_credentials' => $user_credentials
+                        'user_credentials' => $user_credentials,
+                        'token' => $with_token
+                            ?
+                            auth('api')
+                            ->setTTL($mobile ? null : 60) // 60 mins if plattform is different from mobile
+                            ->tokenById($data['user']->id)
+                            :
+                            null,
                     ],
                 ], 200);
             }
