@@ -312,14 +312,15 @@ class AuthController extends Controller
 
     private function validate_2fa_code($secret_key, $code)
     {
-        $google2fa = new Google2FA();
-
-        $window = 1; // 30 sec
-
         // Since the package doesn't come with any instructions on how to test it, I decided to do this
         // So, if env is "local" or "testing" it will not consider G2FA, and return a true instead
-        // I tested this manually and, as far as I know, it works
+        // I tested G2FA manually and, as far as I know, it works
         if (env('APP_ENV') !== 'local' && env('APP_ENV') !== 'testing') {
+
+            $google2fa = new Google2FA();
+
+            $window = 1; // 30 sec
+
             return $google2fa->verifyKey(Crypt::decryptString($secret_key), $code, $window);
         } else {
             return true;
