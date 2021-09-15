@@ -92,7 +92,9 @@ class AppServiceProvider extends ServiceProvider
             return response()->json([
                 'status' => $status_code,
                 'message' => __($message),
-                'errors' => $data['errors'],
+                'data' => [
+                    'errors' => $data['errors']
+                ],
                 'request' => isset($data['request']) ? $data['request'] : null,
             ], $status_code);
         });
