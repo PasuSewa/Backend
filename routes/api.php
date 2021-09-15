@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'Localization'], function () {
 
-    Route::post('/send-code-by-email', 'AuthController@sendCodeByEmail');
+    Route::post('/send-code-by-email', 'AuthController@send_code_by_email');
 
     Route::get('/feedback/index', 'FeedbackController@index');
 
