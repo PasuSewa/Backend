@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Notification;
 
 use PragmaRX\Google2FA\Google2FA;
 
@@ -55,7 +56,18 @@ class AuthController extends Controller
         try {
             $antiFishingSecret = Crypt::decryptString($user->anti_fishing_secret);
 
-            $user->notify(new EmailTwoFactorAuth($code, $antiFishingSecret, $user->preferred_lang));
+            if ($data['isSecondary']) {
+                Notification::route(
+                    'mail',
+                    $user->recovery_email
+                )->notify(new EmailTwoFactorAuth(
+                    $recovery_email_code,
+                    $antiFishingSecret,
+                    $user->preferred_lang
+                ));
+            } else {
+                $user->notify(new EmailTwoFactorAuth($code, $antiFishingSecret, $user->preferred_lang));
+            }
         } catch (\Throwable $th) {
             $data = [
                 'errors' => [
@@ -216,10 +228,10 @@ class AuthController extends Controller
 
     public function login_by_email_code(Request $request)
     {
-        $data = $request->only('email', 'recoveryEmail', 'code');
+        $data = $request->only('mainEmail', 'recoveryEmail', 'code');
 
         $validation = Validator::make($data, [
-            'email' => ['required', 'email', 'min:3', 'max:190', 'exists:users,email'],
+            'mainEmail' => ['required', 'email', 'min:3', 'max:190', 'exists:users,email'],
             'recoveryEmail' => ['nullable', 'email', 'min:3', 'max:190', 'exists:users,recovery_email'],
             'code' => ['required', 'integer', 'min:000000', 'max:999999']
         ]);
@@ -228,9 +240,9 @@ class AuthController extends Controller
             return $this->validation_error($request, $validation);
         }
 
-        $user = User::where('email', $data['email'])->firstOrFail();
+        $user = User::where('email', $data['mainEmail'])->firstOrFail();
 
-        $db_code = isset($data['recoveryEmail']) ? $user->two_factor_code_recovery : $user->two_factor_code_email;
+        $db_code = !is_null($data['recoveryEmail']) ? $user->two_factor_code_recovery : $user->two_factor_code_email;
 
         $valid_email_code = $data['code'] === Crypt::decryptString($db_code);
 
