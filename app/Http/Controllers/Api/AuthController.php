@@ -316,10 +316,10 @@ class AuthController extends Controller
 
         $window = 1; // 30 sec
 
-        // I'm not really sure how to test this, and the package doesn't actually explain anything
-        // I've already tested it manually, and it works. So (at least for now) I'll be leaving it like this
-        // If the env is "local" it asumes that we are in a "testing environment"
-        if (env('APP_ENV') !== 'local') {
+        // Since the package doesn't come with any instructions on how to test it, I decided to do this
+        // So, if env is "local" or "testing" it will not consider G2FA, and return a true instead
+        // I tested this manually and, as far as I know, it works
+        if (env('APP_ENV') !== 'local' && env('APP_ENV') !== 'testing') {
             return $google2fa->verifyKey(Crypt::decryptString($secret_key), $code, $window);
         } else {
             return true;

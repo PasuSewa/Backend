@@ -26,7 +26,7 @@ class AuthTest extends TestCase
             'name' => 'testing_name',
             'phoneNumber' => 'number',
             'mainEmail' => 'main_email@gmail.com',
-            'secondaryEmail' => 'recovery_email@gmail.com',
+            'recoveryEmail' => 'recovery_email@gmail.com',
             'secretAntiFishing' => 'secret',
             'secretAntiFishing_confirmation' => 'secret',
             'invitationCode' => '',
@@ -36,7 +36,7 @@ class AuthTest extends TestCase
 
         $response_step_1->assertOk();
 
-        $this->seeInDatabase('users', ['email' => $json_data['mainEmail']]);
+        $this->assertDatabaseHas('users', ['email' => $json_data['mainEmail']]);
 
         // step 2
         $db_user = User::where('email', $json_data['mainEmail'])->select('two_factor_code_email', 'two_factor_code_recovery')->first();
@@ -52,20 +52,20 @@ class AuthTest extends TestCase
 
         $response_step_2->assertOk();
 
-        $response_2->assertJsonStructure([
+        $response_step_2->assertJsonStructure([
             'data' => [
                 'token'
             ]
         ]);
 
-        $decoded_response_2 = $response_2->decodeResponseJson();
+        $decoded_response_step_2 = $response_step_2->decodeResponseJson();
 
         // step 3
-        $response_3 = $this->withHeader('Authorization', 'Bearer ' . $decoded_response_2['data']['token'])->json('POST', '/api/auth/register/step-3', [
+        $response_step_3 = $this->withHeader('Authorization', 'Bearer ' . $decoded_response_step_2['data']['token'])->json('POST', '/api/auth/register/step-3', [
             'twoFactorCode' => 000001
         ]);
 
-        $response_3->assertOk();
+        $response_step_3->assertOk();
     }
 
     public function user_can_spend_invitation_code()
