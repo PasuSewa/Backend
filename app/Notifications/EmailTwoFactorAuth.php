@@ -50,6 +50,8 @@ class EmailTwoFactorAuth extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        app()->setlocale($this->lang);
+
         return (new MailMessage)
             ->subject(__('notifications.subject'))
             ->greeting(__('notifications.greeting'))
