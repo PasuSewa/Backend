@@ -41,7 +41,7 @@ class AuthController extends Controller
                     'exception' => $th
                 ]
             ];
-            return response()->error($data, 404, 'api_messages.error.user_was_not_found_or_isnt_allowed');
+            return response()->error($data, 'api_messages.error.user_was_not_found_or_isnt_allowed', 404);
         }
 
         $code = rand(100000, 999999);
@@ -61,7 +61,7 @@ class AuthController extends Controller
                     'mail',
                     $user->recovery_email
                 )->notify(new EmailTwoFactorAuth(
-                    $recovery_email_code,
+                    $code,
                     $antiFishingSecret,
                     $user->preferred_lang
                 ));
@@ -74,8 +74,9 @@ class AuthController extends Controller
                     'exception' => $th
                 ]
             ];
-            return response()->error($data, 500, 'api_messages.error.generic');
+            return response()->error($data, 'api_messages.error.generic', 500);
         }
+
         return response()->success(null, 'auth.email_sent');
     }
 
