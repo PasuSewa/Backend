@@ -243,10 +243,10 @@ class AuthController extends Controller
 
     public function login_by_security_code(Request $request)
     {
-        $data = $request->only('email', 'recoveryEmail', 'antiFishingSecret', 'securityCode');
+        $data = $request->only('mainEmail', 'recoveryEmail', 'antiFishingSecret', 'securityCode');
 
         $validation = Validator::make($data, [
-            'email' => ['required', 'email', 'min:3', 'max:190', 'exists:users,email'],
+            'mainEmail' => ['required', 'email', 'min:3', 'max:190', 'exists:users,email'],
             'recoveryEmail' => ['required', 'email', 'min:3', 'max:190'],
             'antiFishingSecret' => ['required', 'string', 'min:5', 'max:190'],
             'securityCode' => ['required', 'string', 'min:10', 'max:10']
@@ -257,7 +257,7 @@ class AuthController extends Controller
         }
 
         try {
-            $user = User::where('email', $data['email'])->first();
+            $user = User::where('email', $data['mainEmail'])->first();
         } catch (\Throwable $th) {
             $data = [
                 'errors' => [
