@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 use Illuminate\Support\Facades\Crypt;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthTest extends TestCase
 {
@@ -89,8 +90,24 @@ class AuthTest extends TestCase
         $this->assertDatabaseHas('users', ['email' => $json_data['mainEmail'], 'slots_available' => 10]);
     }
 
+    /** @test */
     public function user_can_refresh_2fa_secret()
     {
+        $user = User::find(1);
+
+        $token = JWTAuth::fromUser($user);
+
+        $response = $this->withHeaders(['Authorization' => 'Bearer ' . $token])->json('GET', '/api/auth/refresh-2fa-secret');
+
+        $response->assertOk();
+
+        $response->assertJsonStructure([
+            'status',
+            'message',
+            'data' => [
+                'secret'
+            ],
+        ]);
     }
 
     public function app_sends_emails()
