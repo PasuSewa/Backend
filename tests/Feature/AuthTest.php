@@ -24,6 +24,17 @@ class AuthTest extends TestCase
      */
     protected $seed = true;
 
+    public $json_structure = [
+        'status',
+        'message',
+        'data' => [
+            'user_data',
+            'user_credentials',
+            'token'
+        ],
+    ];
+
+
     /** @test */
     public function user_can_register()
     {
@@ -140,15 +151,7 @@ class AuthTest extends TestCase
 
         $response->assertOk();
 
-        $response->assertJsonStructure([
-            'status',
-            'message',
-            'data' => [
-                'user_data',
-                'user_credentials',
-                'token'
-            ],
-        ]);
+        $response->assertJsonStructure($this->json_structure);
     }
 
     /** @test */
@@ -186,8 +189,21 @@ class AuthTest extends TestCase
         ]);
     }
 
+    /** @test */
     public function login_by_security_code()
     {
+        $user = User::find(1);
+
+        $response = $this->json('POST', '/api/auth/login/security-code', [
+            'mainEmail' => $user->email,
+            'recoveryEmail' => $user->recovery_email,
+            'antiFishingSecret' => Crypt::decryptString($user->anti_fishing_secret),
+            'securityCode' => Crypt::decryptString($user->recovery_code),
+        ]);
+
+        $response->assertOk();
+
+        $response->assertJsonStructure($this->json_structure);
     }
 
     public function logout()
