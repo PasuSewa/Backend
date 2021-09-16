@@ -151,8 +151,39 @@ class AuthTest extends TestCase
         ]);
     }
 
+    /** @test */
     public function login_by_email_code()
     {
+        Notification::fake();
+
+        $response_1 = $this->json('POST', '/api/send-code-by-email', [
+            'email' => 'gonzalosalvadorcorvalan@gmail.com',
+            'isSecondary' => true,
+        ]);
+
+        $response_1->assertOk();
+
+        $user = User::find(1);
+
+        $code = Crypt::decryptString($user->two_factor_code_recovery);
+
+        $response_2 = $this->json('POST', '/api/auth/login/email-code', [
+            'mainEmail' => 'mr.corvy@gmail.com',
+            'recoveryEmail' => 'gonzalosalvadorcorvalan@gmail.com',
+            'code' => $code
+        ]);
+
+        $response_2->assertOk();
+
+        $response_2->assertJsonStructure([
+            'status',
+            'message',
+            'data' => [
+                'user_data',
+                'user_credentials',
+                'token'
+            ],
+        ]);
     }
 
     public function login_by_security_code()
