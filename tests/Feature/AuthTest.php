@@ -168,12 +168,10 @@ class AuthTest extends TestCase
 
         $user = User::find(1);
 
-        $code = Crypt::decryptString($user->two_factor_code_recovery);
-
         $response_2 = $this->json('POST', '/api/auth/login/email-code', [
-            'mainEmail' => 'mr.corvy@gmail.com',
-            'recoveryEmail' => 'gonzalosalvadorcorvalan@gmail.com',
-            'code' => $code
+            'mainEmail' => $user->email,
+            'recoveryEmail' => $user->recovery_email,
+            'code' => Crypt::decryptString($user->two_factor_code_recovery)
         ]);
 
         $response_2->assertOk();
