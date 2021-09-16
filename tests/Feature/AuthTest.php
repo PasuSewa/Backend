@@ -3,11 +3,16 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+
+use App\Notifications\EmailTwoFactorAuth;
+
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 use Illuminate\Support\Facades\Crypt;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Queue;
 
 class AuthTest extends TestCase
 {
@@ -110,8 +115,24 @@ class AuthTest extends TestCase
         ]);
     }
 
+    /** @test */
     public function app_sends_emails()
     {
+        Notification::fake();
+
+        $user = User::find(1);
+
+        $response = $this->json('POST', '/api/send-code-by-email', [
+            'email' => $user->email,
+            'isSecondary' => false,
+        ]);
+
+        $response->assertOk();
+
+        Notification::assertSentTo(
+            [$user],
+            EmailTwoFactorAuth::class
+        );
     }
 
     public function login_by_g2fa()
