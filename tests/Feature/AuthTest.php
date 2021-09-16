@@ -206,7 +206,15 @@ class AuthTest extends TestCase
         $response->assertJsonStructure($this->json_structure);
     }
 
+    /** @test */
     public function logout()
     {
+        $user = User::find(1);
+
+        $token = JWTAuth::fromUser($user);
+
+        $response = $this->withHeaders(['Authorization' => 'Bearer ' . $token])->json('GET', '/api/auth/logout');
+
+        $response->assertOk();
     }
 }
