@@ -12,7 +12,6 @@ use Tests\TestCase;
 use Illuminate\Support\Facades\Crypt;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Queue;
 
 class AuthTest extends TestCase
 {
@@ -137,6 +136,19 @@ class AuthTest extends TestCase
 
     public function login_by_g2fa()
     {
+        $response = $this->json('POST', '/auth/login/two-factor-code', ['email' => 'mr.corvy@gmail.com', 'code' => 123456]);
+
+        $response->assertOk();
+
+        $response->assertJsonStructure([
+            'status',
+            'message',
+            'data' => [
+                'user_data',
+                'user_credentials',
+                'token'
+            ],
+        ]);
     }
 
     public function login_by_email_code()
@@ -144,6 +156,10 @@ class AuthTest extends TestCase
     }
 
     public function login_by_security_code()
+    {
+    }
+
+    public function logout()
     {
     }
 }
