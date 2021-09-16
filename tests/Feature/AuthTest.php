@@ -4,22 +4,24 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 use Illuminate\Support\Facades\Crypt;
-
-use Database\Seeders\PermissionSeeder;
 
 class AuthTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Indicates whether the default seeder should run before each test.
+     *
+     * @var bool
+     */
+    protected $seed = true;
+
     /** @test */
     public function user_can_register()
     {
-        $this->seed();
-
         // step 1
         $json_data = [
             'name' => 'testing_name',
@@ -70,8 +72,6 @@ class AuthTest extends TestCase
     /** @test */
     public function user_can_spend_invitation_code()
     {
-        $this->seed();
-
         $json_data = [
             'name' => 'testing_name',
             'phoneNumber' => 'number',
