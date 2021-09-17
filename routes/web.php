@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth', 'Localization', 'role:admin']], function 
 
                 Route::get('/delete/{id}', [AdminController::class, 'delete_company'])
                         ->name('delete_company')
+                        ->whereNumber('id')
                         ->middleware('can:delete_companies');
 
                 Route::post('/create', [AdminController::class, 'create_company'])
@@ -51,6 +52,7 @@ Route::group(['middleware' => ['auth', 'Localization', 'role:admin']], function 
 
                 Route::get('/discard/{id}', [AdminController::class, 'discard_suggestion'])
                         ->name('discard_suggestion')
+                        ->whereNumber('id')
                         ->middleware('can:discard_suggestions');
 
                 Route::get('/publish/{id}', [AdminController::class, 'publish_suggestion'])
@@ -62,10 +64,12 @@ Route::group(['middleware' => ['auth', 'Localization', 'role:admin']], function 
 
                 Route::get('/discard/{id}', [AdminController::class, 'discard_rating'])
                         ->name('discard_rating')
+                        ->whereNumber('id')
                         ->middleware('can:discard_ratings');
 
                 Route::get('/publish/{id}', [AdminController::class, 'publish_rating'])
                         ->name('publish_rating')
+                        ->whereNumber('id')
                         ->middleware('can:publish_ratings');
         });
 });
