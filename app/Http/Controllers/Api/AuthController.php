@@ -80,6 +80,7 @@ class AuthController extends Controller
         return response()->success(null, 'auth.email_sent');
     }
 
+    /**************************************************************************************************************** register process */
     public function create_user(Request $request)
     {
         $data = $request->only(
@@ -203,6 +204,7 @@ class AuthController extends Controller
         }
     }
 
+    /**************************************************************************************************************** login options */
     public function login_by_g2fa(Request $request)
     {
         $data = $request->only('email', 'twoFactorCode');
@@ -298,6 +300,7 @@ class AuthController extends Controller
         return response()->success([], 'auth.logged_out');
     }
 
+    /**************************************************************************************************************** helper functions */
     public function refresh_2fa_secret(Request $request)
     {
         $user = $request->user();

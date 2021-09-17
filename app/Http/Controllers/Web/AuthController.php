@@ -15,7 +15,7 @@ use Auth;
 
 class AuthController extends Controller
 {
-    public function adminLogin(Request $request)
+    public function admin_login(Request $request)
     {
         $rules = ['required', 'integer', 'min:100000', 'max:999999'];
 

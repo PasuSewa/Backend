@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Web\AdminController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,57 +15,57 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => ['guest', 'Localization']], function()
-{
-    Route::view('/', 'welcome')->name('welcome');
+Route::group(['middleware' => ['guest', 'Localization']], function () {
 
-    Route::view('/login', 'welcome')->name('login');
+        Route::view('/', 'welcome')->name('welcome');
 
-    Route::post('/login', 'AuthController@adminLogin')->name('login');
+        Route::view('/login', 'welcome')->name('login');
+
+        Route::post('/login', [AuthController::class, 'admin_login'])->name('login');
 });
 
-Route::group(['middleware' => ['auth', 'Localization', 'role:admin']], function()
-{
-    Route::get('dashboard', 'AdminController@index')->name('home');
+Route::group(['middleware' => ['auth', 'Localization', 'role:admin']], function () {
 
-    Route::get('logout', 'AuthController@logout')->name('logout');
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('home');
 
-    Route::get('statistics', 'AdminController@showStatistics')->name('statistics');
+        Route::get('/logout', 'AuthController@logout')->name('logout');
 
-    Route::group(['prefix' => 'company'], function()
-    {
-        Route::get('delete/{id}', 'AdminController@deleteCompany')
-                ->name('delete_company')
-                ->middleware('can:delete_companies');
-        
-        Route::post('create', 'AdminController@createCompany')
-                ->name('create_company')
-                ->middleware('can:create_companies');
-        
-        Route::post('update', 'AdminController@updateCompany')
-                ->name('update_company')
-                ->middleware('can:update_companies');
-    });
+        Route::get('/statistics', [AdminController::class, 'show_statistics'])->name('statistics');
 
-    Route::group(['prefix' => 'suggestion'], function() 
-    {
-        Route::get('discard/{id}', 'AdminController@discardSuggestion')
-                ->name('discard_suggestion')
-                ->middleware('can:discard_suggestions');
-        
-        Route::get('publish/{id}', 'AdminController@publishSuggestion')
-                ->name('publish_suggestion')
-                ->middleware('can:publish_suggestions');
-    });
-    
-    Route::group(['prefix' => 'rating'], function() 
-    {
-        Route::get('discard/{id}', 'AdminController@discardRating')
-                ->name('discard_rating')
-                ->middleware('can:discard_ratings');
-        
-        Route::get('publish/{id}', 'AdminController@publishRating')
-                ->name('publish_rating')
-                ->middleware('can:publish_ratings');
-    });
+        Route::group(['prefix' => 'company'], function () {
+
+                Route::get('/delete/{id}', [AdminController::class, 'delete_company'])
+                        ->name('delete_company')
+                        ->middleware('can:delete_companies');
+
+                Route::post('/create', [AdminController::class, 'create_company'])
+                        ->name('create_company')
+                        ->middleware('can:create_companies');
+
+                Route::post('/update', [AdminController::class, 'update_company'])
+                        ->name('update_company')
+                        ->middleware('can:update_companies');
+        });
+
+        Route::group(['prefix' => 'suggestion'], function () {
+
+                Route::get('/discard/{id}', [AdminController::class, 'discard_suggestion'])
+                        ->name('discard_suggestion')
+                        ->middleware('can:discard_suggestions');
+
+                Route::get('/publish/{id}', [AdminController::class, 'publish_suggestion'])
+                        ->name('publish_suggestion')
+                        ->middleware('can:publish_suggestions');
+        });
+
+        Route::group(['prefix' => 'rating'], function () {
+
+                Route::get('/discard/{id}', [AdminController::class, 'discard_rating'])
+                        ->name('discard_rating')
+                        ->middleware('can:discard_ratings');
+
+                Route::get('/publish/{id}', [AdminController::class, 'publish_rating'])
+                        ->name('publish_rating')
+                        ->middleware('can:publish_ratings');
+        });
 });

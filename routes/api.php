@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Api\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,36 +16,36 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'Localization'], function () {
 
-    Route::post('/send-code-by-email', 'AuthController@send_code_by_email');
+    Route::post('/send-code-by-email', [AuthController::class, 'send_code_by_email']);
 
-    Route::get('/feedback/index', 'FeedbackController@index');
+    // Route::get('/feedback/index', 'FeedbackController@index');
 
     Route::group(['middleware' => 'guest:api', 'prefix' => 'auth'], function () {
 
-        Route::post('/register/step-1', 'AuthController@create_user');
+        Route::post('/register/step-1', [AuthController::class, 'create_user']);
 
-        Route::post('/register/step-2', 'AuthController@verify_emails');
+        Route::post('/register/step-2', [AuthController::class, 'verify_emails']);
 
         //step 3 requires the user to be authenticated
 
-        Route::post('/login/two-factor-code', 'AuthController@login_by_g2fa');
+        Route::post('/login/two-factor-code', [AuthController::class, 'login_by_g2fa']);
 
-        Route::post('/login/email-code', 'AuthController@login_by_email_code');
+        Route::post('/login/email-code', [AuthController::class, 'login_by_email_code']);
 
-        Route::post('/login/security-code', 'AuthController@login_by_security_code');
+        Route::post('/login/security-code', [AuthController::class, 'login_by_security_code']);
     });
 
     Route::group(['middleware' => 'auth:api'], function () {
 
         Route::group(['prefix' => 'auth'], function () {
-            Route::post('/register/step-3', 'AuthController@verify_2fa');
+            Route::post('/register/step-3', [AuthController::class, 'verify_2fa']);
 
-            Route::get('/refresh-2fa-secret', 'AuthController@refresh_2fa_secret');
+            Route::get('/refresh-2fa-secret', [AuthController::class, 'refresh_2fa_secret']);
 
-            Route::get('/logout', 'AuthController@logout');
+            Route::get('/logout', [AuthController::class, 'logout']);
         });
 
-        Route::post('/feedback/create', 'FeedbackController@create')->middleware('role:premium');
+        // Route::post('/feedback/create', 'FeedbackController@create')->middleware('role:premium');
     });
 });
 

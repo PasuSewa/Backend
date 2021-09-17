@@ -22,8 +22,8 @@ class AdminController extends Controller
 
         return view('dashboard', compact('companies', 'ratings', 'suggestions'));
     }
-/************************************************************************************************* manage companies */
-    public function createCompany(Request $request)
+    /************************************************************************************************* manage companies */
+    public function create_company(Request $request)
     {
         $companyData = $request->validate([
             'company_name' => ['required', 'string', 'max:190'],
@@ -43,7 +43,7 @@ class AdminController extends Controller
         return redirect()->route('home')->withMessage('Company added successfully.');
     }
 
-    public function updateCompany(Request $request)
+    public function update_company(Request $request)
     {
         $companyData = $request->validate([
             'company_name' => ['required', 'string', 'max:190'],
@@ -55,8 +55,7 @@ class AdminController extends Controller
 
         $updateCompany->name = $companyData['company_name'];
 
-        if (isset($companyData['company_logo'])) 
-        {
+        if (isset($companyData['company_logo'])) {
             Storage::disk('s3')->delete('logos/' . $updateCompany->file_name);
 
             $path = $request->file('company_logo')->store('logos', 's3');
@@ -73,7 +72,7 @@ class AdminController extends Controller
         return redirect()->route('home')->withMessage('Company updated successfully.');
     }
 
-    public function deleteCompany($id)
+    public function delete_company($id)
     {
         $company = Company::find($id);
 
@@ -83,15 +82,15 @@ class AdminController extends Controller
 
         return redirect()->route('home')->withMessage('Company deleted successfully.');
     }
-/************************************************************************************************* ratings & suggestions */
-    public function discardSuggestion($id)
+    /************************************************************************************************* ratings & suggestions */
+    public function discard_suggestion($id)
     {
         Feedback::find($id)->delete();
 
         return redirect()->route('home')->withMessage('Suggestion discarded.');
     }
 
-    public function publishSuggestion($id)
+    public function publish_suggestion($id)
     {
         $suggestion = Feedback::find($id);
 
@@ -102,14 +101,14 @@ class AdminController extends Controller
         return redirect()->route('home')->withMessage('Suggestion published.');
     }
 
-    public function discardRating($id)
+    public function discard_rating($id)
     {
         Feedback::find($id)->delete();
 
         return redirect()->route('home')->withMessage('Rating discarded.');
     }
 
-    public function publishRating($id)
+    public function publish_rating($id)
     {
         $rating = Feedback::find($id);
 
@@ -119,8 +118,8 @@ class AdminController extends Controller
 
         return redirect()->route('home')->withMessage('Rating published.');
     }
-/************************************************************************************************* statistics */
-    public function showStatistics()
+    /************************************************************************************************* statistics */
+    public function show_statistics()
     {
         $statistics = array();
 
