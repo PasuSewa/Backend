@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
+
+use Validator;
+
 use App\Models\Feedback;
 
 class FeedbackController extends Controller
@@ -29,7 +32,7 @@ class FeedbackController extends Controller
     {
         $data = $request->only('userName', 'body', 'rating', 'email', 'type');
 
-        $rules = ['required', 'string', 'min:10', 'max:190'];
+        $rules = ['required', 'string', 'min:5', 'max:190'];
 
         $validation = Validator::make($data, [
             'userName' => $rules,

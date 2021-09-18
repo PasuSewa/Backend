@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\FeedbackController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,7 +20,7 @@ Route::group(['middleware' => 'Localization'], function () {
 
     Route::post('/send-code-by-email', [AuthController::class, 'send_code_by_email']);
 
-    // Route::get('/feedback/index', 'FeedbackController@index');
+    Route::get('/feedback/index', [FeedbackController::class, 'index']);
 
     Route::group(['middleware' => 'guest:api', 'prefix' => 'auth'], function () {
 
@@ -45,7 +47,7 @@ Route::group(['middleware' => 'Localization'], function () {
             Route::get('/logout', [AuthController::class, 'logout']);
         });
 
-        // Route::post('/feedback/create', 'FeedbackController@create')->middleware('role:premium');
+        Route::post('/feedback/create', [FeedbackController::class, 'create'])->middleware('role:premium');
     });
 });
 
