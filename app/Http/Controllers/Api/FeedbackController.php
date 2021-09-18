@@ -6,61 +6,56 @@ use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use App\Models\Feedback;
-use App\Models\User;
 
 class FeedbackController extends Controller
 {
     public function index()
     {
-        $suggestions = Feedback::where('feedback_type', 'suggestion')->where('is_published', true)->get();
+        $data = cache()->remember('feedback', 60 * 60 * 24 * 7, function () {
+            $suggestions = Feedback::where('type', true)->where('is_public', true)->get();
 
-        $ratings = Feedback::where('feedback_type', 'rating')->where('is_published', true)->get();
+            $ratings = Feedback::where('type', false)->where('is_public', true)->get();
 
-        return response()->json([
-            'feedback' => [
+            return [
                 'suggestions' => $suggestions,
                 'ratings' => $ratings
-            ]
-        ], 200);
+            ];
+        });
+
+        return response()->success(['feedback' => $data], 'feedback.obtained');
     }
 
-    public function create(Request $request, $feedbackType)
+    public function create(Request $request)
     {
-        if ($feedbackType !== 'suggestion' && $feedbackType !== 'rating') {
-            return response()->json([
-                'status' => 400,
-                'message' => __('api_responses.error.parameter_was_incorrect')
-            ], 400);
-        }
-
-        $data = $request->only('userName', 'body', 'rating', 'email');
+        $data = $request->only('userName', 'body', 'rating', 'email', 'type');
 
         $rules = ['required', 'string', 'min:10', 'max:190'];
 
         $validation = Validator::make($data, [
             'userName' => $rules,
             'body' => $rules,
-            'rating' => [Rule::requiredIf($feedbackType === 'rating'), 'integer', 'min:1', 'max:10'],
-            'email' => ['required', 'email', 'exists:users,email']
+            'rating' => [Rule::requiredIf(!$data['type']), 'integer', 'min:1', 'max:10'],
+            'email' => ['required', 'email', 'exists:users,email'],
+            'type' => ['required', 'boolean'],
         ]);
 
         if ($validation->fails()) {
-            return response()->json([
-                'message' => __('api_messages.error.validation'),
-                'errors' => $validation->errors()
-            ], 400);
+            $data = [
+                'errors' => $validation->errors(),
+                'request' => $request->all(),
+            ];
+
+            return response()->error($data, 'api_messages.error.generic', 400);
         }
 
         Feedback::create([
             'user_name' => $data['userName'],
             'body' => $data['body'],
-            'rating' => $feedbackType === 'rating' ? 'rating' : null,
-            'feedback_type' => $feedbackType,
+            'rating' => !$data['type'] && isset($data['rating']) ? $data['rating'] : null,
+            'type' => $data['type'],
         ]);
 
-        return response()->json([
-            'message' => __('api_messages.success.feedback.received'),
-        ], 200);
+        return response()->success([], 'api_messages.success.feedback.received');
     }
 
     //coinbase

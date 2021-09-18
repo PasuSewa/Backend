@@ -11,7 +11,8 @@ return [
             "logged_out" => "La sesión fue cerrada exitosamente."
         ],
         "feedback" => [
-            "received" => "Gracias por el feedback, lo tendremos en cuenta."
+            "received" => "Gracias por el feedback, lo tendremos en cuenta.",
+            "obtained" => "Ratings y Sugerencias obtenidas con éxito."
         ]
     ],
     "error" => [

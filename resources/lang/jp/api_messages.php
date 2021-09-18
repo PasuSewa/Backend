@@ -11,7 +11,8 @@ return [
             "logged_out" => "Logged you out successfully."
         ],
         "feedback" => [
-            "received" => "Thank you for your feedback, we will take it in count."
+            "received" => "Thank you for your feedback, we will take it in count.",
+            "obtained" => "Ratings and Suggestions obtained successfully."
         ]
     ],
     "error" => [
