@@ -68,6 +68,7 @@ class FeedbackTest extends TestCase
             'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
             'rating' => null,
             'type' => 1,
+            'is_public' => 0
         ]);
 
 
@@ -80,6 +81,7 @@ class FeedbackTest extends TestCase
             'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
             'rating' => 7,
             'type' => 0,
+            'is_public' => 0
         ]);
     }
 
