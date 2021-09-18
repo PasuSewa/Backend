@@ -24,7 +24,7 @@ class FeedbackFactory extends Factory
         return [
             'user_name' => $this->faker->name,
             'body' => $this->faker->sentence(10, false),
-            'is_public' => false,
+            'is_public' => true,
         ];
     }
 }
