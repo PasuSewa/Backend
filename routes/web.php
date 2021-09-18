@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\AdminController;
+use App\Http\Controllers\Web\FeedbackController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,28 +50,16 @@ Route::group(['middleware' => ['auth', 'Localization', 'role:admin']], function 
                         ->middleware('can:update_companies');
         });
 
-        Route::group(['prefix' => 'suggestion'], function () {
+        Route::group(['prefix' => 'feedback'], function () {
 
-                Route::get('/discard/{id}', [AdminController::class, 'discard_suggestion'])
-                        ->name('discard_suggestion')
+                Route::get('/discard/{id}', [FeedbackController::class, 'discard'])
+                        ->name('discard_feedback')
                         ->whereNumber('id')
-                        ->middleware('can:discard_suggestions');
+                        ->middleware('can:discard_feedback');
 
-                Route::get('/publish/{id}', [AdminController::class, 'publish_suggestion'])
-                        ->name('publish_suggestion')
-                        ->middleware('can:publish_suggestions');
-        });
-
-        Route::group(['prefix' => 'rating'], function () {
-
-                Route::get('/discard/{id}', [AdminController::class, 'discard_rating'])
-                        ->name('discard_rating')
+                Route::get('/publish/{id}', [FeedbackController::class, 'publish'])
+                        ->name('publish_feedback')
                         ->whereNumber('id')
-                        ->middleware('can:discard_ratings');
-
-                Route::get('/publish/{id}', [AdminController::class, 'publish_rating'])
-                        ->name('publish_rating')
-                        ->whereNumber('id')
-                        ->middleware('can:publish_ratings');
+                        ->middleware('can:publish_feedbacks');
         });
 });

@@ -32,36 +32,30 @@ class PermissionSeeder extends Seeder
             ]);
         });
 
-        $adminRole = Role::create(['name' => 'admin']);
+        $admin_role = Role::create(['name' => 'admin']);
 
         Role::create(['name' => 'free']);
         Role::create(['name' => 'semi-premium']);
-        $premiumRole = Role::create(['name' => 'premium']);
+        $premium_role = Role::create(['name' => 'premium']);
 
-        $premiumPermissions = array();
-        $adminPermissions = array();
+        $premium_permissions = array();
+        $admin_permissions = array();
 
-        array_push($adminPermissions, Permission::create(['name' => 'access_dashboard']));
-        array_push($adminPermissions, Permission::create(['name' => 'create_companies']));
-        array_push($adminPermissions, Permission::create(['name' => 'update_companies']));
-        array_push($adminPermissions, Permission::create(['name' => 'delete_companies']));
-        array_push($adminPermissions, Permission::create(['name' => 'discard_suggestions']));
-        array_push($adminPermissions, Permission::create(['name' => 'publish_suggestions']));
-        array_push($adminPermissions, Permission::create(['name' => 'discard_ratings']));
-        array_push($adminPermissions, Permission::create(['name' => 'publish_ratings']));
+        array_push($admin_permissions, Permission::create(['name' => 'access_dashboard']));
+        array_push($admin_permissions, Permission::create(['name' => 'create_companies']));
+        array_push($admin_permissions, Permission::create(['name' => 'update_companies']));
+        array_push($admin_permissions, Permission::create(['name' => 'delete_companies']));
+        array_push($admin_permissions, Permission::create(['name' => 'discard_feedback']));
+        array_push($admin_permissions, Permission::create(['name' => 'publish_feedback']));
 
         //user's feedback permissions
-        $permissionToGiveRatings = Permission::create(['name' => 'retrieve_ratings']);
-        $permissionToGiveSuggestions = Permission::create(['name' => 'retrieve_suggestions']);
+        $permission_to_retrieve_feedback = Permission::create(['name' => 'retrieve_feedback']);
 
-        array_push($adminPermissions, $permissionToGiveRatings);
-        array_push($adminPermissions, $permissionToGiveSuggestions);
+        array_push($admin_permissions, $permission_to_retrieve_feedback);
+        array_push($premium_permissions, $permission_to_retrieve_feedback);
 
-        array_push($premiumPermissions, $permissionToGiveRatings);
-        array_push($premiumPermissions, $permissionToGiveSuggestions);
-
-        $adminRole->syncPermissions($adminPermissions);
-        $premiumRole->syncPermissions($premiumPermissions);
+        $admin_role->syncPermissions($admin_permissions);
+        $premium_role->syncPermissions($premium_permissions);
 
         $admin->assignRole('admin');
     }

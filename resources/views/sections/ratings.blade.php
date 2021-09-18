@@ -32,11 +32,11 @@
                                 </h5>
                             </div>
                             <div class="card-footer d-flex justify-content-around">
-                                <a href="{{route('discard_rating', $rating->id)}}">
+                                <a href="{{route('discard_feedback', $rating->id)}}">
                                     <button class="btn btn-outline-warning">Discard rating</button>
                                 </a>
                                 @if (!$rating->is_public)
-                                    <a href="{{route('publish_rating', $rating->id)}}">
+                                    <a href="{{route('publish_feedback', $rating->id)}}">
                                         <button class="btn btn-outline-success">Publish rating</button>
                                     </a>
                                 @endif

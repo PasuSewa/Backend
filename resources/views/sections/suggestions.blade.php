@@ -27,11 +27,11 @@
                                 {{$suggestion->body}}
                             </div>
                             <div class="card-footer d-flex justify-content-around">
-                                <a href="{{route('discard_suggestion', $suggestion->id)}}">
+                                <a href="{{route('discard_feedback', $suggestion->id)}}">
                                     <button class="btn btn-outline-warning">Discard Suggestion</button>
                                 </a>
                                 @if (!$suggestion->is_public)
-                                    <a href="{{route('publish_suggestion', $suggestion->id)}}">
+                                    <a href="{{route('publish_feedback', $suggestion->id)}}">
                                         <button class="btn btn-outline-success">Publish Suggestion</button>
                                     </a>
                                 @endif

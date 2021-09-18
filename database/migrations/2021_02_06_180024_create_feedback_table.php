@@ -18,7 +18,7 @@ class CreateFeedbackTable extends Migration
             $table->string('user_name');
             $table->string('body');
             $table->integer('rating')->nullable();
-            $table->boolean('feedback_type'); // true = "suggestion", false = "rating"
+            $table->boolean('type'); // true = "suggestion", false = "rating"
             $table->boolean('is_public')->default(false);
             $table->timestamps();
         });

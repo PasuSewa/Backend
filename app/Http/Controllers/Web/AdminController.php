@@ -82,42 +82,6 @@ class AdminController extends Controller
 
         return redirect()->route('home')->withMessage('Company deleted successfully.');
     }
-    /************************************************************************************************* ratings & suggestions */
-    public function discard_suggestion($id)
-    {
-        Feedback::find($id)->delete();
-
-        return redirect()->route('home')->withMessage('Suggestion discarded.');
-    }
-
-    public function publish_suggestion($id)
-    {
-        $suggestion = Feedback::find($id);
-
-        $suggestion->is_public = true;
-
-        $suggestion->save();
-
-        return redirect()->route('home')->withMessage('Suggestion published.');
-    }
-
-    public function discard_rating($id)
-    {
-        Feedback::find($id)->delete();
-
-        return redirect()->route('home')->withMessage('Rating discarded.');
-    }
-
-    public function publish_rating($id)
-    {
-        $rating = Feedback::find($id);
-
-        $rating->is_public = true;
-
-        $rating->save();
-
-        return redirect()->route('home')->withMessage('Rating published.');
-    }
     /************************************************************************************************* statistics */
     public function show_statistics()
     {
