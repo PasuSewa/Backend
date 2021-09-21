@@ -30,15 +30,13 @@ class FeedbackController extends Controller
 
     public function create(Request $request)
     {
-        $data = $request->only('userName', 'body', 'rating', 'email', 'type');
+        $data = $request->only('body', 'rating', 'type');
 
         $rules = ['required', 'string', 'min:5', 'max:190'];
 
         $validation = Validator::make($data, [
-            'userName' => $rules,
             'body' => $rules,
-            'rating' => [Rule::requiredIf(!$data['type']), 'integer', 'min:1', 'max:10'],
-            'email' => ['required', 'email', 'exists:users,email'],
+            'rating' => [Rule::requiredIf(!$data['type']), 'integer', 'min:0', 'max:10'],
             'type' => ['required', 'boolean'],
         ]);
 
@@ -51,14 +49,16 @@ class FeedbackController extends Controller
             return response()->error($data, 'api_messages.error.generic', 400);
         }
 
+        $user = $request->user();
+
         Feedback::create([
-            'user_name' => $data['userName'],
+            'user_name' => $user->name,
             'body' => $data['body'],
             'rating' => !$data['type'] && isset($data['rating']) ? $data['rating'] : null,
             'type' => $data['type'],
         ]);
 
-        return response()->success([], 'api_messages.success.feedback.received');
+        return response()->success([], 'feedback.received');
     }
 
     //coinbase
