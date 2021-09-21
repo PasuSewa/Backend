@@ -64,6 +64,7 @@ class AppServiceProvider extends ServiceProvider
                             'slots_available' => $data['user']->slots_available,
                             'invitation_code' => $data['user']->invitation_code,
                             'role' => $data['user']->getRoleNames()[0], // users only have 1 role
+                            'preferred_lang' => $data['user']->preferred_lang
                         ],
                         'user_credentials' => $user_credentials,
                         'token' => $with_token
