@@ -8,7 +8,8 @@ return [
             "email_verified" => "Email was verified successfully.",
             "refresh_2fa_secret" => "Yuor secret key was regenerated successfully. Please scan the QR code, or copy and paste the secret key, in order to maintain access to your account.",
             "2fa_code_is_correct" => "The second factor authentication succeeded, you may login now.",
-            "logged_out" => "Logged you out successfully."
+            "logged_out" => "Logged you out successfully.",
+            "access_granted" => "Access Granted."
         ],
         "feedback" => [
             "received" => "Thank you for your feedback, we will take it in count.",

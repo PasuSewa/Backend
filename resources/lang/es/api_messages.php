@@ -8,7 +8,8 @@ return [
             "email_verified" => "Email verificado exitosamente.",
             "refresh_2fa_secret" => "Llave secreta regenerada exitosamente. Porfavor escanee el código QR, o copie y pegue la llave secreta, para garantizar el acceso a su cuenta.",
             "2fa_code_is_correct" => "La autenticación en dos factores se dió exitosamente. Puedes ingresar a tu cuenta.",
-            "logged_out" => "La sesión fue cerrada exitosamente."
+            "logged_out" => "La sesión fue cerrada exitosamente.",
+            "access_granted" => "Acceso Concedido."
         ],
         "feedback" => [
             "received" => "Gracias por el feedback, lo tendremos en cuenta.",

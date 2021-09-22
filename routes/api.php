@@ -40,11 +40,14 @@ Route::group(['middleware' => 'Localization'], function () {
     Route::group(['middleware' => 'auth:api'], function () {
 
         Route::group(['prefix' => 'auth'], function () {
+
             Route::post('/register/step-3', [AuthController::class, 'verify_2fa']);
 
             Route::get('/refresh-2fa-secret', [AuthController::class, 'refresh_2fa_secret']);
 
             Route::get('/logout', [AuthController::class, 'logout']);
+
+            Route::post('/grant-access', [AuthController::class, 'grant_access']);
         });
 
         Route::post('/feedback/create', [FeedbackController::class, 'create'])->middleware('role:premium');

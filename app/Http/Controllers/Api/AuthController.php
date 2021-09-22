@@ -300,6 +300,41 @@ class AuthController extends Controller
         return response()->success([], 'auth.logged_out');
     }
 
+    /**************************************************************************************************************** access encrypted data */
+    public function grant_access(Request $request)
+    {
+        $data = $request->only('accessTo', 'credentialId');
+
+        $validation = Validator::make($data, [
+            'accessTo' => ['required', 'string', 'max:190', 'in:user-data,credential-data'],
+            'credentialId' => ['nullable', 'integer', 'min:1', 'exists:slots,id']
+        ]);
+
+        if ($validation->fails()) {
+            return $this->validation_error($request, $validation);
+        }
+
+        if ($data['accessTo'] === 'user-data') {
+
+            $user = $request->user();
+
+            $data = [
+                'name' => $user->name,
+                'email' => $user->email,
+                'recovery_email' => $user->recovery_email,
+                'phone_number' => Crypt::decryptString($user->phone_number),
+                'anti_fishing_secret' => Crypt::decryptString($user->anti_fishing_secret),
+                'security_access_code' => Crypt::decryptString($user->recovery_code),
+            ];
+
+            return response()->success($data, 'auth.access_granted');
+        }
+
+        if ($data['accessTo'] === 'credential-data') {
+            // return decrypted credential
+        }
+    }
+
     /**************************************************************************************************************** helper functions */
     public function refresh_2fa_secret(Request $request)
     {
