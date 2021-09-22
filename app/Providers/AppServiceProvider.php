@@ -79,16 +79,6 @@ class AppServiceProvider extends ServiceProvider
             }
         );
 
-        Response::macro('user_was_authorized', function ($message) {
-            return response()->json([
-                'status' => 200,
-                'message' => __('api_messages.success.auth.' . $message),
-                'data' => [
-                    'is_authorized' => true
-                ],
-            ], 200);
-        });
-
         Response::macro('error', function ($data, $message, $status_code) {
             return response()->json([
                 'status' => $status_code,
