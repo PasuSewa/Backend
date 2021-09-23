@@ -10,12 +10,13 @@ return [
             "2fa_code_is_correct" => "The second factor authentication succeeded, you may login now.",
             "logged_out" => "Logged you out successfully.",
             "access_granted" => "Access Granted.",
-            "user_updated_successfully" => "Your access credentials were updated successfully."
+            "user_updated_successfully" => "Your access credentials were updated successfully.",
         ],
         "feedback" => [
             "received" => "Thank you for your feedback, we will take it in count.",
             "obtained" => "Ratings and Suggestions obtained successfully."
-        ]
+        ],
+        "user_updated_preferred_lang" => "Request received. From now on we'll message you in this language."
     ],
     "error" => [
         "generic" => "Oops... Seems like there was an error... Please try again later.",

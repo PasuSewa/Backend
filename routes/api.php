@@ -55,6 +55,8 @@ Route::group(['middleware' => 'Localization'], function () {
             Route::put('/update', [UserController::class, 'update']);
 
             Route::get('/stop-premium', [UserController::class, 'stop_premium'])->middleware('role:premium');
+
+            Route::put('/update-preferred-lang', [UserController::class, 'update_preferred_lang']);
         }); // *************************************************************** end of "/user" routes
 
         Route::post('/feedback/create', [FeedbackController::class, 'create'])->middleware('role:premium');

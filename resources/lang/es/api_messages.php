@@ -10,12 +10,13 @@ return [
             "2fa_code_is_correct" => "La autenticación en dos factores se dió exitosamente. Puedes ingresar a tu cuenta.",
             "logged_out" => "La sesión fue cerrada exitosamente.",
             "access_granted" => "Acceso Concedido.",
-            "user_updated_successfully" => "Sus datos de acceso fueron actualizados exitosamente."
+            "user_updated_successfully" => "Sus datos de acceso fueron actualizados exitosamente.",
         ],
         "feedback" => [
             "received" => "Gracias por el feedback, lo tendremos en cuenta.",
             "obtained" => "Ratings y Sugerencias obtenidas con éxito."
-        ]
+        ],
+        "user_updated_preferred_lang" => "Petición recibida. A partir de ahora te enviaremos mensajes en este idioma."
     ],
     "error" => [
         "generic" => "Oops... Parece que hubo un error... Por favor, intente nuevamente más tarde.",

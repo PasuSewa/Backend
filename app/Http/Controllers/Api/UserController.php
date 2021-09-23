@@ -58,4 +58,28 @@ class UserController extends Controller
 
         return response()->success([], 'user.stopped_premium');
     }
+
+    public function update_preferred_lang(Request $request)
+    {
+        $data = $request->only('preferredLang');
+
+        $validation = Validator::make($data, [
+            'preferredLang' => ['required', 'string', 'min:2', 'max:2', 'in:en,es,jp'],
+        ]);
+
+        if ($validation->fails()) {
+            $data = [
+                'request' => $request->all(),
+                'errors' => $validation->errors(),
+            ];
+
+            return response()->error($data, 'api_messages.error.validation', 401);
+        }
+
+        $user = $request->user();
+        $user->preferred_lang = $data['preferredLang'];
+        $user->save();
+
+        return response()->success([], 'user_updated_preferred_lang');
+    }
 }
