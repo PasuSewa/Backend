@@ -54,7 +54,7 @@ class AuthController extends Controller
         $user->save();
 
         try {
-            $antiFishingSecret = Crypt::decryptString($user->anti_fishing_secret);
+            $anti_fishing_secret = Crypt::decryptString($user->anti_fishing_secret);
 
             if ($data['isSecondary']) {
                 Notification::route(
@@ -62,11 +62,11 @@ class AuthController extends Controller
                     $user->recovery_email
                 )->notify(new EmailTwoFactorAuth(
                     $code,
-                    $antiFishingSecret,
+                    $anti_fishing_secret,
                     $user->preferred_lang
                 ));
             } else {
-                $user->notify(new EmailTwoFactorAuth($code, $antiFishingSecret, $user->preferred_lang));
+                $user->notify(new EmailTwoFactorAuth($code, $anti_fishing_secret, $user->preferred_lang));
             }
         } catch (\Throwable $th) {
             $data = [
