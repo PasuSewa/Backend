@@ -215,4 +215,33 @@ class AuthTest extends TestCase
 
         $response->assertOk();
     }
+
+    /** @test */
+    public function grant_access()
+    {
+        $user = User::find(1);
+
+        $token = JWTAuth::fromUser($user);
+
+        $body = [
+            'accessTo' => 'user-data'
+        ];
+
+        $response_user_data = $this->withHeaders(['Authorization' => 'Bearer ' . $token])->json('POST', '/api/auth/grant-access', $body);
+
+        $response_user_data->assertOk();
+
+        $response_user_data->assertJsonStructure([
+            'status',
+            'message',
+            'data' => [
+                'name',
+                'email',
+                'recovery_email',
+                'phone_number',
+                'anti_fishing_secret',
+                'security_access_code',
+            ]
+        ]);
+    }
 }
