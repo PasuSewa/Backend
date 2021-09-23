@@ -61,4 +61,18 @@ class UserTest extends TestCase
         $this->assertTrue($json_data['phone_number'] === Crypt::decryptString($new_user->phone_number));
         $this->assertTrue($json_data['anti_fishing_secret'] === Crypt::decryptString($new_user->anti_fishing_secret));
     }
+
+    /** @test */
+    public function user_can_update_preferred_lang()
+    {
+        $user = User::find(1);
+
+        $token = JWTAuth::fromUser($user);
+
+        $response = $this->withHeaders(['Authorization' => 'Bearer ' . $token])->json('PUT', '/api/user/update-preferred-lang', [
+            'preferredLang' => 'jp'
+        ]);
+
+        $response->assertOk();
+    }
 }
