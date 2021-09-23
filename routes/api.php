@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FeedbackController;
+use App\Http\Controllers\Api\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,11 @@ Route::group(['middleware' => 'Localization'], function () {
         });
 
         Route::post('/feedback/create', [FeedbackController::class, 'create'])->middleware('role:premium');
+
+        Route::group(['prefix' => 'user'], function () {
+
+            Route::put('/update', [UserController::class, 'update']);
+        });
     });
 });
 
