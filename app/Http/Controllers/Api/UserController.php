@@ -49,4 +49,13 @@ class UserController extends Controller
 
         return response()->success([], 'auth.user_updated_successfully');
     }
+
+    public function stop_premium(Request $request)
+    {
+        $user = $request->user();
+
+        $user->removeRole('premium');
+
+        return response()->success([], 'user.stopped_premium');
+    }
 }
