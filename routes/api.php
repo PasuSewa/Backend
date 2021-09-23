@@ -6,38 +6,37 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FeedbackController;
 use App\Http\Controllers\Api\UserController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
 Route::group(['middleware' => 'Localization'], function () {
 
+    /**************************************************************************************************************** guests & authenticated routes */
     Route::post('/send-code-by-email', [AuthController::class, 'send_code_by_email']);
 
     Route::get('/feedback/index', [FeedbackController::class, 'index']);
 
+    /**************************************************************************************************************** only non-authenticated users */
     Route::group(['middleware' => 'guest:api', 'prefix' => 'auth'], function () {
 
-        Route::post('/register/step-1', [AuthController::class, 'create_user']);
+        Route::group(['prefix' => 'register'], function () {
 
-        Route::post('/register/step-2', [AuthController::class, 'verify_emails']);
+            Route::post('/step-1', [AuthController::class, 'create_user']);
 
-        //step 3 requires the user to be authenticated
+            Route::post('/step-2', [AuthController::class, 'verify_emails']);
 
-        Route::post('/login/two-factor-code', [AuthController::class, 'login_by_g2fa']);
+            //step 3 requires the user to be authenticated
+        }); // *************************************************************** end of "/register" routes
 
-        Route::post('/login/email-code', [AuthController::class, 'login_by_email_code']);
+        Route::group(['prefix' => 'login'], function () {
 
-        Route::post('/login/security-code', [AuthController::class, 'login_by_security_code']);
-    });
+            Route::post('/two-factor-code', [AuthController::class, 'login_by_g2fa']);
 
+            Route::post('/email-code', [AuthController::class, 'login_by_email_code']);
+
+            Route::post('/security-code', [AuthController::class, 'login_by_security_code']);
+        }); // *************************************************************** end of "/login" routes
+
+    }); // ******************************************************************* end of "/auth" routes for non-authenticated users
+
+    /**************************************************************************************************************** only authenticated users */
     Route::group(['middleware' => 'auth:api'], function () {
 
         Route::group(['prefix' => 'auth'], function () {
@@ -49,14 +48,16 @@ Route::group(['middleware' => 'Localization'], function () {
             Route::get('/logout', [AuthController::class, 'logout']);
 
             Route::post('/grant-access', [AuthController::class, 'grant_access']);
-        });
-
-        Route::post('/feedback/create', [FeedbackController::class, 'create'])->middleware('role:premium');
+        }); // *************************************************************** end of "/auth" routes
 
         Route::group(['prefix' => 'user'], function () {
 
             Route::put('/update', [UserController::class, 'update']);
-        });
+
+            Route::get('/stop-premium', [UserController::class, 'stop_premium'])->middleware('role:premium');
+        }); // *************************************************************** end of "/user" routes
+
+        Route::post('/feedback/create', [FeedbackController::class, 'create'])->middleware('role:premium');
     });
 });
 
