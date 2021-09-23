@@ -7,28 +7,24 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class EmailTwoFactorAuth extends Notification implements ShouldQueue
+class UserWasUpdated extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public $code;
+    public $lang;
 
     public $anti_fishing_secret;
-
-    public $lang;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($two_factor_code, $anti_fishing_secret, $preferred_lang)
+    public function __construct($secret, $preferred_lang)
     {
-        $this->code = $two_factor_code;
-
-        $this->anti_fishing_secret = $anti_fishing_secret;
-
         $this->lang = $preferred_lang;
+
+        $this->anti_fishing_secret = $secret;
     }
 
     /**
@@ -53,10 +49,10 @@ class EmailTwoFactorAuth extends Notification implements ShouldQueue
         app()->setlocale($this->lang);
 
         return (new MailMessage)
-            ->subject(__('notifications.subject'))
+            ->subject(__('notifications.user_updated.subject'))
             ->greeting(__('notifications.greeting'))
             ->line(__('notifications.anti_fishing') . $this->anti_fishing_secret)
-            ->line(__('notifications.code') . number_format($this->code, 0, ' ', ' '))
+            ->line(__('notifications.user_updated.body'))
             ->salutation(__('notifications.thanks'));
     }
 

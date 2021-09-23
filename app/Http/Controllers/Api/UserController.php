@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Notifications\UserWasUpdated;
 use Illuminate\Support\Facades\Crypt;
 
 use Validator;
@@ -44,6 +45,8 @@ class UserController extends Controller
 
         $user->save();
 
-        return response()->success([], 'info_updated_successfully');
+        $user->notify(new UserWasUpdated($data['anti_fishing_secret'], $user->preferred_lang));
+
+        return response()->success([], 'auth.user_updated_successfully');
     }
 }
