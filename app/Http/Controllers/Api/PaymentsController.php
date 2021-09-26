@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\PaymentInstance;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -32,7 +33,8 @@ class PaymentsController extends Controller
         $validation = Validator::make($data, [
             'method' => ['required', 'string', 'min:6', 'max:6', 'in:PayPal,Crypto'],
             'amount' => ['required', 'integer', 'min:5'],
-            'type' => ['required', 'string', 'min:5', 'max:7', 'in:premium,slots']
+            'type' => ['required', 'string', 'min:5', 'max:7', 'in:premium,slots'],
+            'code' => ['required', 'string', 'min:1', 'max:190', 'unique:payment_instances,code']
         ]);
 
         if ($validation->fails()) {
@@ -137,25 +139,46 @@ class PaymentsController extends Controller
     /**************************************************************************************************************** paypal */
     public function verify_paypal_payment(Request $request)
     {
-        // request from the frontend
+        $data = $request->only('code');
 
-        // $payment = $this->capturePaypalPayment($data['paypalOrderId']);
+        $validation = Validator::make($data, [
+            'code' => ['required', 'string', 'min:1', 'max:190', 'exists:payment_instances,code']
+        ]);
 
-        // if ($payment['status'] !== 'COMPLETED') {
-        //     return response()->error(
-        //         [
-        //             'errors' => [
-        //                 'message' => 'message',
-        //                 'paypal_response' => $payment
-        //             ],
-        //             'request' => $request->all(),
-        //         ],
-        //         'api_messages.error.error_paying_with_paypal',
-        //         500,
-        //     );
-        // }
+        if ($validation->fails()) {
+            $data = [
+                'errors' => $validation->errors(),
+                'request' => $request->all(),
+            ];
 
-        // resolve request
+            return response()->error($data, 'api_messages.error.parameter_was_incorrect', 400);
+        }
+
+        $payment = $this->capture_paypal_order($data['code']);
+
+        if (isset($payment['status']) && $payments['status'] !== 'COMPLETED') {
+            return response()->error(
+                [
+                    'errors' => [
+                        'message' => 'message',
+                        'paypal_response' => $payment
+                    ],
+                    'request' => $request->all(),
+                ],
+                'api_messages.error.error_paying_with_paypal',
+                500,
+            );
+        }
+
+        $resolve_purchase = $this->resolve_purchase($data['code']);
+
+        if (!$resolve_purchase) {
+            return response()->error([
+                'errors' => __('api_messages.error.generic')
+            ], 'api_messages.error.generic', 500);
+        }
+
+        return response()->success([], 'purchase_finished');
     }
 
     private function capture_paypal_order($paypal_order_id)
@@ -179,4 +202,45 @@ class PaymentsController extends Controller
             )
             ->json();
     }
+
+    /**************************************************************************************************************** give the user what they paid for */
+    private function resolve_purchase($code)
+    {
+        $payment_instance = PaymentInstance::where('code', $code)->first();
+
+        $user = User::find($payment_instance->user_id);
+
+        if ($payment_instance->type === 'premium') {
+
+            if ($user->hasRole('free')) {
+                $user->removeRole('free');
+            }
+
+            if ($user->hasRole('semi-premium')) {
+                $user->removeRole('semi-premium');
+            }
+
+            $user->assignRole('premium');
+
+            $payment_instance->delete();
+
+            return true;
+        }
+
+        if ($payment_instance->type === 'slots') {
+            $slots_to_add = $payment_instance->amount / 10;
+
+            if (is_int($slots_to_add)) {
+                $user->available_slots *= $slots_to_add;
+
+                $payment_instance->delete();
+
+                return true;
+            } // end if is_int
+
+            return false;
+        } // end if payment type
+
+        return false;
+    } // end method
 }
