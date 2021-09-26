@@ -51,6 +51,11 @@ Route::group(['middleware' => 'Localization'], function () {
     /**************************************************************************************************************** only authenticated users */
     Route::group(['middleware' => 'auth:api'], function () {
 
+        Route::post('/feedback/create', [FeedbackController::class, 'create'])->middleware('role:premium');
+
+        Route::post('/verify-paypal-payment', [PaymentsController::class, 'verify_paypal_payment'])->middleware('role:free|semi-premium');
+
+
         Route::group(['prefix' => 'auth'], function () {
 
             Route::post('/register/step-3', [AuthController::class, 'verify_2fa']);
@@ -71,7 +76,5 @@ Route::group(['middleware' => 'Localization'], function () {
 
             Route::put('/update-preferred-lang', [UserController::class, 'update_preferred_lang']);
         }); // *************************************************************** end of "/user" routes
-
-        Route::post('/feedback/create', [FeedbackController::class, 'create'])->middleware('role:premium');
     });
 });
