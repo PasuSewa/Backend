@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FeedbackController;
+use App\Http\Controllers\Api\PaymentsController;
 use App\Http\Controllers\Api\UserController;
 
 Route::group(['middleware' => 'Localization'], function () {
@@ -12,6 +13,16 @@ Route::group(['middleware' => 'Localization'], function () {
     Route::post('/send-code-by-email', [AuthController::class, 'send_code_by_email']);
 
     Route::get('/feedback/index', [FeedbackController::class, 'index']);
+
+
+    Route::group(['prefix' => 'coinbase-webhook'], function () {
+
+        Route::post('/pending', [PaymentsController::class, 'crypto_order_received']);
+
+        Route::post('/error', [PaymentsController::class, 'crypto_order_failed']);
+
+        Route::post('/success', [PaymentsController::class, 'crypto_order_succeeded']);
+    }); // *************************************************************** end of "/coinbase-webhook" routes
 
     /**************************************************************************************************************** only non-authenticated users */
     Route::group(['middleware' => 'guest:api', 'prefix' => 'auth'], function () {
@@ -24,6 +35,7 @@ Route::group(['middleware' => 'Localization'], function () {
 
             //step 3 requires the user to be authenticated
         }); // *************************************************************** end of "/register" routes
+
 
         Route::group(['prefix' => 'login'], function () {
 
@@ -50,6 +62,7 @@ Route::group(['middleware' => 'Localization'], function () {
             Route::post('/grant-access', [AuthController::class, 'grant_access']);
         }); // *************************************************************** end of "/auth" routes
 
+
         Route::group(['prefix' => 'user'], function () {
 
             Route::put('/update', [UserController::class, 'update']);
@@ -62,7 +75,3 @@ Route::group(['middleware' => 'Localization'], function () {
         Route::post('/feedback/create', [FeedbackController::class, 'create'])->middleware('role:premium');
     });
 });
-
-//coinbase 
-
-// Route::post('/webhook', 'FeedbackController@testPost');
