@@ -16,7 +16,8 @@ return [
             "received" => "Gracias por el feedback, lo tendremos en cuenta.",
             "obtained" => "Ratings y Sugerencias obtenidas con éxito."
         ],
-        "user_updated_preferred_lang" => "Petición recibida. A partir de ahora te enviaremos mensajes en este idioma."
+        "user_updated_preferred_lang" => "Petición recibida. A partir de ahora te enviaremos mensajes en este idioma.",
+        "coinbase_webhook_received" => "Notificación de estado recibida exitosamente."
     ],
     "error" => [
         "generic" => "Oops... Parece que hubo un error... Por favor, intente nuevamente más tarde.",
@@ -24,6 +25,7 @@ return [
         "parameter_was_incorrect" => "El parámetro dado es incorrecto.",
         "unauthorized" => "No estás autorizado/a a acceder a este recurso.",
         "validation" => "Una o más de las credenciales enviadas son incorrectas.",
-        "2fa_code_invalid" => "La autenticación en dos factores ha fallado. Porfavor intente nuevamente."
+        "2fa_code_invalid" => "La autenticación en dos factores ha fallado. Porfavor intente nuevamente.",
+        "coinbase_signature_failed" => "La firma otorgada no es válida."
     ]
 ];

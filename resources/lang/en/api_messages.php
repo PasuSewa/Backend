@@ -16,7 +16,8 @@ return [
             "received" => "Thank you for your feedback, we will take it in count.",
             "obtained" => "Ratings and Suggestions obtained successfully."
         ],
-        "user_updated_preferred_lang" => "Request received. From now on we'll message you in this language."
+        "user_updated_preferred_lang" => "Request received. From now on we'll message you in this language.",
+        "coinbase_webhook_received" => "Status notification received successfully."
     ],
     "error" => [
         "generic" => "Oops... Seems like there was an error... Please try again later.",
@@ -24,6 +25,7 @@ return [
         "parameter_was_incorrect" => "The parameter given was incorrect.",
         "unauthorized" => "You are not allowed to make use of this resourse.",
         "validation" => "One or more of the credentials sent were incorrect.",
-        "2fa_code_invalid" => "The second factor authentication has failed. Please try again."
+        "2fa_code_invalid" => "The second factor authentication has failed. Please try again.",
+        "coinbase_signature_failed" => "The given signature is invalid."
     ],
 ];
