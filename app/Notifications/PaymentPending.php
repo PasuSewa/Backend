@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class PaypalPaymentSuceeded extends Notification
+class PaymentPending extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -49,10 +49,10 @@ class PaypalPaymentSuceeded extends Notification
         app()->setlocale($this->lang);
 
         return (new MailMessage)
-            ->subject(__('notifications.payments.paypal.success_subject'))
+            ->subject(__('notifications.payments.pending_subject'))
             ->greeting(__('notifications.greeting'))
             ->line(__('notifications.anti_fishing') . $this->anti_fishing_secret)
-            ->line(__('notifications.payments.paypal.success_body'))
+            ->line(__('notifications.payments.pending_body'))
             ->salutation(__('notifications.thanks'));
     }
 

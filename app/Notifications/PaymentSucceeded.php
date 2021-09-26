@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class CryptoPaymentStarted extends Notification
+class PaymentSucceeded extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -49,10 +49,10 @@ class CryptoPaymentStarted extends Notification
         app()->setlocale($this->lang);
 
         return (new MailMessage)
-            ->subject(__('notifications.payments.crypto.pending_subject'))
+            ->subject(__('notifications.payments.success_subject'))
             ->greeting(__('notifications.greeting'))
             ->line(__('notifications.anti_fishing') . $this->anti_fishing_secret)
-            ->line(__('notifications.payments.crypto.pending_body'))
+            ->line(__('notifications.payments.success_body'))
             ->salutation(__('notifications.thanks'));
     }
 

@@ -11,17 +11,11 @@ return [
         "body" => "Actualizaste exitosamente tus datos para acceder a PasuNashi."
     ],
     "payments" => [
-        "crypto" => [
-            "pending_subject" => "Procesando instancia de pago",
-            "pending_body" => "Tu instancia de pago se encuentra actualmente en estado de verificación. Te avisaremos cuabndo el proceso haya finalizado.",
-            "success_subject" => "Instancia de pago exitosa",
-            "success_body" => "Tu instancia de pago ya fue completamente verificada. Puedes acceder ahora a los beneficios que hayas comprado.",
-            "error_subject" => "Instancia de pago fallida",
-            "error_body" => "Tu instancia de pago fue verificada completamente, pero no es válida. Por favor ponte en contacto con PasuNashi en oficial@pasunashi.xyz para que podamos resolver esta situación.",
-        ],
-        "paypal" => [
-            "success_subject" => "Instancia de pago exitosa",
-            "success_body" => "Tu instancia de pago ya fue completamente verificada. Puedes acceder ahora a los beneficios que hayas comprado.",
-        ],
+        "pending_subject" => "Procesando instancia de pago",
+        "pending_body" => "Tu instancia de pago se encuentra actualmente en estado de verificación. Te avisaremos cuabndo el proceso haya finalizado.",
+        "success_subject" => "Instancia de pago exitosa",
+        "success_body" => "Tu instancia de pago ya fue completamente verificada. Puedes acceder ahora a los beneficios que hayas comprado.",
+        "error_subject" => "Instancia de pago fallida",
+        "error_body" => "Tu instancia de pago fue verificada completamente, pero no es válida. Por favor ponte en contacto con PasuNashi en oficial@pasunashi.xyz para que podamos resolver esta situación.",
     ]
 ];

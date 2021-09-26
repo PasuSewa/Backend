@@ -3,9 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+
 use App\Models\PaymentInstance;
 use App\Models\User;
+
+use App\Notifications\PaymentFailed;
+use App\Notifications\PaymentPending;
+use App\Notifications\PaymentSucceeded;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 
 use Validator;
@@ -55,6 +62,10 @@ class PaymentsController extends Controller
             'type' => $data['type'],
             'method' => $data['method'],
         ]);
+
+        $secret = Crypt::decryptString($user->anti_fishing_secret);
+
+        $user->notify(new PaymentPending($secret, $user->preferred_lang));
 
         return response()->success([], 'payment_instance_started');
     }
@@ -156,7 +167,14 @@ class PaymentsController extends Controller
 
         $payment = $this->capture_paypal_order($data['code']);
 
+        $user = $request->user();
+
+        $secret = Crypt::decryptString($user->anti_fishing_secret);
+
         if (isset($payment['status']) && $payments['status'] !== 'COMPLETED') {
+
+            $user->notify(new PaymentFailed($secret, $user->preferred_lang));
+
             return response()->error(
                 [
                     'errors' => [
@@ -173,10 +191,15 @@ class PaymentsController extends Controller
         $resolve_purchase = $this->resolve_purchase($data['code']);
 
         if (!$resolve_purchase) {
+
+            $user->notify(new PaymentFailed($secret, $user->preferred_lang));
+
             return response()->error([
                 'errors' => __('api_messages.error.generic')
             ], 'api_messages.error.generic', 500);
         }
+
+        $user->notify(new PaymentSucceeded($secret, $user->preferred_lang));
 
         return response()->success([], 'purchase_finished');
     }
