@@ -60,20 +60,4 @@ class FeedbackController extends Controller
 
         return response()->success([], 'feedback.received');
     }
-
-    //coinbase
-
-    // public function testPost(Request $request)
-    // {
-    //     $event = $request->all();
-
-    //     $edit = User::find(1);
-
-    //     // this is the important part to get the code of the charge
-    //     $edit->email = $event['event']['data']['code'];
-
-    //     $edit->save();
-
-    //     return response()->json(['testing' => $event['event']['data']], 200);
-    // }
 }
