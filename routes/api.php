@@ -55,6 +55,8 @@ Route::group(['middleware' => 'Localization'], function () {
 
         Route::post('/verify-paypal-payment', [PaymentsController::class, 'verify_paypal_payment'])->middleware('role:free|semi-premium');
 
+        Route::post('/payments/start-payment/instance', [PaymentsController::class, 'start_payment_instace']);
+
 
         Route::group(['prefix' => 'auth'], function () {
 

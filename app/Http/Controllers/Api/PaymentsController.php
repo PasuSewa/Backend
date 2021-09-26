@@ -17,6 +17,28 @@ class PaymentsController extends Controller
         $this->shared_secret = env('COINBASE_SHARED_SECRET');
     }
 
+    /**************************************************************************************************************** init payment instance */
+    public function start_payment_instance(Request $request)
+    {
+        /**
+         * validate request
+         * request must contain:
+         * 
+         * 1- jwt token
+         * 2- method = 'PayPal' || 'Crypto'
+         * 3- amount
+         * 4- type = 'role' || 'slots'
+         * 5- code = paypal payment id || coinbase order code
+         */
+
+        /**
+         * to do:
+         * rename model OpenPayment => PaymentInstance
+         * create paymnet instance on db
+         * return response
+         */
+    }
+
     /**************************************************************************************************************** coinbase webhooks */
     public function crypto_order_received(Request $request)
     {
