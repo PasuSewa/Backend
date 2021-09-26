@@ -48,74 +48,65 @@ class PaymentsController extends Controller
     /**************************************************************************************************************** coinbase webhooks */
     public function crypto_order_received(Request $request)
     {
-        $signature = $request->header('X-CC-Webhook-Signature');
+        $signature_verified = $this->verify_signature($request);
 
-        $body = $request->getContent();
-
-        $signature_verified = $this->verify_signature($signature, $body);
-
-        if ($signature_verified) {
-
-            $data = $request->all();
-
-            $order_code = $data['event']['data']['code'];
-
-            return response()->success([], 'coinbase_webhook_received');
-        } else {
+        if (!$signature_verified) {
             return response()->error([
-                'errors' => __('api_messages.error.coinbase_signature_failed'),
+                'errors' => [
+                    'message' => __('api_messages.error.coinbase_signature_failed')
+                ],
                 'request' => $request->all(),
             ], 'api_messages.error.coinbase_signature_failed', 400);
         }
+
+        $data = $request->all();
+
+        $order_code = $data['event']['data']['code'];
+
+        return response()->success([], 'coinbase_webhook_received');
     }
 
     public function crypto_order_failed(Request $request)
     {
-        $signature = $request->header('X-CC-Webhook-Signature');
+        $signature_verified = $this->verify_signature($request);
 
-        $body = $request->getContent();
-
-        $signature_verified = $this->verify_signature($signature, $body);
-
-        if ($signature_verified) {
-
-            $data = $request->all();
-
-            $order_code = $data['event']['data']['code'];
-
-            return response()->success([], 'coinbase_webhook_received');
-        } else {
+        if (!$signature_verified) {
             return response()->error([
-                'errors' => __('api_messages.error.coinbase_signature_failed'),
+                'errors' => [
+                    'message' => __('api_messages.error.coinbase_signature_failed')
+                ],
                 'request' => $request->all(),
             ], 'api_messages.error.coinbase_signature_failed', 400);
         }
+
+        $data = $request->all();
+
+        $order_code = $data['event']['data']['code'];
+
+        return response()->success([], 'coinbase_webhook_received');
     }
 
     public function crypto_order_succeeded(Request $request)
     {
-        $signature = $request->header('X-CC-Webhook-Signature');
+        $signature_verified = $this->verify_signature($request);
 
-        $body = $request->getContent();
-
-        $signature_verified = $this->verify_signature($signature, $body);
-
-        if ($signature_verified) {
-
-            $data = $request->all();
-
-            $order_code = $data['event']['data']['code'];
-
-            return response()->success([], 'coinbase_webhook_received');
-        } else {
+        if (!$signature_verified) {
             return response()->error([
-                'errors' => __('api_messages.error.coinbase_signature_failed'),
+                'errors' => [
+                    'message' => __('api_messages.error.coinbase_signature_failed')
+                ],
                 'request' => $request->all(),
             ], 'api_messages.error.coinbase_signature_failed', 400);
         }
+
+        $data = $request->all();
+
+        $order_code = $data['event']['data']['code'];
+
+        return response()->success([], 'coinbase_webhook_received');
     }
 
-    private function verify_signature($signature, $body)
+    private function verify_signature(Request $request)
     {
         /**
          * Now, here I have a problem. I tried verifying coinbase's signature header with their own php package, but the problem is that
@@ -123,6 +114,11 @@ class PaymentsController extends Controller
          * 
          * For now, unilt I figure out how to verify the signature, I'll be leaving this function like this.
          */
+
+        $signature = $request->header('X-CC-Webhook-Signature');
+
+        $body = $request->getContent();
+
         return true;
     }
 
