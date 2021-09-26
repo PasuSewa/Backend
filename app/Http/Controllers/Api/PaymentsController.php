@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\PaymentInstance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -26,22 +27,34 @@ class PaymentsController extends Controller
     /**************************************************************************************************************** init payment instance */
     public function start_payment_instance(Request $request)
     {
-        /**
-         * validate request
-         * request must contain:
-         * 
-         * 1- jwt token
-         * 2- method = 'PayPal' || 'Crypto'
-         * 3- amount
-         * 4- type = 'role' || 'slots'
-         * 5- code = paypal payment id || coinbase order code
-         */
+        $data = $request->only('method', 'amount', 'type', 'code');
 
-        /**
-         * to do:
-         * create paymnet instance on db
-         * return response
-         */
+        $validation = Validator::make($data, [
+            'method' => ['required', 'string', 'min:6', 'max:6', 'in:PayPal,Crypto'],
+            'amount' => ['required', 'integer', 'min:5'],
+            'type' => ['required', 'string', 'min:5', 'max:7', 'in:premium,slots']
+        ]);
+
+        if ($validation->fails()) {
+            $data = [
+                'errors' => $validation->errors(),
+                'request' => $request->all(),
+            ];
+
+            return response()->error($data, 'api_messages.error.parameter_was_incorrect', 400);
+        }
+
+        $user = $request->user();
+
+        PaymentInstance::create([
+            'user_id' => $user->id,
+            'amount' => $data['amount'],
+            'code' => $data['code'],
+            'type' => $data['type'],
+            'method' => $data['method'],
+        ]);
+
+        return response()->success([], 'payment_instance_started');
     }
 
     /**************************************************************************************************************** coinbase webhooks */

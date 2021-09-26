@@ -17,7 +17,8 @@ return [
             "obtained" => "Ratings and Suggestions obtained successfully."
         ],
         "user_updated_preferred_lang" => "Request received. From now on we'll message you in this language.",
-        "coinbase_webhook_received" => "Status notification received successfully."
+        "coinbase_webhook_received" => "Status notification received successfully.",
+        "payment_instance_started" => "We're now verifying the payment, we'll let you know when it finishes."
     ],
     "error" => [
         "generic" => "Oops... Seems like there was an error... Please try again later.",
