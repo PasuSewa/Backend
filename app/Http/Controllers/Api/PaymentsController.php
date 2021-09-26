@@ -10,11 +10,17 @@ use Validator;
 
 class PaymentsController extends Controller
 {
-    protected $shared_secret;
+    protected $coinbase_shared_secret;
+    protected $paypal_base_uri;
+    protected $paypal_client_id;
+    protected $paypal_client_secret;
 
     public function __construct()
     {
-        $this->shared_secret = env('COINBASE_SHARED_SECRET');
+        $this->coinbase_shared_secret = env('COINBASE_SHARED_SECRET');
+        $this->paypal_base_uri = env('PAYPAL_BASE_URI');
+        $this->paypal_client_id = env('PAYPAL_CLIENT_ID');
+        $this->paypal_client_secret = env('PAYPAL_CLIENT_SECRET');
     }
 
     /**************************************************************************************************************** init payment instance */
@@ -146,11 +152,7 @@ class PaymentsController extends Controller
 
     public function capture_paypal_order($paypal_order_id)
     {
-        $base_uri = env('PAYPAL_BASE_URI');
-        $client_id = env('PAYPAL_CLIENT_ID');
-        $client_secret = env('PAYPAL_CLIENT_SECRET');
-
-        $credentials = base64_encode("{$client_id}:{$client_secret}");
+        $credentials = base64_encode("{$this->paypal_client_id}:{$this->paypal_client_secret}");
 
         return Http::withHeaders([
             'Content-Type' => 'application/json',
@@ -158,7 +160,7 @@ class PaymentsController extends Controller
             'Authorization' => "Basic {$credentials}"
         ])
             ->post(
-                $base_uri . "/v2/checkout/orders/{$paypal_order_id}/capture",
+                $this->paypal_base_uri . "/v2/checkout/orders/{$paypal_order_id}/capture",
                 [
                     'application_context' =>
                     [
