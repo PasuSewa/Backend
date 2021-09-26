@@ -10,10 +10,10 @@ use Validator;
 
 class PaymentsController extends Controller
 {
-    protected $coinbase_shared_secret;
-    protected $paypal_base_uri;
-    protected $paypal_client_id;
-    protected $paypal_client_secret;
+    private $coinbase_shared_secret;
+    private $paypal_base_uri;
+    private $paypal_client_id;
+    private $paypal_client_secret;
 
     public function __construct()
     {
@@ -39,7 +39,6 @@ class PaymentsController extends Controller
 
         /**
          * to do:
-         * rename model OpenPayment => PaymentInstance
          * create paymnet instance on db
          * return response
          */
@@ -146,7 +145,7 @@ class PaymentsController extends Controller
         // resolve request
     }
 
-    public function capture_paypal_order($paypal_order_id)
+    private function capture_paypal_order($paypal_order_id)
     {
         $credentials = base64_encode("{$this->paypal_client_id}:{$this->paypal_client_secret}");
 
