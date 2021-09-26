@@ -53,7 +53,7 @@ Route::group(['middleware' => 'Localization'], function () {
 
         Route::post('/feedback/create', [FeedbackController::class, 'create'])->middleware('role:premium');
 
-        Route::post('/verify-paypal-payment', [PaymentsController::class, 'verify_paypal_payment'])->middleware('role:free|semi-premium');
+        Route::post('/verify-paypal-payment', [PaymentsController::class, 'verify_paypal_payment']);
 
         Route::post('/start-payment-instance', [PaymentsController::class, 'start_payment_instance']);
 
