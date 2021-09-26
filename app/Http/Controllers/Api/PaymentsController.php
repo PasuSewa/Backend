@@ -88,6 +88,12 @@ class PaymentsController extends Controller
 
         $order_code = $data['event']['data']['code'];
 
+        $payment_instance = PaymentInstance::where('code', $order_code)->first();
+
+        $user = User::find($payment_instance->user_id);
+
+        $user->notify(new PaymentPending($secret, $user->preferred_lang));
+
         return response()->success([], 'coinbase_webhook_received');
     }
 
@@ -108,6 +114,12 @@ class PaymentsController extends Controller
 
         $order_code = $data['event']['data']['code'];
 
+        $payment_instance = PaymentInstance::where('code', $order_code)->first();
+
+        $user = User::find($payment_instance->user_id);
+
+        $user->notify(new PaymentFailed($secret, $user->preferred_lang));
+
         return response()->success([], 'coinbase_webhook_received');
     }
 
@@ -127,6 +139,19 @@ class PaymentsController extends Controller
         $data = $request->all();
 
         $order_code = $data['event']['data']['code'];
+
+        $resolve_purchase = $this->resolve_purchase($order_code);
+
+        if (!$resolve_purchase) {
+
+            $user->notify(new PaymentFailed($secret, $user->preferred_lang));
+
+            return response()->error([
+                'errors' => __('api_messages.error.generic')
+            ], 'api_messages.error.generic', 500);
+        }
+
+        $user->notify(new PaymentSucceeded($secret, $user->preferred_lang));
 
         return response()->success([], 'coinbase_webhook_received');
     }
