@@ -23,6 +23,7 @@ class PaymentsController extends Controller
     private $paypal_base_uri;
     private $paypal_client_id;
     private $paypal_client_secret;
+    private $use_fake_payments;
 
     public function __construct()
     {
@@ -30,6 +31,7 @@ class PaymentsController extends Controller
         $this->paypal_base_uri = env('PAYPAL_BASE_URI');
         $this->paypal_client_id = env('PAYPAL_CLIENT_ID');
         $this->paypal_client_secret = env('PAYPAL_CLIENT_SECRET');
+        $this->use_fake_payments = env('USE_FAKE_PAYMENTS');
     }
 
     /**************************************************************************************************************** init payment instance */
@@ -70,6 +72,30 @@ class PaymentsController extends Controller
         return response()->success([], 'payment_instance_started');
     }
 
+    /**************************************************************************************************************** get payment instance */
+    private function get_payment_instance($code)
+    {
+        try {
+            if (!$this->use_fake_payments) {
+                return [
+                    'instance' => PaymentInstance::where('code', $code)->firstOrFail(),
+                    'successful' => true,
+                ];
+            } else {
+                return [
+                    'successful' => true,
+                    'instance' => null,
+                ];
+            }
+        } catch (\Throwable $th) {
+            return [
+                'successful' => false,
+                'message' => $th->getMessage(),
+                'errors' => $th
+            ];
+        }
+    }
+
     /**************************************************************************************************************** coinbase webhooks */
     public function crypto_order_received(Request $request)
     {
@@ -86,11 +112,13 @@ class PaymentsController extends Controller
 
         $data = $request->all();
 
-        $order_code = $data['event']['data']['code'];
+        $payment = $this->get_payment_instance($data['event']['data']['code']);
 
-        $payment_instance = PaymentInstance::where('code', $order_code)->first();
+        if (!$payment['successful']) {
+            return response()->error(['errors' => $payment['errors']], $payment['message'], 500);
+        }
 
-        $user = User::find($payment_instance->user_id);
+        $user = User::find(!$this->use_fake_payments ? $payment['instance']->user_id : 1);
 
         $user->notify(new PaymentPending($secret, $user->preferred_lang));
 
@@ -112,11 +140,13 @@ class PaymentsController extends Controller
 
         $data = $request->all();
 
-        $order_code = $data['event']['data']['code'];
+        $payment = $this->get_payment_instance($data['event']['data']['code']);
 
-        $payment_instance = PaymentInstance::where('code', $order_code)->first();
+        if (!$payment['successful']) {
+            return response()->error(['errors' => $payment['errors']], $payment['message'], 500);
+        }
 
-        $user = User::find($payment_instance->user_id);
+        $user = User::find(!$this->use_fake_payments ? $payment['instance']->user_id : 1);
 
         $user->notify(new PaymentFailed($secret, $user->preferred_lang));
 
@@ -139,6 +169,14 @@ class PaymentsController extends Controller
         $data = $request->all();
 
         $order_code = $data['event']['data']['code'];
+
+        $payment = $this->get_payment_instance($order_code);
+
+        if (!$payment['successful']) {
+            return response()->error(['errors' => $payment['errors']], $payment['message'], 500);
+        }
+
+        $user = User::find(!$this->use_fake_payments ? $payment['instance']->user_id : 1);
 
         $resolve_purchase = $this->resolve_purchase($order_code);
 
@@ -196,7 +234,7 @@ class PaymentsController extends Controller
 
         $secret = Crypt::decryptString($user->anti_fishing_secret);
 
-        if (isset($payment['status']) && $payments['status'] !== 'COMPLETED') {
+        if (!$this->use_fake_payments && $payments['status'] !== 'COMPLETED') {
 
             $user->notify(new PaymentFailed($secret, $user->preferred_lang));
 
@@ -231,6 +269,12 @@ class PaymentsController extends Controller
 
     private function capture_paypal_order($paypal_order_id)
     {
+        if ($this->use_fake_payments) {
+            return [
+                'status' => 'COMPLETED'
+            ];
+        }
+
         $credentials = base64_encode("{$this->paypal_client_id}:{$this->paypal_client_secret}");
 
         return Http::withHeaders([
@@ -254,11 +298,19 @@ class PaymentsController extends Controller
     /**************************************************************************************************************** give the user what they paid for */
     private function resolve_purchase($code)
     {
-        $payment_instance = PaymentInstance::where('code', $code)->first();
+        $payment = $this->get_payment_instance($code);
 
-        $user = User::find($payment_instance->user_id);
+        if (!$payment['successful']) {
+            return false;
+        }
 
-        if ($payment_instance->type === 'premium') {
+        $user = User::find(!$this->use_fake_payments ? $payment['instance']->user_id : 1);
+
+        if ($this->use_fake_payments) {
+            return true;
+        }
+
+        if ($payment['instance']->type === 'premium') {
 
             if ($user->hasRole('free')) {
                 $user->removeRole('free');
@@ -270,18 +322,18 @@ class PaymentsController extends Controller
 
             $user->assignRole('premium');
 
-            $payment_instance->delete();
+            $payment['instance']->delete();
 
             return true;
         }
 
-        if ($payment_instance->type === 'slots') {
-            $slots_to_add = $payment_instance->amount / 10;
+        if ($payment['instance']->type === 'slots') {
+            $slots_to_add = $payment['instance']->amount / 10;
 
             if (is_int($slots_to_add)) {
                 $user->available_slots *= $slots_to_add;
 
-                $payment_instance->delete();
+                $payment['instance']->delete();
 
                 return true;
             } // end if is_int
