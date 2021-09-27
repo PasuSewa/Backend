@@ -32,6 +32,8 @@ class UpdateCredentialJob implements ShouldQueue
      */
     public function handle()
     {
+        // since the credential may have been deleted, I have to check if it actually exists
+
         $credential = Slot::find($this->credential_id);
 
         if (!is_null($credential)) {
