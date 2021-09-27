@@ -120,6 +120,8 @@ class PaymentsController extends Controller
 
         $user = User::find(!$this->use_fake_payments ? $payment['instance']->user_id : 1);
 
+        $secret = Crypt::decryptString($user->anti_fishing_secret);
+
         $user->notify(new PaymentPending($secret, $user->preferred_lang));
 
         return response()->success([], 'coinbase_webhook_received');
@@ -147,6 +149,8 @@ class PaymentsController extends Controller
         }
 
         $user = User::find(!$this->use_fake_payments ? $payment['instance']->user_id : 1);
+
+        $secret = Crypt::decryptString($user->anti_fishing_secret);
 
         $user->notify(new PaymentFailed($secret, $user->preferred_lang));
 
@@ -177,6 +181,8 @@ class PaymentsController extends Controller
         }
 
         $user = User::find(!$this->use_fake_payments ? $payment['instance']->user_id : 1);
+
+        $secret = Crypt::decryptString($user->anti_fishing_secret);
 
         $resolve_purchase = $this->resolve_purchase($order_code);
 
