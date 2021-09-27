@@ -23,11 +23,7 @@ class Slot extends Model
 
     protected $guarded = [];
 
-    protected $hidden = [
-        'accessing_device',
-        'accessing_platform',
-        'user_name'
-    ];
+    protected $hidden = [];
 
     public function user()
     {
