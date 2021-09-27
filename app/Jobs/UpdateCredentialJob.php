@@ -32,12 +32,12 @@ class UpdateCredentialJob implements ShouldQueue
      */
     public function handle()
     {
-        /**
-         * to do:
-         * 
-         * 1- find the credential
-         * 2- since the credential may have been deleted, check if it actually exists
-         * 3- remove the "recently_seen" property (I'm not sure yet if this means to set it on "null" or "false")
-         */
+        $credential = Slot::find($this->credential_id);
+
+        if (!is_null($credential)) {
+            $credential->recently_seen = false;
+
+            $credential->save();
+        }
     }
 }
