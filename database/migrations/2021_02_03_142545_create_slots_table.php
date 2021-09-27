@@ -19,6 +19,7 @@ class CreateSlotsTable extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
 
+            $table->boolean('recently_seen')->nullable(); // this will be set up to "false" after 10 days of seeing it
             $table->date('last_seen')->nullable();
             $table->string('accessing_device')->nullable();
             $table->string('accessing_platform')->nullable();
@@ -38,10 +39,10 @@ class CreateSlotsTable extends Migration
      */
     public function down()
     {
-        Schema::table('slots', function(BluePrint $table){
+        Schema::table('slots', function (BluePrint $table) {
             $table->dropForeign(['user_id']);
             $table->dropColumn('user_id');
-            
+
             $table->dropForeign(['company_id']);
             $table->dropColumn('company_id');
         });
