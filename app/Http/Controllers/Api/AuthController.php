@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\UpdateCredentialJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
@@ -332,6 +333,8 @@ class AuthController extends Controller
 
         if ($data['accessTo'] === 'credential-data') {
             // return decrypted credential
+
+            UpdateCredentialJob::dispatch($data['credentialId'])->delay(now()->addDays(10));
         }
     }
 
