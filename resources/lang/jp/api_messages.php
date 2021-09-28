@@ -19,7 +19,10 @@ return [
         "user_updated_preferred_lang" => "リクエストを受け取りました。今から、この言語でメッセージを送信します。",
         "coinbase_webhook_received" => "Status notification received successfully.",
         "payment_instance_started" => "We're now verifying the payment, we'll let you know when it finishes.",
-        "purchase_finished" => "Payment successful."
+        "purchase_finished" => "Payment successful.",
+        "credentials" => [
+            "created" => "New credential was created successfully."
+        ]
     ],
     "error" => [
         "generic" => "Oops... Seems like there was an error... Please try again later.",

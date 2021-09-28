@@ -19,7 +19,10 @@ return [
         "user_updated_preferred_lang" => "Petición recibida. A partir de ahora te enviaremos mensajes en este idioma.",
         "coinbase_webhook_received" => "Notificación de estado recibida exitosamente.",
         "payment_instance_started" => "Estamos verificando el pago, te avisaremos cuando haya finalizado.",
-        "purchase_finished" => "Instancia de pago finalizada."
+        "purchase_finished" => "Instancia de pago finalizada.",
+        "credentials" => [
+            "created" => "La nueva credencial fue creada exitosamente."
+        ]
     ],
     "error" => [
         "generic" => "Oops... Parece que hubo un error... Por favor, intente nuevamente más tarde.",

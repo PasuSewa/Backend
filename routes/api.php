@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CredentialController;
 use App\Http\Controllers\Api\FeedbackController;
 use App\Http\Controllers\Api\PaymentsController;
 use App\Http\Controllers\Api\UserController;
@@ -78,5 +79,11 @@ Route::group(['middleware' => 'Localization'], function () {
 
             Route::put('/update-preferred-lang', [UserController::class, 'update_preferred_lang']);
         }); // *************************************************************** end of "/user" routes
+
+
+        Route::group(['prefix' => 'credential'], function () {
+
+            Route::post('/create', [CredentialController::class, 'create']);
+        }); // *************************************************************** end of "/credential" routes
     });
 });

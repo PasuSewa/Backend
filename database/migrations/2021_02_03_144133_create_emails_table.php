@@ -19,7 +19,7 @@ class CreateEmailsTable extends Migration
             $table->foreignId('slot_id')->constrained()->onDelete('cascade');
 
             $table->string('email', 250);
-            $table->string('opening', 1);
+            $table->string('opening');
             $table->integer('char_count');
             $table->string('ending');
             $table->timestamps();
@@ -33,7 +33,7 @@ class CreateEmailsTable extends Migration
      */
     public function down()
     {
-        Schema::table('emails', function(BluePrint $table){
+        Schema::table('emails', function (BluePrint $table) {
             $table->dropForeign(['slot_id']);
             $table->dropColumn('slot_id');
         });
