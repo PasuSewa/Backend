@@ -29,7 +29,6 @@ class CredentialController extends Controller
     private $validation_rules = [
         'id' =>                                 ['nullable', 'integer', 'exists:slots,id'],
         'user_id' =>                            ['nullable', 'integer', 'exists:users,id'],
-        'company_id' =>                         ['nullable', 'integer', 'exists:companies,id'],
         'company_name' =>                       ['nullable', 'string', 'min:1', 'max:190'],
         'description' =>                        ['required', 'string', 'min:0', 'max:500'],
         'user_name' =>                          ['nullable', 'string', 'min:1', 'max:190'],
@@ -73,7 +72,6 @@ class CredentialController extends Controller
     public function create(Request $request)
     {
         $data = $request->only(
-            'company_id',
             'company_name',
             'description',
             'user_name',
@@ -108,7 +106,6 @@ class CredentialController extends Controller
         try {
             $credential = Slot::create([
                 'user_id' => $user->id,
-                'company_id' => isset($data['company_id']) ? $data['company_id'] : 1, // placeholder
                 'company_name' => isset($data['company_name']) && !isset($data['company_id']) ? $data['company_name'] : null,
                 'last_seen' => now()->format('Y-m-d H:i:s'),
                 'recently_seen' => true,
