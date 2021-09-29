@@ -23,7 +23,9 @@ class Slot extends Model
 
     protected $guarded = [];
 
-    protected $hidden = [];
+    protected $hidden = [
+        'user_name'
+    ];
 
     public function user()
     {
