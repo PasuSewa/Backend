@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -46,6 +47,17 @@ class CredentialController extends Controller
         'accessing_device' =>                   ['required', 'string', 'min:1', 'max:190'],
         'accessing_platform' =>                ['required', 'string', 'min:3', 'max:7', 'in:mobile,web,desktop']
     ];
+
+    public function get_companies()
+    {                                                   // 1 week
+        $companies = cache()->remember('companies', 60 * 60 * 24 * 7, function () {
+            return Company::select('name', 'url_logo', 'id')->get();
+        });
+
+        return response()->success([
+            'companies' => $companies,
+        ], 'success');
+    }
 
     public function index(Request $request)
     {

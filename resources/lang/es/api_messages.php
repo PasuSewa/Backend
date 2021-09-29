@@ -22,7 +22,8 @@ return [
         "purchase_finished" => "Instancia de pago finalizada.",
         "credentials" => [
             "created" => "La nueva credencial fue creada exitosamente."
-        ]
+        ],
+        "success" => "Éxito!"
     ],
     "error" => [
         "generic" => "Oops... Parece que hubo un error... Por favor, intente nuevamente más tarde.",

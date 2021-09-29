@@ -15,6 +15,8 @@ Route::group(['middleware' => 'Localization'], function () {
 
     Route::get('/feedback/index', [FeedbackController::class, 'index']);
 
+    Route::get('/companies/index', [CredentialController::class, 'get_companies']);
+
 
     Route::group(['prefix' => 'coinbase-webhook'], function () {
 

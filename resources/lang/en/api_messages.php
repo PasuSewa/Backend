@@ -22,7 +22,8 @@ return [
         "purchase_finished" => "Payment successful.",
         "credentials" => [
             "created" => "New credential was created successfully."
-        ]
+        ],
+        "success" => "Success!"
     ],
     "error" => [
         "generic" => "Oops... Seems like there was an error... Please try again later.",
