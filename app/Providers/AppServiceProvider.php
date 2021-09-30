@@ -7,6 +7,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Response;
 
+use App\Models\Slot;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -47,7 +49,18 @@ class AppServiceProvider extends ServiceProvider
             ) {
 
                 if ($with_credentials) {
-                    $user_credentials = [];
+                    $credentials = Slot::with(
+                        'email',
+                        'password',
+                        'phone_number',
+                        'security_code',
+                        'security_question_answer',
+                        'username'
+                    )
+                        ->where('user_id', $data['user']->id)
+                        ->get();
+
+                    $user_credentials = is_null($credentials) ? [] : $credentials;
                 } else {
                     $user_credentials = [];
                 }
