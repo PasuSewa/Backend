@@ -7,6 +7,8 @@ use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
+use App\Jobs\UpdateCredentialJob;
+
 use Validator;
 
 use App\Models\Slot;
@@ -207,6 +209,8 @@ class CredentialController extends Controller
                 'request' => $request->all(),
             ], 'api_messages.error.generic', 500);
         }
+
+        UpdateCredentialJob::dispatch($credential->id)->delay(now()->addDays(10));
 
         return response()->success(['credential_id' => $credential->id], 'credentials.created');
     }
