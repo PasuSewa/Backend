@@ -102,8 +102,11 @@ class CredentialController extends Controller
         }
 
         $user = $request->user();
-        $user->slots_available = $user->slots_available - 1;
-        $user->save();
+
+        if ($user->hasAnyRole(['free', 'semi-free'])) {
+            $user->slots_available = $user->slots_available - 1;
+            $user->save();
+        }
 
         try {
             $credential = Slot::create([
