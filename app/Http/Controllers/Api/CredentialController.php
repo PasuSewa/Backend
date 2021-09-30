@@ -266,11 +266,17 @@ class CredentialController extends Controller
     {
         $user = $request->user();
 
-        /**
-         * to do:
-         * 
-         * 1- get all credentials with "recently_seen" property equal to "true", and sort them by "last_seen" propertty
-         */
+        $credentials = Slot::where('user_id', $user->id)->select(
+            'company_name',
+            'last_seen',
+            'id',
+            'accessing_device',
+            'accessing_platform',
+            'created_at',
+            'updated_at'
+        )->get();
+
+        return response()->success(['recently_seen' => $credentials], 'success');
     }
 
     private function fuse_strings($array_of_strings)

@@ -19,7 +19,7 @@ class CreateSlotsTable extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
             $table->boolean('recently_seen')->nullable(); // this will be set up to "false" after 10 days of seeing it
-            $table->date('last_seen')->nullable();
+            $table->string('last_seen')->nullable();
             $table->string('accessing_device')->nullable();
             $table->string('accessing_platform')->nullable();
 
