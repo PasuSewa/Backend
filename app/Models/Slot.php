@@ -47,17 +47,17 @@ class Slot extends Model
         return $this->hasOne(Password::class);
     }
 
-    public function phoneNumber()
+    public function phone_number()
     {
         return $this->hasOne(PhoneNumber::class);
     }
 
-    public function questionAnswer()
+    public function security_question_answer()
     {
         return $this->hasOne(QuestionAnswer::class);
     }
 
-    public function securityCodes()
+    public function security_code()
     {
         return $this->hasOne(SecurityCode::class);
     }

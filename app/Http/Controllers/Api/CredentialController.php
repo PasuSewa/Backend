@@ -212,7 +212,16 @@ class CredentialController extends Controller
 
         UpdateCredentialJob::dispatch($credential->id)->delay(now()->addDays(10));
 
-        return response()->success(['credential_id' => $credential->id], 'credentials.created');
+        $credential_created = Slot::with(
+            'email',
+            'password',
+            'phone_number',
+            'security_code',
+            'security_question_answer',
+            'username'
+        )->find($credential->id);
+
+        return response()->success(['credential' => $credential_created], 'credentials.created');
     }
 
     public function update(Request $request)
