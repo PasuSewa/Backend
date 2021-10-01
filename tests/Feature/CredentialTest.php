@@ -47,15 +47,15 @@ class CredentialTest extends TestCase
             'phone_number' => '+54 011 1234 - 5678',
             'security_question' => 'question?',
             'security_answer' => 'answer!',
-            'unique_security_code' => 'UNIQUE-SECURITY-CODE',
-            'multiple_security_code' => [
+            'unique_code' => 'UNIQUE-SECURITY-CODE',
+            'multiple_codes' => [
                 'ABC1234',
                 'ABC1235',
                 'ABC1236',
                 'ABC1237',
                 'ABC1238',
             ],
-            'crypto_currency_access_codes' => [
+            'crypto_codes' => [
                 'phrase 1',
                 'phrase 2',
                 'phrase 3',
@@ -81,7 +81,7 @@ class CredentialTest extends TestCase
         $this->assertDatabaseHas('emails', [
             'slot_id' => 1,
             'opening' => substr($json_data['email'], 0, 2),
-            'ending' => explode('@', $json_data['email'], 2)[1]
+            'ending' => '@' . explode('@', $json_data['email'], 2)[1]
         ]);
 
         $this->assertDatabaseHas('passwords', [
@@ -98,8 +98,9 @@ class CredentialTest extends TestCase
 
         $this->assertDatabaseHas('security_codes', [
             'slot_id' => 1,
-            'multiple_codes_length' => count($json_data['multiple_security_code']),
-            'crypto_codes_length' => count($json_data['crypto_currency_access_codes']),
+            'multiple_codes_length' => count($json_data['multiple_codes']),
+            'crypto_codes_length' => count($json_data['crypto_codes']),
+            'unique_code_length' => strlen($json_data['unique_code']),
         ]);
 
         $this->assertDatabaseHas('security_questions_answers', ['slot_id' => 1]);
