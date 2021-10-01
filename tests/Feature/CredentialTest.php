@@ -153,4 +153,18 @@ class CredentialTest extends TestCase
             ]
         ]);
     }
+
+    /** @test */
+    public function get_companies()
+    {
+        $response = $this->json('GET', '/api/companies/index');
+        $response->assertOk();
+        $response->assertJsonStructure([
+            'status',
+            'message',
+            'data' => [
+                'companies'
+            ]
+        ]);
+    }
 }
