@@ -19,6 +19,8 @@ use App\Models\PhoneNumber;
 use App\Models\QuestionAnswer;
 use App\Models\SecurityCode;
 
+use App\Services\CredentialService;
+
 class CredentialController extends Controller
 {
     /**
@@ -40,11 +42,11 @@ class CredentialController extends Controller
         'phone_number' =>                       ['nullable', 'string', 'min:8', 'max:190'],
         'security_question' =>                  ['nullable', 'string', 'min:5', 'max:190'],
         'security_answer' =>                    ['nullable', 'string', 'min:5', 'max:190'],
-        'unique_code' =>               ['nullable', 'string', 'min:1', 'max:190'],
-        'multiple_codes' =>             ['nullable', 'array', 'min:1'],
-        'multiple_codes.*' =>           ['nullable', 'string', 'min:1', 'max:25', 'distinct'],
-        'crypto_codes' =>       ['nullable', 'array', 'min:7'],
-        'crypto_codes.*' =>     ['nullable', 'string', 'min:2', 'max:25', 'distinct'],
+        'unique_code' =>                        ['nullable', 'string', 'min:1', 'max:190'],
+        'multiple_codes' =>                     ['nullable', 'array', 'min:1'],
+        'multiple_codes.*' =>                   ['nullable', 'string', 'min:1', 'max:25', 'distinct'],
+        'crypto_codes' =>                       ['nullable', 'array', 'min:7'],
+        'crypto_codes.*' =>                     ['nullable', 'string', 'min:2', 'max:25', 'distinct'],
         'accessing_device' =>                   ['required', 'string', 'min:1', 'max:190'],
         'accessing_platform' =>                 ['required', 'string', 'min:3', 'max:7', 'in:mobile,web,desktop']
     ];
@@ -101,111 +103,136 @@ class CredentialController extends Controller
             }
         }
 
-        try {
-            $credential = Slot::create([
-                'user_id' => $user->id,
-                'company_name' => isset($data['company_name']) && !isset($data['company_id']) ? $data['company_name'] : null,
-                'last_seen' => now()->format('Y-m-d H:i:s'),
-                'recently_seen' => true,
-                'accessing_device' => $data['accessing_device'],
-                'accessing_platform' => $data['accessing_platform'],
-                'user_name' => isset($data['user_name']) ? Crypt::encryptString($data['user_name']) : null,
-                'char_count' => isset($data['user_name']) ? strlen($data['user_name']) : null,
-                'description' => isset($data['description']) ? $data['description'] : '',
+        // try {
+        $credential = Slot::create([
+            'user_id' => $user->id,
+            'company_name' => isset($data['company_name']) && !isset($data['company_id']) ? $data['company_name'] : null,
+            'last_seen' => now()->format('Y-m-d H:i:s'),
+            'recently_seen' => true,
+            'accessing_device' => $data['accessing_device'],
+            'accessing_platform' => $data['accessing_platform'],
+            'user_name' => isset($data['user_name']) ? Crypt::encryptString($data['user_name']) : null,
+            'char_count' => isset($data['user_name']) ? strlen($data['user_name']) : null,
+            'description' => isset($data['description']) ? $data['description'] : '',
+        ]);
+
+        if (isset($data['email'])) {
+            (new CredentialService())->email_crud('create', $credential->id, $data['email']);
+        }
+
+        if (isset($data['password'])) {
+            (new CredentialService())->password_crud('create', $credential->id, $data['password']);
+        }
+
+        if (isset($data['phone_number'])) {
+            (new CredentialService())->phone_number_crud('create', $credential->id, $data['phone_number']);
+        }
+
+        if (isset($data['security_question']) && isset($data['security_answer'])) {
+            (new CredentialService())->question_answer_crud('create', $credential->id, [
+                'question' => $data['security_question'],
+                'answer' => $data['security_answer'],
             ]);
+        }
 
-            if (isset($data['email'])) {
-                $ending = explode('@', $data['email'], 2)[1];
+        if (isset($data['username'])) {
+            (new CredentialService())->username_crud('create', $credential->id, $data['username']);
+        }
 
+        if (
+            isset($data['unique_code'])
+            ||
+            isset($data['multiple_codes'])
+            ||
+            isset($data['crypto_codes'])
+        ) {
+            (new CredentialService())->security_code_crud('create', $credential->id, $data);
+        }
+        // } catch (\Throwable $th) {
+        //     return response()->error([
+        //         'errors' => $th,
+        //         'request' => $request->all(),
+        //     ], 'api_messages.error.generic', 500);
+        // }
+
+        UpdateCredentialJob::dispatch($credential->id)->delay(now()->addDays(10));
+
+        $credential_created = Slot::with(
+            'email',
+            'password',
+            'phone_number',
+            'security_code',
+            'security_question_answer',
+            'username'
+        )->find($credential->id);
+
+        return response()->success(['credential' => $credential_created], 'credentials.created');
+    }
+
+    public function update(Request $request, $credential_id)
+    {
+        $data = $request->only(
+            'company_name',
+            'description',
+            'user_name',
+            'email',
+            'password',
+            'username',
+            'phone_number',
+            'security_question',
+            'security_answer',
+            'unique_code',
+            'multiple_codes',
+            'crypto_codes',
+            'accessing_device',
+            'accessing_platform',
+        );
+
+        $validation = Validator::make($data, $this->validation_rules);
+
+        if ($validation->fails()) {
+            $data = [
+                'errors' => $validation->errors(),
+                'request' => $request->all(),
+            ];
+
+            return response()->error($data, 'api_messages.error.parameter_was_incorrect', 401);
+        }
+
+        $user = $request->user();
+
+        try {
+
+            $credential = Slot::where('user_id', $user->id)->where('id', $credential_id)->firstOrFail();
+
+            $credential->user_name = isset($data['user_name']) ? Crypt::encryptString($data['user_name']) : null;
+            $credential->char_count = isset($data['user_name']) ? strlen($data['user_name']) : null;
+            $credential->description = isset($data['description']) ? $data['description'] : '';
+
+            /**************************************************************************************** update email */
+            $email = Email::where('credential_id', $credential->id)->first();
+
+            $ending = explode('@', $data['email'], 2)[1];
+
+            if (isset($data['email']) && is_null($email)) {
                 Email::create([
                     'slot_id' => $credential->id,
                     'email' => Crypt::encryptString($data['email']),
                     'opening' => substr($data['email'], 0, 2),
                     'ending' => '@' . $ending,
-                    'char_count' => strlen($data['email']) - 2 - strlen($ending), // total char count - opening - ending
+                    'char_count' => strlen($data['email']) - 2 - strlen($ending) + 1,
                 ]);
             }
 
-            if (isset($data['password'])) {
-                Password::create([
-                    'slot_id' => $credential->id,
-                    'password' => Crypt::encryptString($data['password']),
-                    'char_count' => strlen($data['password'])
-                ]);
+            if (isset($data['email']) && !is_null($email)) {
+                $email->email = Crypt::encryptString($data['email']);
+                $email->opening = substr($data['email'], 0, 2);
+                $email->ending = '@' . $ending;
+                $email->char_count = strlen($data['email']) - 2 - strlen($ending) + 1;
             }
 
-            if (isset($data['phone_number'])) {
-                PhoneNumber::create([
-                    'slot_id' => $credential->id,
-                    'phone_number' => Crypt::encryptString($data['phone_number']),
-                    'opening' => substr($data['phone_number'], 0, 3),
-                    'char_count' => strlen($data['phone_number']) - 5,
-                    'ending' => substr($data['phone_number'], -2)
-                ]);
-            }
-
-            if (isset($data['security_question']) && isset($data['security_answer'])) {
-                QuestionAnswer::create([
-                    'slot_id' => $credential->id,
-                    'security_question' => Crypt::encryptString($data['security_question']),
-                    'security_answer' => Crypt::encryptString($data['security_answer']),
-                ]);
-            }
-
-            if (isset($data['username'])) {
-                Username::create([
-                    'slot_id' => $credential->id,
-                    'username' => Crypt::encryptString($data['username']),
-                    'char_count' => strlen($data['username']),
-                ]);
-            }
-
-            if (
-                isset($data['unique_code'])
-                ||
-                isset($data['multiple_codes'])
-                ||
-                isset($data['crypto_codes'])
-            ) {
-                SecurityCode::create([
-                    'slot_id' => $credential->id,
-                    'unique_code' =>
-                    isset($data['unique_code'])
-                        ?
-                        Crypt::encryptString($data['unique_code'])
-                        :
-                        null,
-                    'unique_code_length' =>
-                    isset($data['unique_code'])
-                        ?
-                        strlen($data['unique_code'])
-                        :
-                        null,
-                    'multiple_codes' =>
-                    isset($data['multiple_codes'])
-                        ?
-                        Crypt::encryptString($this->fuse_strings($data['multiple_codes']))
-                        :
-                        null,
-                    'multiple_codes_length' =>
-                    isset($data['multiple_codes'])
-                        ?
-                        count($data['multiple_codes'])
-                        :
-                        null,
-                    'crypto_codes' =>
-                    isset($data['crypto_codes'])
-                        ?
-                        Crypt::encryptString($this->fuse_strings($data['crypto_codes']))
-                        :
-                        null,
-                    'crypto_codes_length' =>
-                    isset($data['crypto_codes'])
-                        ?
-                        count($data['crypto_codes'])
-                        :
-                        null
-                ]);
+            if (!isset($data['email']) && !is_null($email)) {
+                $email->delete();
             }
         } catch (\Throwable $th) {
             return response()->error([
@@ -226,22 +253,6 @@ class CredentialController extends Controller
         )->find($credential->id);
 
         return response()->success(['credential' => $credential_created], 'credentials.created');
-    }
-
-    public function update(Request $request)
-    {
-        $user = $request->user();
-
-        /**
-         * to do:
-         * 
-         * 1- validate request must have the following:
-         * 
-         * 2- make use of multiple "if" statements to check if credential has set the correct values for each property
-         * in case of !isset($credential_property) it must be deleted from db
-         * 
-         * 3- save all changes (don't forget to encrypt the data)
-         */
     }
 
     public function delete(Request $request, $credential_id)
@@ -295,6 +306,7 @@ class CredentialController extends Controller
         return response()->success(['recently_seen' => $credentials], 'success');
     }
 
+    /**************************************************************************************************************** helper functions */
     private function fuse_strings($array_of_strings)
     {
         $string = '';
