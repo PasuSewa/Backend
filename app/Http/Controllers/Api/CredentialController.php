@@ -32,7 +32,7 @@ class CredentialController extends Controller
         'id' =>                                 ['nullable', 'integer', 'exists:slots,id'],
         'user_id' =>                            ['nullable', 'integer', 'exists:users,id'],
         'company_name' =>                       ['nullable', 'string', 'min:1', 'max:190'],
-        'description' =>                        ['required', 'string', 'min:0', 'max:500'],
+        'description' =>                        ['nullable', 'string', 'min:0', 'max:500'],
         'user_name' =>                          ['nullable', 'string', 'min:1', 'max:190'],
         'email' =>                              ['nullable', 'email', 'min:6', 'max:190'],
         'password' =>                           ['nullable', 'string', 'min:5', 'max:190'],

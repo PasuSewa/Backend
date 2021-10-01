@@ -32,6 +32,8 @@ class CredentialTest extends TestCase
 
         $user = User::find(1);
 
+        $token = JWTAuth::fromUser($user);
+
         //*********************************************************************** * user can create a full credential (with all preperties)
         $json_data = [
             'accessing_device' => 'my pc for testing',
@@ -66,14 +68,48 @@ class CredentialTest extends TestCase
             'accessing_platform' => 'web',
         ];
 
-        //*********************************************************************** * user can create a credential with some properties, but not all
-        $json_data = [
+        $response_1 = $this->withHeaders(['Authorization' => 'Bearer ' . $token])->json('POST', '/api/credential/create', $json_data);
+        $response_1->assertOk();
+
+        $this->assertDatabaseHas('slots', [
             'accessing_device' => 'my pc for testing',
             'accessing_platform' => 'web',
-            'company_name' => ''
-        ];
+            'company_name' => 'testing name 1',
+            'description' => 'description 1',
+        ]);
 
-        $token = JWTAuth::fromUser($user);
+        $this->assertDatabaseHas('emails', [
+            'slot_id' => 1,
+            'opening' => substr($json_data['email'], 0, 2),
+            'ending' => explode('@', $json_data['email'], 2)[1]
+        ]);
+
+        $this->assertDatabaseHas('passwords', [
+            'slot_id' => 1,
+            'char_count' => strlen($json_data['password']),
+        ]);
+
+        $this->assertDatabaseHas('phone_numbers', [
+            'slot_id' => 1,
+            'opening' => substr($json_data['phone_number'], 0, 3),
+            'char_count' => strlen($json_data['phone_number']) - 5,
+            'ending' => substr($json_data['phone_number'], -2)
+        ]);
+
+        $this->assertDatabaseHas('security_codes', [
+            'slot_id' => 1,
+            'multiple_codes_length' => count($json_data['multiple_security_code']),
+            'crypto_codes_length' => count($json_data['crypto_currency_access_codes']),
+        ]);
+
+        $this->assertDatabaseHas('security_questions_answers', ['slot_id' => 1]);
+
+        $this->assertDatabaseHas('usernames', [
+            'slot_id' => 1,
+            'char_count' => strlen($json_data['username']),
+        ]);
+
+        Bus::assertDispatched(UpdateCredentialJob::class);
 
         //*********************************************************************** * user can create a credential without anything, just name and description
         $json_data = [
