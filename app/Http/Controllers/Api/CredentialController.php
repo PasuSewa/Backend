@@ -40,13 +40,13 @@ class CredentialController extends Controller
         'phone_number' =>                       ['nullable', 'string', 'min:8', 'max:190'],
         'security_question' =>                  ['nullable', 'string', 'min:5', 'max:190'],
         'security_answer' =>                    ['nullable', 'string', 'min:5', 'max:190'],
-        'unique_security_code' =>               ['nullable', 'string', 'min:1', 'max:190'],
-        'multiple_security_code' =>             ['nullable', 'array', 'min:1'],
-        'multiple_security_code.*' =>           ['nullable', 'string', 'min:1', 'max:25', 'distinct'],
-        'crypto_currency_access_codes' =>       ['nullable', 'array', 'min:7'],
-        'crypto_currency_access_codes.*' =>     ['nullable', 'string', 'min:2', 'max:25', 'distinct'],
+        'unique_code' =>               ['nullable', 'string', 'min:1', 'max:190'],
+        'multiple_codes' =>             ['nullable', 'array', 'min:1'],
+        'multiple_codes.*' =>           ['nullable', 'string', 'min:1', 'max:25', 'distinct'],
+        'crypto_codes' =>       ['nullable', 'array', 'min:7'],
+        'crypto_codes.*' =>     ['nullable', 'string', 'min:2', 'max:25', 'distinct'],
         'accessing_device' =>                   ['required', 'string', 'min:1', 'max:190'],
-        'accessing_platform' =>                ['required', 'string', 'min:3', 'max:7', 'in:mobile,web,desktop']
+        'accessing_platform' =>                 ['required', 'string', 'min:3', 'max:7', 'in:mobile,web,desktop']
     ];
 
     public function get_companies()
@@ -72,9 +72,9 @@ class CredentialController extends Controller
             'phone_number',
             'security_question',
             'security_answer',
-            'unique_security_code',
-            'multiple_security_code',
-            'crypto_currency_access_codes',
+            'unique_code',
+            'multiple_codes',
+            'crypto_codes',
             'accessing_device',
             'accessing_platform',
         );
@@ -119,7 +119,7 @@ class CredentialController extends Controller
                     'slot_id' => $credential->id,
                     'email' => Crypt::encryptString($data['email']),
                     'opening' => substr($data['email'], 0, 2),
-                    'ending' => explode('@', $data['email'], 2)[1],
+                    'ending' => '@' . explode('@', $data['email'], 2)[1],
                     'char_count' => strlen($data['email']),
                 ]);
             }
@@ -159,42 +159,48 @@ class CredentialController extends Controller
             }
 
             if (
-                isset($data['unique_security_code'])
+                isset($data['unique_code'])
                 ||
-                isset($data['multiple_security_code'])
+                isset($data['multiple_codes'])
                 ||
-                isset($data['crypto_currency_access_codes'])
+                isset($data['crypto_codes'])
             ) {
                 SecurityCode::create([
                     'slot_id' => $credential->id,
                     'unique_code' =>
-                    isset($data['unique_security_code'])
+                    isset($data['unique_code'])
                         ?
-                        Crypt::encryptString($data['unique_security_code'])
+                        Crypt::encryptString($data['unique_code'])
+                        :
+                        null,
+                    'unique_code_length' =>
+                    isset($data['unique_code'])
+                        ?
+                        strlen($data['unique_code'])
                         :
                         null,
                     'multiple_codes' =>
-                    isset($data['multiple_security_code'])
+                    isset($data['multiple_codes'])
                         ?
-                        Crypt::encryptString($this->fuse_strings($data['multiple_security_code']))
+                        Crypt::encryptString($this->fuse_strings($data['multiple_codes']))
                         :
                         null,
                     'multiple_codes_length' =>
-                    isset($data['multiple_security_code'])
+                    isset($data['multiple_codes'])
                         ?
-                        count($data['multiple_security_code'])
+                        count($data['multiple_codes'])
                         :
                         null,
                     'crypto_codes' =>
-                    isset($data['crypto_currency_access_codes'])
+                    isset($data['crypto_codes'])
                         ?
-                        Crypt::encryptString($this->fuse_strings($data['crypto_currency_access_codes']))
+                        Crypt::encryptString($this->fuse_strings($data['crypto_codes']))
                         :
                         null,
                     'crypto_codes_length' =>
-                    isset($data['crypto_currency_access_codes'])
+                    isset($data['crypto_codes'])
                         ?
-                        count($data['crypto_currency_access_codes'])
+                        count($data['crypto_codes'])
                         :
                         null
                 ]);
