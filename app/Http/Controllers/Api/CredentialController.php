@@ -115,12 +115,14 @@ class CredentialController extends Controller
             ]);
 
             if (isset($data['email'])) {
+                $ending = explode('@', $data['email'], 2)[1];
+
                 Email::create([
                     'slot_id' => $credential->id,
                     'email' => Crypt::encryptString($data['email']),
                     'opening' => substr($data['email'], 0, 2),
-                    'ending' => '@' . explode('@', $data['email'], 2)[1],
-                    'char_count' => strlen($data['email']),
+                    'ending' => '@' . $ending,
+                    'char_count' => strlen($data['email']) - 2 - strlen($ending), // total char count - opening - ending
                 ]);
             }
 
