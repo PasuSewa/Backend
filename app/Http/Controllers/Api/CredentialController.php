@@ -60,17 +60,6 @@ class CredentialController extends Controller
         ], 'success');
     }
 
-    public function index(Request $request)
-    {
-        $user = $request->user();
-
-        /**
-         * to do:
-         * 
-         * 1- return all credentials for the user
-         */
-    }
-
     public function create(Request $request)
     {
         $data = $request->only(
