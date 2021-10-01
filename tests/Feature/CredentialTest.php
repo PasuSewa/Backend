@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use App\Jobs\UpdateCredentialJob;
 
 use App\Models\User;
-use App\Models\Credential;
+use App\Models\Slot;
 
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Crypt;
@@ -124,5 +124,33 @@ class CredentialTest extends TestCase
         $this->assertDatabaseHas('slots', $json_data);
 
         Bus::assertDispatched(UpdateCredentialJob::class);
+    }
+
+    /** @test */
+    public function get_recent_access()
+    {
+        Slot::create([
+            'user_id' => 1,
+            'last_seen' => now()->format('Y-m-d H:i:s'),
+            'recently_seen' => true,
+            'accessing_device' => 'mi pc for testing',
+            'accessing_platform' => 'web',
+            'company_name' => 'testing recently seen'
+        ]);
+
+        $user = User::find(1);
+
+        $token = JWTAuth::fromUser($user);
+
+        $response = $this->withHeaders(['Authorization' => 'Bearer ' . $token])->json('GET', '/api/credential/get-recently-seen');
+        $response->assertOk();
+
+        $response->assertJsonStructure([
+            'message',
+            'status',
+            'data' => [
+                'recently_seen'
+            ]
+        ]);
     }
 }
