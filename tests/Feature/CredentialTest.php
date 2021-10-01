@@ -127,6 +127,34 @@ class CredentialTest extends TestCase
     }
 
     /** @test */
+    public function delete_credential()
+    {
+        $credential = Slot::create([
+            'user_id' => 1,
+            'last_seen' => now()->format('Y-m-d H:i:s'),
+            'recently_seen' => true,
+            'accessing_device' => 'mi pc for testing',
+            'accessing_platform' => 'web',
+            'company_name' => 'testing recently seen'
+        ]);
+
+        $user = User::find(1);
+
+        $token = JWTAuth::fromUser($user);
+
+        $response = $this->withHeaders(['Authorization' => 'Bearer ' . $token])->json('GET', '/api/credential/delete/' . $credential->id);
+        $response->assertOk();
+
+        $response->assertJsonStructure([
+            'message',
+            'status',
+            'data'
+        ]);
+
+        $this->assertDatabaseMissing('slots', ['id' => $credential->id]);
+    }
+
+    /** @test */
     public function get_recent_access()
     {
         Slot::create([
