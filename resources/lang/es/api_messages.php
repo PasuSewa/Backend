@@ -32,6 +32,7 @@ return [
         "unauthorized" => "No estás autorizado/a a acceder a este recurso.",
         "validation" => "Una o más de las credenciales enviadas son incorrectas.",
         "2fa_code_invalid" => "La autenticación en dos factores ha fallado. Porfavor intente nuevamente.",
-        "coinbase_signature_failed" => "La firma otorgada no es válida."
+        "coinbase_signature_failed" => "La firma otorgada no es válida.",
+        "user_cant_create_credentials" => "Has alcanzado el límite máximo de credenciales disponibles para tu cuenta."
     ]
 ];

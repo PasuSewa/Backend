@@ -104,8 +104,12 @@ class CredentialController extends Controller
         $user = $request->user();
 
         if ($user->hasAnyRole(['free', 'semi-free'])) {
-            $user->slots_available = $user->slots_available - 1;
-            $user->save();
+            if ($user->slots_available >= 1) {
+                $user->slots_available = $user->slots_available - 1;
+                $user->save();
+            } else {
+                return response()->error($data, 'api_messages.error.user_cant_create_credentials', 401);
+            }
         }
 
         try {

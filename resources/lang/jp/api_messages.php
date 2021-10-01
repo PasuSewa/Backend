@@ -32,6 +32,7 @@ return [
         "unauthorized" => "You are not allowed to make use of this resourse.",
         "validation" => "One or more of the credentials sent were incorrect.",
         "2fa_code_invalid" => "The second factor authentication has failed. Please try again.",
-        "coinbase_signature_failed" => "The given signature is invalid."
+        "coinbase_signature_failed" => "The given signature is invalid.",
+        "user_cant_create_credentials" => "You have reached the maximum amount of credentials available for your account."
     ],
 ];
