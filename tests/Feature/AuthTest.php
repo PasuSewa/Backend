@@ -145,9 +145,10 @@ class AuthTest extends TestCase
         );
     }
 
+    /** @test */
     public function login_by_g2fa()
     {
-        $response = $this->json('POST', '/auth/login/two-factor-code', ['email' => 'mr.corvy@gmail.com', 'code' => 123456]);
+        $response = $this->json('POST', '/api/auth/login/two-factor-code', ['email' => 'mr.corvy@gmail.com', 'twoFactorCode' => 123456]);
 
         $response->assertOk();
 
