@@ -240,11 +240,23 @@ class CredentialController extends Controller
     {
         $user = $request->user();
 
-        /**
-         * to do:
-         * 
-         * 1- delete the credential (this should also delete all other properties related on the db)
-         */
+        try {
+            $credential = Slot::where('user_id', $user->id)->where('id', $credential_id)->firstOrFail();
+
+            $credential->delete();
+        } catch (\Throwable $th) {
+            return response()->error([
+                'errors' => $th,
+                'request' => $request->all()
+            ], 'api_messages.error.generic', 404);
+        }
+
+        if ($user->hasAnyRole(['free', 'semi-premium'])) {
+            $user->slots_available += 1;
+            $user->save();
+        }
+
+        return response()->success([], 'success');
     }
 
     public function find(Request $request, $credential_id)

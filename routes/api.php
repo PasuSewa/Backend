@@ -87,6 +87,8 @@ Route::group(['middleware' => 'Localization'], function () {
 
             Route::post('/create', [CredentialController::class, 'create']);
 
+            Route::get('/delete/{credential_id}', [CredentialController::class, 'delete']);
+
             Route::get('/get-recently-seen', [CredentialController::class, 'get_recently_seen']);
         }); // *************************************************************** end of "/credential" routes
     });
