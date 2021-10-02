@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\UpdateCredentialJob;
+use App\Models\Slot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
@@ -316,26 +317,20 @@ class AuthController extends Controller
             return (new AuthService())->validation_error($request, $validation);
         }
 
+        $user = $request->user();
+
         if ($data['accessTo'] === 'user-data') {
-
-            $user = $request->user();
-
-            $data = [
-                'name' => $user->name,
-                'email' => $user->email,
-                'recovery_email' => $user->recovery_email,
-                'phone_number' => Crypt::decryptString($user->phone_number),
-                'anti_fishing_secret' => Crypt::decryptString($user->anti_fishing_secret),
-                'security_access_code' => Crypt::decryptString($user->recovery_code),
-            ];
+            $data = (new AuthService())->access_user_data($user);
 
             return response()->success($data, 'auth.access_granted');
         }
 
         if ($data['accessTo'] === 'credential-data') {
-            // return decrypted credential
+            $decrypted_credential = (new AuthService())->access_credential_data($user->id, $data['credentialId']);
 
             UpdateCredentialJob::dispatch($data['credentialId'])->delay(now()->addDays(10));
+
+            return response()->success(['decrypted_credential' => $decrypted_credential], 'succes');
         }
     }
 
