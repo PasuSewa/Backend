@@ -21,7 +21,7 @@ class CreateSecurityCodesTable extends Migration
             // this 3 are nullable because the user may have one, or the other, but most likely won't have all 3 at the same time
             $table->string('unique_code')->nullable(); // only 1 security code
             $table->integer('unique_code_length')->nullable();
-            $table->string('multiple_codes', 250)->nullable(); // 10+ security codes
+            $table->text('multiple_codes')->nullable(); // 10+ security codes
             $table->integer('multiple_codes_length')->nullable();
             $table->text('crypto_codes')->nullable(); // the 27 words used to acces a crypto wallet
             $table->integer('crypto_codes_length')->nullable();

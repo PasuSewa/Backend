@@ -225,7 +225,9 @@ class AuthTest extends TestCase
         $token = JWTAuth::fromUser($user);
 
         $body = [
-            'accessTo' => 'user-data'
+            'accessTo' => 'user-data',
+            'accessingPlatform' => 'web',
+            'accessingDevice' => 'mi pc for testing'
         ];
 
         $response_user_data = $this->withHeaders(['Authorization' => 'Bearer ' . $token])->json('POST', '/api/auth/grant-access', $body);
