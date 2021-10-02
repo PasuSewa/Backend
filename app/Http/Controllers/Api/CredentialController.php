@@ -103,57 +103,57 @@ class CredentialController extends Controller
             }
         }
 
-        // try {
-        $credential = Slot::create([
-            'user_id' => $user->id,
-            'company_name' => isset($data['company_name']) && !isset($data['company_id']) ? $data['company_name'] : null,
-            'last_seen' => now()->format('Y-m-d H:i:s'),
-            'recently_seen' => true,
-            'accessing_device' => $data['accessing_device'],
-            'accessing_platform' => $data['accessing_platform'],
-            'user_name' => isset($data['user_name']) ? Crypt::encryptString($data['user_name']) : null,
-            'char_count' => isset($data['user_name']) ? strlen($data['user_name']) : null,
-            'description' => isset($data['description']) ? $data['description'] : '',
-        ]);
-
-        if (isset($data['email'])) {
-            (new CredentialService())->email_crud('create', $credential->id, $data['email']);
-        }
-
-        if (isset($data['password'])) {
-            (new CredentialService())->password_crud('create', $credential->id, $data['password']);
-        }
-
-        if (isset($data['phone_number'])) {
-            (new CredentialService())->phone_number_crud('create', $credential->id, $data['phone_number']);
-        }
-
-        if (isset($data['security_question']) && isset($data['security_answer'])) {
-            (new CredentialService())->question_answer_crud('create', $credential->id, [
-                'question' => $data['security_question'],
-                'answer' => $data['security_answer'],
+        try {
+            $credential = Slot::create([
+                'user_id' => $user->id,
+                'company_name' => isset($data['company_name']) && !isset($data['company_id']) ? $data['company_name'] : null,
+                'last_seen' => now()->format('Y-m-d H:i:s'),
+                'recently_seen' => true,
+                'accessing_device' => $data['accessing_device'],
+                'accessing_platform' => $data['accessing_platform'],
+                'user_name' => isset($data['user_name']) ? Crypt::encryptString($data['user_name']) : null,
+                'char_count' => isset($data['user_name']) ? strlen($data['user_name']) : null,
+                'description' => isset($data['description']) ? $data['description'] : '',
             ]);
-        }
 
-        if (isset($data['username'])) {
-            (new CredentialService())->username_crud('create', $credential->id, $data['username']);
-        }
+            if (isset($data['email'])) {
+                (new CredentialService())->email_crud('create', $credential->id, $data['email']);
+            }
 
-        if (
-            isset($data['unique_code'])
-            ||
-            isset($data['multiple_codes'])
-            ||
-            isset($data['crypto_codes'])
-        ) {
-            (new CredentialService())->security_code_crud('create', $credential->id, $data);
+            if (isset($data['password'])) {
+                (new CredentialService())->password_crud('create', $credential->id, $data['password']);
+            }
+
+            if (isset($data['phone_number'])) {
+                (new CredentialService())->phone_number_crud('create', $credential->id, $data['phone_number']);
+            }
+
+            if (isset($data['security_question']) && isset($data['security_answer'])) {
+                (new CredentialService())->question_answer_crud('create', $credential->id, [
+                    'question' => $data['security_question'],
+                    'answer' => $data['security_answer'],
+                ]);
+            }
+
+            if (isset($data['username'])) {
+                (new CredentialService())->username_crud('create', $credential->id, $data['username']);
+            }
+
+            if (
+                isset($data['unique_code'])
+                ||
+                isset($data['multiple_codes'])
+                ||
+                isset($data['crypto_codes'])
+            ) {
+                (new CredentialService())->security_code_crud('create', $credential->id, $data);
+            }
+        } catch (\Throwable $th) {
+            return response()->error([
+                'errors' => $th,
+                'request' => $request->all(),
+            ], 'api_messages.error.generic', 500);
         }
-        // } catch (\Throwable $th) {
-        //     return response()->error([
-        //         'errors' => $th,
-        //         'request' => $request->all(),
-        //     ], 'api_messages.error.generic', 500);
-        // }
 
         UpdateCredentialJob::dispatch($credential->id)->delay(now()->addDays(10));
 
@@ -209,31 +209,39 @@ class CredentialController extends Controller
             $credential->char_count = isset($data['user_name']) ? strlen($data['user_name']) : null;
             $credential->description = isset($data['description']) ? $data['description'] : '';
 
-            /**************************************************************************************** update email */
-            $email = Email::where('credential_id', $credential->id)->first();
+            if (isset($data['email'])) {
+                (new CredentialService())->email_crud('update', $credential->id, $data['email']);
+            } else {
+                (new CredentialService())->email_crud('delete', $credential->id);
+            }
 
-            $ending = explode('@', $data['email'], 2)[1];
+            if (isset($data['password'])) {
+                (new CredentialService())->password_crud('update', $credential->id, $data['password']);
+            } else {
+                (new CredentialService())->password_crud('delete', $credential->id);
+            }
 
-            if (isset($data['email']) && is_null($email)) {
-                Email::create([
-                    'slot_id' => $credential->id,
-                    'email' => Crypt::encryptString($data['email']),
-                    'opening' => substr($data['email'], 0, 2),
-                    'ending' => '@' . $ending,
-                    'char_count' => strlen($data['email']) - 2 - strlen($ending) + 1,
+            if (isset($data['phone_number'])) {
+                (new CredentialService())->phone_number_crud('update', $credential->id, $data['phone_number']);
+            } else {
+                (new CredentialService())->phone_number_crud('delete', $credential->id);
+            }
+
+            if (isset($data['security_question']) && isset($data['security_answer'])) {
+                (new CredentialService())->question_answer_crud('update', $credential->id, [
+                    'question' => $data['security_question'],
+                    'answer' => $data['security_answer'],
                 ]);
+            } else {
+                (new CredentialService())->question_answer_crud('delete', $credential->id);
             }
 
-            if (isset($data['email']) && !is_null($email)) {
-                $email->email = Crypt::encryptString($data['email']);
-                $email->opening = substr($data['email'], 0, 2);
-                $email->ending = '@' . $ending;
-                $email->char_count = strlen($data['email']) - 2 - strlen($ending) + 1;
+            if (isset($data['username'])) {
+                (new CredentialService())->username_crud('update', $credential->id, $data['username']);
+            } else {
             }
 
-            if (!isset($data['email']) && !is_null($email)) {
-                $email->delete();
-            }
+            (new CredentialService())->security_code_crud('update or delete', $credential->id, $data);
         } catch (\Throwable $th) {
             return response()->error([
                 'errors' => $th,
@@ -243,7 +251,7 @@ class CredentialController extends Controller
 
         UpdateCredentialJob::dispatch($credential->id)->delay(now()->addDays(10));
 
-        $credential_created = Slot::with(
+        $credential_updated = Slot::with(
             'email',
             'password',
             'phone_number',
@@ -252,7 +260,7 @@ class CredentialController extends Controller
             'username'
         )->find($credential->id);
 
-        return response()->success(['credential' => $credential_created], 'credentials.created');
+        return response()->success(['credential' => $credential_updated], 'success');
     }
 
     public function delete(Request $request, $credential_id)

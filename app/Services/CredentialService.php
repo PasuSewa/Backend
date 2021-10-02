@@ -26,7 +26,7 @@ class CredentialService
         return substr($string, 0, 1);
     }
 
-    public function email_crud($option, $credential_id, $body)
+    public function email_crud($option, $credential_id, $body = null)
     {
         $ending = explode('@', $body, 2)[1];
 
@@ -56,7 +56,7 @@ class CredentialService
         }
     }
 
-    public function password_crud($option, $credential_id, $body)
+    public function password_crud($option, $credential_id, $body = null)
     {
         if ($option === "create") {
             Password::create([
@@ -81,7 +81,7 @@ class CredentialService
         }
     }
 
-    public function phone_number_crud($option, $credential_id, $body)
+    public function phone_number_crud($option, $credential_id, $body = null)
     {
         if ($option === "create") {
             PhoneNumber::create([
@@ -111,7 +111,7 @@ class CredentialService
         }
     }
 
-    public function question_answer_crud($option, $credential_id, $body)
+    public function question_answer_crud($option, $credential_id, $body = null)
     {
         if ($option === "create") {
             QuestionAnswer::create([
@@ -124,8 +124,8 @@ class CredentialService
         if ($option === "update") {
             $question_answer = QuestionAnswer::where('slot_id', $credential_id)->first();
 
-            $question_answer->question = Crypt::encryptString($body['question']);
-            $question_answer->answer = Crypt::encryptString($body['answer']);
+            $question_answer->security_question = Crypt::encryptString($body['question']);
+            $question_answer->security_answer = Crypt::encryptString($body['answer']);
 
             $question_answer->save();
         }
@@ -137,7 +137,7 @@ class CredentialService
         }
     }
 
-    public function username_crud($option, $credential_id, $body)
+    public function username_crud($option, $credential_id, $body = null)
     {
         if ($option === "create") {
             Username::create([
@@ -210,13 +210,19 @@ class CredentialService
         if ($option === "update or delete") {
             $codes = SecurityCode::where('slot_id', $credential_id)->first();
 
+            if (is_null($codes)) {
+                $this->security_code_crud('create', $credential_id, $body);
+
+                return;
+            }
+
             $codes->unique_code = isset($body['unique_code']) ? Crypt::encryptString($body['unique_code']) : null;
             $codes->multiple_codes = isset($body['multiple_codes']) ? Crypt::encryptString($this->fuse_strings($body['multiple_codes'])) : null;
             $codes->crypto_codes = isset($body['crypto_codes']) ? Crypt::encryptString($this->fuse_strings($body['crypto_codes'])) : null;
 
             $codes->unique_code_length = isset($body['unique_code']) ? strlen($body['unique_code']) : null;
-            $codes->multiple_codes_length = isset($body['multiple_code']) ? strlen($body['multiple_codes']) : null;
-            $codes->crypto_codes_length = isset($body['crypto_codes']) ? strlen($body['crypto_codes']) : null;
+            $codes->multiple_codes_length = isset($body['multiple_code']) ? count($body['multiple_codes']) : null;
+            $codes->crypto_codes_length = isset($body['crypto_codes']) ? count($body['crypto_codes']) : null;
 
             if (is_null($codes->unique_code) && is_null($codes->multiple_codes) && is_null($codes->crypto_codes)) {
                 $codes->delete();
