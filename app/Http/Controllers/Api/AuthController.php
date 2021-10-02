@@ -9,13 +9,14 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Notification;
 
-use PragmaRX\Google2FA\Google2FA;
+use App\Services\CredentialService;
 
 use Validator;
 
 use App\Models\User;
 
 use App\Notifications\EmailTwoFactorAuth;
+use App\Services\AuthService;
 
 class AuthController extends Controller
 {
@@ -29,7 +30,7 @@ class AuthController extends Controller
         ]);
 
         if ($validation->fails()) {
-            return $this->validation_error($request, $validation);
+            return (new AuthService())->validation_error($request, $validation);
         }
 
         try {
@@ -105,10 +106,10 @@ class AuthController extends Controller
         ]);
 
         if ($validation->fails()) {
-            return $this->validation_error($request, $validation);
+            return (new AuthService())->validation_error($request, $validation);
         }
 
-        $slots_available = isset($data['invitationCode']) ? $this->spend_invitation_code($data['invitationCode']) : 5;
+        $slots_available = isset($data['invitationCode']) ? (new AuthService())->spend_invitation_code($data['invitationCode']) : 5;
 
         $user = User::create([
             'name' => $data['name'],
@@ -146,7 +147,7 @@ class AuthController extends Controller
         ]);
 
         if ($validation->fails()) {
-            return $this->validation_error($request, $validation);
+            return (new AuthService())->validation_error($request, $validation);
         }
 
         $user = User::where('email', $data['mainEmail'])->firstOrFail();
@@ -167,12 +168,12 @@ class AuthController extends Controller
         $second_is_correct = $second_code === $data['recoveryEmailCode'];
 
         if (!$main_is_correct || !$second_is_correct) {
-            return $this->validation_error($request);
+            return (new AuthService())->validation_error($request);
         }
 
         $user->two_factor_code_email = null;
         $user->two_factor_code_recovery = null;
-        $user->two_factor_secret = $this->generate_2fa_secret();
+        $user->two_factor_secret = (new AuthService())->generate_2fa_secret();
         $user->save();
 
         return response()->success(['token' => auth('api')->setTTL(7200)->tokenById($user->id)], 'auth.email_verified');
@@ -189,10 +190,10 @@ class AuthController extends Controller
         ]);
 
         if ($validation->fails()) {
-            return $this->validation_error($request, $validation);
+            return (new AuthService())->validation_error($request, $validation);
         }
 
-        $is_valid = $this->validate_2fa_code($user->two_factor_secret, $data['twoFactorCode']);
+        $is_valid = (new AuthService())->validate_2fa_code($user->two_factor_secret, $data['twoFactorCode']);
 
         if ($is_valid) {
             //in the react app, the token its not stored anywhere, so we need to destroy the old session
@@ -201,7 +202,7 @@ class AuthController extends Controller
 
             return response()->user_was_authenticated(['user' => $user], '2fa_code_is_correct', true);
         } else {
-            return $this->validation_error($request, null, 'api_messages.error.2fa_code_invalid');
+            return (new AuthService())->validation_error($request, null, 'api_messages.error.2fa_code_invalid');
         }
     }
 
@@ -216,17 +217,17 @@ class AuthController extends Controller
         ]);
 
         if ($validation->fails()) {
-            return $this->validation_error($request, $validation);
+            return (new AuthService())->validation_error($request, $validation);
         }
 
         $user = User::where('email', $data['email'])->firstOrFail();
 
-        $is_valid = $this->validate_2fa_code($user->two_factor_secret, $data['twoFactorCode']);
+        $is_valid = (new AuthService())->validate_2fa_code($user->two_factor_secret, $data['twoFactorCode']);
 
         if ($is_valid) {
             return response()->user_was_authenticated(['user' => $user], '2fa_code_is_correct', true, true);
         } else {
-            return $this->validation_error($request, null, 'api_messages.error.2fa_code_invalid');
+            return (new AuthService())->validation_error($request, null, 'api_messages.error.2fa_code_invalid');
         }
     }
 
@@ -241,7 +242,7 @@ class AuthController extends Controller
         ]);
 
         if ($validation->fails()) {
-            return $this->validation_error($request, $validation);
+            return (new AuthService())->validation_error($request, $validation);
         }
 
         $user = User::where('email', $data['mainEmail'])->firstOrFail();
@@ -253,7 +254,7 @@ class AuthController extends Controller
         if ($valid_email_code) {
             return response()->user_was_authenticated(['user' => $user], '2fa_code_is_correct', true, true);
         } else {
-            return $this->validation_error($request);
+            return (new AuthService())->validation_error($request);
         }
     }
 
@@ -269,7 +270,7 @@ class AuthController extends Controller
         ]);
 
         if ($validation->fails()) {
-            return $this->validation_error($request, $validation);
+            return (new AuthService())->validation_error($request, $validation);
         }
 
         try {
@@ -290,7 +291,7 @@ class AuthController extends Controller
         if ($second_email_is_valid && $anti_fishing_is_valid && $security_code_is_valid) {
             return response()->user_was_authenticated(['user' => $user], '2fa_code_is_correct', true, true);
         } else {
-            return $this->validation_error($request);
+            return (new AuthService())->validation_error($request);
         }
     }
 
@@ -312,7 +313,7 @@ class AuthController extends Controller
         ]);
 
         if ($validation->fails()) {
-            return $this->validation_error($request, $validation);
+            return (new AuthService())->validation_error($request, $validation);
         }
 
         if ($data['accessTo'] === 'user-data') {
@@ -338,76 +339,15 @@ class AuthController extends Controller
         }
     }
 
-    /**************************************************************************************************************** helper functions */
     public function refresh_2fa_secret(Request $request)
     {
         $user = $request->user();
 
-        $secret = $this->generate_2fa_secret(true);
+        $secret = (new AuthService())->generate_2fa_secret(true);
 
         $user->two_factor_secret = Crypt::encryptString($secret);
         $user->save();
 
         return response()->success(['secret' => $secret, 'email' => $user->email], 'auth.refresh_2fa_secret');
-    }
-
-    private function validate_2fa_code($secret_key, $code)
-    {
-        // Since the package doesn't come with any instructions on how to test it, I decided to do this
-        // So, if env is "local" or "testing" it will not consider G2FA, and return a true instead
-        // I tested G2FA manually and, as far as I know, it works
-        if (env('APP_ENV') !== 'local' && env('APP_ENV') !== 'testing') {
-
-            $google2fa = new Google2FA();
-
-            $window = 1; // 30 sec
-
-            return $google2fa->verifyKey(Crypt::decryptString($secret_key), $code, $window);
-        } else {
-            return true;
-        }
-    }
-
-    private function generate_2fa_secret($return_decrypted = false)
-    {
-        $google2fa = new Google2FA();
-        $two_factor_secret = $google2fa->generateSecretKey();
-
-        if ($return_decrypted) {
-            return $two_factor_secret;
-        } else {
-            return Crypt::encryptString($two_factor_secret);
-        }
-    }
-
-    private function spend_invitation_code($code)
-    {
-        $referred_user = User::where('invitation_code', $code)->firstOrFail();
-
-        if (!$referred_user->hasRole('premium')) {
-            $referred_user->slots_available += 5;
-
-            $referred_user->save();
-        }
-
-        return 10;
-    }
-
-    private function validation_error(Request $request, $validation = null, $message = null)
-    {
-        if (!is_null($validation)) {
-            $data = [
-                'errors' => $validation->errors(),
-                'request' => $request->all(),
-            ];
-        } else {
-            $data = [
-                'errors' => [
-                    'error' => __($message ? $message : 'auth.failed')
-                ],
-                'request' => $request->all()
-            ];
-        }
-        return response()->error($data, $message ? $message : 'auth.failed', 401);
     }
 }

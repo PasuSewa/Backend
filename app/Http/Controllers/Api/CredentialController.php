@@ -12,12 +12,6 @@ use App\Jobs\UpdateCredentialJob;
 use Validator;
 
 use App\Models\Slot;
-use App\Models\Username;
-use App\Models\Email;
-use App\Models\Password;
-use App\Models\PhoneNumber;
-use App\Models\QuestionAnswer;
-use App\Models\SecurityCode;
 
 use App\Services\CredentialService;
 
