@@ -13,17 +13,6 @@ use Illuminate\Support\Facades\Crypt;
 
 class CredentialService
 {
-    public function fuse_strings($array_of_strings)
-    {
-        $string = '';
-
-        foreach ($array_of_strings as $single_string) {
-            $string = $string . ' ' . $single_string;
-        }
-
-        return substr($string, 0, 1);
-    }
-
     public function email_crud($option, $credential_id, $body = null)
     {
         $ending = explode('@', $body, 2)[1];
@@ -181,7 +170,7 @@ class CredentialService
                 'multiple_codes' =>
                 isset($body['multiple_codes'])
                     ?
-                    Crypt::encryptString($this->fuse_strings($body['multiple_codes']))
+                    Crypt::encryptString(implode('<@>', $body['multiple_codes']))
                     :
                     null,
                 'multiple_codes_length' =>
@@ -193,7 +182,7 @@ class CredentialService
                 'crypto_codes' =>
                 isset($body['crypto_codes'])
                     ?
-                    Crypt::encryptString($this->fuse_strings($body['crypto_codes']))
+                    Crypt::encryptString(implode('<@>', $body['crypto_codes']))
                     :
                     null,
                 'crypto_codes_length' =>
@@ -215,8 +204,8 @@ class CredentialService
             }
 
             $codes->unique_code = isset($body['unique_code']) ? Crypt::encryptString($body['unique_code']) : null;
-            $codes->multiple_codes = isset($body['multiple_codes']) ? Crypt::encryptString($this->fuse_strings($body['multiple_codes'])) : null;
-            $codes->crypto_codes = isset($body['crypto_codes']) ? Crypt::encryptString($this->fuse_strings($body['crypto_codes'])) : null;
+            $codes->multiple_codes = isset($body['multiple_codes']) ? Crypt::encryptString(implode('<@>', $body['multiple_codes'])) : null;
+            $codes->crypto_codes = isset($body['crypto_codes']) ? Crypt::encryptString(implode('<@>', $body['crypto_codes'])) : null;
 
             $codes->unique_code_length = isset($body['unique_code']) ? strlen($body['unique_code']) : null;
             $codes->multiple_codes_length = isset($body['multiple_code']) ? count($body['multiple_codes']) : null;
