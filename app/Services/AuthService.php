@@ -108,8 +108,8 @@ class AuthService
             'company_name' => $enc_credential->company_name,
             'description' => $enc_credential->description,
             'last_seen' => $enc_credential->last_seen,
-            'created_at' => $enc_credential->created_at,
-            'updated_at' => $enc_credential->updated_at,
+            'created_at' => $enc_credential->created_at->format('Y-m-d H:i:s'),
+            'updated_at' => $enc_credential->updated_at->format('Y-m-d H:i:s'),
         ];
 
         if (!is_null($enc_credential->user_name)) {

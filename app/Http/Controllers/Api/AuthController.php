@@ -4,19 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\UpdateCredentialJob;
-use App\Models\Slot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Notification;
-
-use App\Services\CredentialService;
 
 use Validator;
 
 use App\Models\User;
 
 use App\Notifications\EmailTwoFactorAuth;
+
 use App\Services\AuthService;
 
 class AuthController extends Controller
@@ -306,11 +304,13 @@ class AuthController extends Controller
     /**************************************************************************************************************** access encrypted data */
     public function grant_access(Request $request)
     {
-        $data = $request->only('accessTo', 'credentialId');
+        $data = $request->only('accessTo', 'credentialId', 'accessingDevice', 'accessingPlatform');
 
         $validation = Validator::make($data, [
             'accessTo' => ['required', 'string', 'max:190', 'in:user-data,credential-data'],
-            'credentialId' => ['nullable', 'integer', 'min:1', 'exists:slots,id']
+            'credentialId' => ['nullable', 'integer', 'min:1', 'exists:slots,id'],
+            'accessingDevice' => ['required', 'string', 'min:1', 'max:190'],
+            'accessingPlatform' => ['required', 'string', 'min:3', 'max:7', 'in:mobile,web,desktop']
         ]);
 
         if ($validation->fails()) {
@@ -326,7 +326,12 @@ class AuthController extends Controller
         }
 
         if ($data['accessTo'] === 'credential-data') {
-            $decrypted_credential = (new AuthService())->access_credential_data($user->id, $data['credentialId']);
+            $decrypted_credential = (new AuthService())->access_credential_data([
+                'user_id' => $user->id,
+                'credential_id' => $data['credentialId'],
+                'user_agent' => $data['accessingDevice'],
+                'accessing_platform' => $data['accessingPlatform']
+            ]);
 
             UpdateCredentialJob::dispatch($data['credentialId'])->delay(now()->addDays(10));
 
