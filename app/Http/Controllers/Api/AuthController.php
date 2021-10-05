@@ -350,4 +350,14 @@ class AuthController extends Controller
 
         return response()->success(['secret' => $secret, 'email' => $user->email], 'auth.refresh_2fa_secret');
     }
+
+    public function renew_security_code(Request $request)
+    {
+        $user = $request->user();
+        $renewed_code = Crypt::encryptString(strtoupper(Str::random(10)));
+        $user->recovery_code = $renewed_code;
+        $user->save();
+
+        return response()->success(['renewed_code' => $renewed_code], 'success');
+    }
 }
