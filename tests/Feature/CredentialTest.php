@@ -302,8 +302,69 @@ class CredentialTest extends TestCase
         $this->assertEquals(Crypt::decryptString($question_answer->security_answer), $new_json_data['security_answer']);
     }
 
+    /** @test */
     public function it_deletes_unused_properties()
     {
+        $old_json_data = [
+            'company_name' => 'testing',
+            'description' => 'old description',
+            'user_name' => 'old name',
+            'email' => 'email@old.com',
+            'password' => 'old password',
+            'username' => 'old username',
+            'phone_number' => 'old phone number',
+            'security_question' => 'old question',
+            'security_answer' => 'old answer',
+            'unique_code' => 'old unique code',
+            'multiple_codes' => [
+                'old code 1',
+                'old code 2',
+                'old code 3',
+            ],
+            'crypto_codes' => [
+                'old code 1',
+                'old code 2',
+                'old code 3',
+                'old code 4',
+                'old code 5',
+                'old code 6',
+                'old code 7',
+            ],
+            'accessing_device' => 'my pc for testing',
+            'accessing_platform' => 'web',
+        ];
+
+        $new_json_data = [
+            'company_name' => 'testing',
+            'description' => 'new description',
+            'accessing_device' => 'my pc for testing',
+            'accessing_platform' => 'web',
+        ];
+
+        $user = User::find(1);
+        $token = JWTAuth::fromUser($user);
+
+        $old_response = $this->withHeaders(['Authorization' => 'Bearer ' . $token])->json('POST', '/api/credential/create', $old_json_data);
+        $old_response->assertOk();
+
+        $this->assertDatabaseHas('slots', [
+            'accessing_device' => 'my pc for testing',
+            'accessing_platform' => 'web',
+            'company_name' => 'testing',
+            'description' => 'old description',
+        ]);
+
+        $credential_id = $old_response->json()['data']['credential']['id'];
+
+        $new_response = $this->withHeaders(['Authorization' => 'Bearer ' . $token])->json('PUT', '/api/credential/update/' . $credential_id, $new_json_data);
+        $new_response->assertOk();
+
+        $this->assertDatabaseMissing('emails', ['slot_id' => $credential_id]);
+        $this->assertDatabaseMissing('passwords', ['slot_id' => $credential_id]);
+        $this->assertDatabaseMissing('phone_numbers', ['slot_id' => $credential_id]);
+        $this->assertDatabaseMissing('security_codes', ['slot_id' => $credential_id]);
+        $this->assertDatabaseMissing('security_questions_answers', ['slot_id' => $credential_id]);
+        $this->assertDatabaseMissing('usernames', ['slot_id' => $credential_id]);
     }
 
     public function it_creates_new_properties()
