@@ -15,9 +15,9 @@ class CredentialService
 {
     public function email_crud($option, $credential_id, $body = null)
     {
-        $ending = explode('@', $body, 2)[1];
-
         if ($option === "create") {
+            $ending = explode('@', $body, 2)[1];
+
             Email::create([
                 'slot_id' => $credential_id,
                 'email' => Crypt::encryptString($body),
@@ -28,18 +28,30 @@ class CredentialService
         }
 
         if ($option === "update") {
+            $ending = explode('@', $body, 2)[1];
+
             $email = Email::where('slot_id', $credential_id)->first();
+
+            if (is_null($email)) {
+                $this->email_crud('create', $credential_id, $body);
+
+                return;
+            }
 
             $email->email = Crypt::encryptString($body);
             $email->opening = substr($body, 0, 2);
             $email->ending = '@' . $ending;
             $email->char_count = strlen($body) - 2 - strlen($ending) + 1;
+
+            $email->save();
         }
 
         if ($option === "delete") {
             $email = Email::where('slot_id', $credential_id)->first();
 
-            $email->delete();
+            if (!is_null($email)) {
+                $email->delete();
+            }
         }
     }
 
@@ -56,6 +68,12 @@ class CredentialService
         if ($option === "update") {
             $password = Password::where('slot_id', $credential_id)->first();
 
+            if (is_null($password)) {
+                $this->password_crud('create', $credential_id, $body);
+
+                return;
+            }
+
             $password->password = Crypt::encryptString($body);
             $password->char_count = strlen($body);
             $password->save();
@@ -64,7 +82,9 @@ class CredentialService
         if ($option === "delete") {
             $password = Password::where('slot_id', $credential_id)->first();
 
-            $password->delete();
+            if (!is_null($password)) {
+                $password->delete();
+            }
         }
     }
 
@@ -83,6 +103,12 @@ class CredentialService
         if ($option === "update") {
             $phone_number = PhoneNumber::where('slot_id', $credential_id)->first();
 
+            if (is_null($phone_number)) {
+                $this->phone_number_crud('create', $credential_id, $body);
+
+                return;
+            }
+
             $phone_number->phone_number = Crypt::encryptString($body);
             $phone_number->opening = substr($body, 0, 3);
             $phone_number->char_count = strlen($body) - 5;
@@ -94,7 +120,9 @@ class CredentialService
         if ($option === "delete") {
             $phone_number = PhoneNumber::where('slot_id', $credential_id)->first();
 
-            $phone_number->delete();
+            if (!is_null($phone_number)) {
+                $phone_number->delete();
+            }
         }
     }
 
@@ -111,6 +139,12 @@ class CredentialService
         if ($option === "update") {
             $question_answer = QuestionAnswer::where('slot_id', $credential_id)->first();
 
+            if (is_null($question_answer)) {
+                $this->question_answer_crud('create', $credential_id, $body);
+
+                return;
+            }
+
             $question_answer->security_question = Crypt::encryptString($body['question']);
             $question_answer->security_answer = Crypt::encryptString($body['answer']);
 
@@ -120,7 +154,9 @@ class CredentialService
         if ($option === "delete") {
             $question_answer = QuestionAnswer::where('slot_id', $credential_id)->first();
 
-            $question_answer->delete();
+            if (!is_null($question_answer)) {
+                $question_answer->delete();
+            }
         }
     }
 
@@ -137,6 +173,12 @@ class CredentialService
         if ($option === "update") {
             $username = Username::where('slot_id', $credential_id)->first();
 
+            if (is_null($username)) {
+                $this->username_crud('create', $credential_id, $body);
+
+                return;
+            }
+
             $username->username = Crypt::encryptString($body);
             $username->char_count = strlen($body);
 
@@ -146,7 +188,9 @@ class CredentialService
         if ($option === "delete") {
             $username = Username::where('slot_id', $credential_id)->first();
 
-            $username->delete();
+            if (!is_null($username)) {
+                $username->delete();
+            }
         }
     }
 
@@ -211,7 +255,15 @@ class CredentialService
             $codes->multiple_codes_length = isset($body['multiple_code']) ? count($body['multiple_codes']) : null;
             $codes->crypto_codes_length = isset($body['crypto_codes']) ? count($body['crypto_codes']) : null;
 
-            if (is_null($codes->unique_code) && is_null($codes->multiple_codes) && is_null($codes->crypto_codes)) {
+            if (
+                !is_null($codes)
+                &&
+                is_null($codes->unique_code)
+                &&
+                is_null($codes->multiple_codes)
+                &&
+                is_null($codes->crypto_codes)
+            ) {
                 $codes->delete();
             } else {
                 $codes->save();
