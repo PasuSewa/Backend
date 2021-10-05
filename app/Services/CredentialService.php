@@ -252,7 +252,7 @@ class CredentialService
             $codes->crypto_codes = isset($body['crypto_codes']) ? Crypt::encryptString(implode('<@>', $body['crypto_codes'])) : null;
 
             $codes->unique_code_length = isset($body['unique_code']) ? strlen($body['unique_code']) : null;
-            $codes->multiple_codes_length = isset($body['multiple_code']) ? count($body['multiple_codes']) : null;
+            $codes->multiple_codes_length = isset($body['multiple_codes']) ? count($body['multiple_codes']) : null;
             $codes->crypto_codes_length = isset($body['crypto_codes']) ? count($body['crypto_codes']) : null;
 
             if (
