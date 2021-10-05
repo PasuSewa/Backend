@@ -367,7 +367,81 @@ class CredentialTest extends TestCase
         $this->assertDatabaseMissing('usernames', ['slot_id' => $credential_id]);
     }
 
+    /** @test */
     public function it_creates_new_properties()
     {
+        $old_json_data = [
+            'accessing_device' => 'my pc for testing',
+            'accessing_platform' => 'web',
+            'company_name' => 'testing',
+            'description' => 'old description',
+        ];
+
+        $new_json_data = [
+            'description' => 'new description',
+            'user_name' => 'new name',
+            'email' => 'email@new.com',
+            'password' => 'new password',
+            'username' => 'new username',
+            'phone_number' => 'new phone number',
+            'security_question' => 'new question',
+            'security_answer' => 'new answer',
+            'unique_code' => 'new unique code',
+            'multiple_codes' => [
+                'new code 1',
+                'new code 2',
+                'new code 3',
+            ],
+            'crypto_codes' => [
+                'new code 1',
+                'new code 2',
+                'new code 3',
+                'new code 4',
+                'new code 5',
+                'new code 6',
+                'new code 7',
+            ],
+            'accessing_device' => 'my pc for testing',
+            'accessing_platform' => 'web',
+        ];
+
+        $user = User::find(1);
+        $token = JWTAuth::fromUser($user);
+
+        $old_response = $this->withHeaders(['Authorization' => 'Bearer ' . $token])->json('POST', '/api/credential/create', $old_json_data);
+        $old_response->assertOk();
+
+        $this->assertDatabaseHas('slots', [
+            'accessing_device' => 'my pc for testing',
+            'accessing_platform' => 'web',
+            'company_name' => 'testing',
+            'description' => 'old description',
+        ]);
+
+        $credential_id = $old_response->json()['data']['credential']['id'];
+
+        $new_response = $this->withHeaders(['Authorization' => 'Bearer ' . $token])->json('PUT', '/api/credential/update/' . $credential_id, $new_json_data);
+        $new_response->assertOk();
+
+        $email = Email::where('slot_id', $credential_id)->firstOrFail();
+        $this->assertEquals(Crypt::decryptString($email->email), $new_json_data['email']);
+
+        $password = Password::where('slot_id', $credential_id)->firstOrFail();
+        $this->assertEquals(Crypt::decryptString($password->password), $new_json_data['password']);
+
+        $phone_number = PhoneNumber::where('slot_id', $credential_id)->firstOrFail();
+        $this->assertEquals(Crypt::decryptString($phone_number->phone_number), $new_json_data['phone_number']);
+
+        $username = Username::where('slot_id', $credential_id)->firstOrFail();
+        $this->assertEquals(Crypt::decryptString($username->username), $new_json_data['username']);
+
+        $code = SecurityCode::where('slot_id', $credential_id)->firstOrFail();
+        $this->assertEquals(Crypt::decryptString($code->unique_code), $new_json_data['unique_code']);
+        $this->assertEquals(Crypt::decryptString($code->multiple_codes), implode('<@>', $new_json_data['multiple_codes']));
+        $this->assertEquals(Crypt::decryptString($code->crypto_codes), implode('<@>', $new_json_data['crypto_codes']));
+
+        $question_answer = QuestionAnswer::where('slot_id', $credential_id)->firstOrFail();
+        $this->assertEquals(Crypt::decryptString($question_answer->security_question), $new_json_data['security_question']);
+        $this->assertEquals(Crypt::decryptString($question_answer->security_answer), $new_json_data['security_answer']);
     }
 }
