@@ -56,6 +56,26 @@ class CredentialController extends Controller
         ], 'success');
     }
 
+    public function index(Request $request)
+    {
+        $user = $request->user();
+
+        $credentials = Slot::with(
+            'email',
+            'password',
+            'phone_number',
+            'security_code',
+            'security_question_answer',
+            'username'
+        )
+            ->where('user_id', $user->id)
+            ->get();
+
+        $user_credentials = is_null($credentials) ? [] : $credentials;
+
+        return response()->success(['credentials' => $user_credentials], 'success');
+    }
+
     public function create(Request $request)
     {
         $data = $request->only(
@@ -279,11 +299,19 @@ class CredentialController extends Controller
     {
         $user = $request->user();
 
-        /**
-         * to do:
-         * 
-         * 1- find the credential if exists
-         */
+        $credential = Slot::with(
+            'email',
+            'password',
+            'phone_number',
+            'security_code',
+            'security_question_answer',
+            'username'
+        )
+            ->where('user_id', $user->id)
+            ->where('slot_id', $credential_id)
+            ->firstOrFail();
+
+        return response()->success(['credential' => $credential], 'success');
     }
 
     public function get_recently_seen(Request $request)

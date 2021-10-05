@@ -87,6 +87,10 @@ Route::group(['middleware' => 'Localization'], function () {
 
             Route::post('/create', [CredentialController::class, 'create']);
 
+            Route::get('/index', [CredentialController::class, 'index']);
+
+            Route::get('/find/{credential_id}', [CredentialController::class, 'find']);
+
             Route::put('/update/{credential_id}', [CredentialController::class, 'update']);
 
             Route::get('/delete/{credential_id}', [CredentialController::class, 'delete']);
