@@ -105,7 +105,7 @@ class AuthService
 
         $enc_credential->save();
 
-        UpdateCredentialJob::dispatch($credential->id)->delay(now()->addDays(3));
+        UpdateCredentialJob::dispatch($enc_credential->id)->delay(now()->addDays(3));
 
         $dec_credential = [
             'id' => $enc_credential->id,
