@@ -169,7 +169,7 @@ class CredentialController extends Controller
             ], 'api_messages.error.generic', 500);
         }
 
-        UpdateCredentialJob::dispatch($credential->id)->delay(now()->addDays(10));
+        UpdateCredentialJob::dispatch($credential->id)->delay(now()->addDays(3));
 
         $credential_created = Slot::with(
             'email',
@@ -258,8 +258,6 @@ class CredentialController extends Controller
 
         (new CredentialService())->security_code_crud('update or delete', $credential->id, $data);
 
-        UpdateCredentialJob::dispatch($credential->id)->delay(now()->addDays(10));
-
         $credential_updated = Slot::with(
             'email',
             'password',
@@ -326,7 +324,9 @@ class CredentialController extends Controller
             'accessing_platform',
             'created_at',
             'updated_at'
-        )->get();
+        )
+            ->orderBy('last_seen', 'DESC')
+            ->get();
 
         return response()->success(['recently_seen' => $credentials], 'success');
     }

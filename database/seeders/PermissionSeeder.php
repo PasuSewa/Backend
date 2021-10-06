@@ -28,7 +28,8 @@ class PermissionSeeder extends Seeder
                 'anti_fishing_secret' => Crypt::encryptString('secret'),
                 'preferred_lang' => 'es',
                 'invitation_code' => '4LGDR0COFF',
-                'recovery_code' => Crypt::encryptString('AJF682JK9S')
+                'recovery_code' => Crypt::encryptString('AJF682JK9S'),
+                'slots_available' => 3
             ]);
         });
 

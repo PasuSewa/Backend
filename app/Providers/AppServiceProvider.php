@@ -83,7 +83,7 @@ class AppServiceProvider extends ServiceProvider
                         'token' => $with_token
                             ?
                             auth('api')
-                            ->setTTL($mobile ? null : 60) // 60 mins if plattform is different from mobile
+                            ->setTTL($mobile ? null : 120) // 120 mins if plattform is different from mobile
                             ->tokenById($data['user']->id)
                             :
                             null,

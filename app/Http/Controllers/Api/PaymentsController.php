@@ -330,6 +330,9 @@ class PaymentsController extends Controller
 
             $payment['instance']->delete();
 
+            $user->slots_available = 3;
+            $user->save();
+
             return true;
         }
 
@@ -337,7 +340,7 @@ class PaymentsController extends Controller
             $slots_to_add = $payment['instance']->amount / 10;
 
             if (is_int($slots_to_add)) {
-                $user->available_slots *= $slots_to_add;
+                $user->slots_available *= $slots_to_add;
 
                 $payment['instance']->delete();
 

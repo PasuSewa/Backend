@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Http\Request;
 use PragmaRX\Google2FA\Google2FA;
 
+use App\Jobs\UpdateCredentialJob;
+
 use App\Models\User;
 use App\Models\Slot;
 
@@ -100,6 +102,10 @@ class AuthService
         $enc_credential->last_seen = now()->format('Y-m-d H:i:s');
         $enc_credential->accessing_device = $data['user_agent'];
         $enc_credential->accessing_platform = $data['accessing_platform'];
+
+        $enc_credential->save();
+
+        UpdateCredentialJob::dispatch($credential->id)->delay(now()->addDays(3));
 
         $dec_credential = [
             'id' => $enc_credential->id,
