@@ -18,7 +18,7 @@ class CreatePhoneNumbersTable extends Migration
 
             $table->foreignId('slot_id')->constrained()->onDelete('cascade');
 
-            $table->string('phone_number', 250);
+            $table->string('phone_number', 500);
             $table->string('opening', 3); // the country code
             $table->integer('char_count');
             $table->string('ending'); // the last 4 digits
@@ -33,7 +33,7 @@ class CreatePhoneNumbersTable extends Migration
      */
     public function down()
     {
-        Schema::table('phone_numbers', function(BluePrint $table){
+        Schema::table('phone_numbers', function (BluePrint $table) {
             $table->dropForeign(['slot_id']);
             $table->dropColumn('slot_id');
         });

@@ -18,7 +18,7 @@ class CreateUsernamesTable extends Migration
 
             $table->foreignId('slot_id')->constrained()->onDelete('cascade');
 
-            $table->string('username', 250);
+            $table->text('username');
             $table->integer('char_count');
             $table->timestamps();
         });
@@ -31,7 +31,7 @@ class CreateUsernamesTable extends Migration
      */
     public function down()
     {
-        Schema::table('usernames', function(BluePrint $table){
+        Schema::table('usernames', function (BluePrint $table) {
             $table->dropForeign(['slot_id']);
             $table->dropColumn('slot_id');
         });

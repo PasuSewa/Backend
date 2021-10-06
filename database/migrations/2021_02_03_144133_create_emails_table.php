@@ -18,7 +18,7 @@ class CreateEmailsTable extends Migration
 
             $table->foreignId('slot_id')->constrained()->onDelete('cascade');
 
-            $table->string('email', 250);
+            $table->text('email');
             $table->string('opening');
             $table->integer('char_count');
             $table->string('ending');

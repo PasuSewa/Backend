@@ -17,8 +17,8 @@ class CreatePasswordsTable extends Migration
             $table->id();
 
             $table->foreignId('slot_id')->constrained()->onDelete('cascade');
-            
-            $table->string('password', 250);
+
+            $table->text('password');
             $table->integer('char_count');
             $table->timestamps();
         });
@@ -31,7 +31,7 @@ class CreatePasswordsTable extends Migration
      */
     public function down()
     {
-        Schema::table('passwords', function(BluePrint $table){
+        Schema::table('passwords', function (BluePrint $table) {
             $table->dropForeign(['slot_id']);
             $table->dropColumn('slot_id');
         });

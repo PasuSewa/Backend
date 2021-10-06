@@ -18,8 +18,8 @@ class CreateSecurityQuestionsAnswers extends Migration
 
             $table->foreignId('slot_id')->constrained()->onDelete('cascade');
 
-            $table->string('security_question', 250);
-            $table->string('security_answer', 250);
+            $table->text('security_question');
+            $table->text('security_answer');
             $table->timestamps();
         });
     }
@@ -31,7 +31,7 @@ class CreateSecurityQuestionsAnswers extends Migration
      */
     public function down()
     {
-        Schema::table('security_questions_answers', function(BluePrint $table){
+        Schema::table('security_questions_answers', function (BluePrint $table) {
             $table->dropForeign(['slot_id']);
             $table->dropColumn('slot_id');
         });

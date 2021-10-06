@@ -23,7 +23,7 @@ class CreateSlotsTable extends Migration
             $table->string('accessing_device')->nullable();
             $table->string('accessing_platform')->nullable();
 
-            $table->string('user_name')->nullable();
+            $table->text('user_name')->nullable();
             $table->integer('char_count')->nullable();
             $table->string('company_name');
             $table->string('description', 500)->nullable();
