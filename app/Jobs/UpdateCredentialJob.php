@@ -38,7 +38,7 @@ class UpdateCredentialJob implements ShouldQueue
 
         $credential = Slot::find($this->credential_id);
 
-        if (!is_null($credential)) {
+        if (!is_null($credential) && $credential->recently_seen) {
             $credential->recently_seen = false;
 
             $credential->save();
