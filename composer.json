@@ -12,6 +12,7 @@
         "coinbase/coinbase-commerce": "^1.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
+        "garygreen/pretty-routes": "^1.0",
         "guzzlehttp/guzzle": "^5.0",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
