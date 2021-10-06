@@ -354,8 +354,8 @@ class AuthController extends Controller
     public function renew_security_code(Request $request)
     {
         $user = $request->user();
-        $renewed_code = Crypt::encryptString(strtoupper(Str::random(10)));
-        $user->recovery_code = $renewed_code;
+        $renewed_code = strtoupper(Str::random(10));
+        $user->recovery_code = Crypt::encryptString($renewed_code);
         $user->save();
 
         return response()->success(['renewed_code' => $renewed_code], 'success');
