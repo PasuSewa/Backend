@@ -19,7 +19,7 @@ class CreateSecurityCodesTable extends Migration
             $table->foreignId('slot_id')->constrained()->onDelete('cascade');
 
             // this 3 are nullable because the user may have one, or the other, but most likely won't have all 3 at the same time
-            $table->string('unique_code')->nullable(); // only 1 security code
+            $table->text('unique_code')->nullable(); // only 1 security code
             $table->integer('unique_code_length')->nullable();
             $table->text('multiple_codes')->nullable(); // 10+ security codes
             $table->integer('multiple_codes_length')->nullable();

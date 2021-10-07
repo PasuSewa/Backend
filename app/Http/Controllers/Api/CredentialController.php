@@ -118,9 +118,13 @@ class CredentialController extends Controller
         }
 
         try {
+
+            $company = Company::where('name', 'LIKE', '%' . $data['company_name'] . '%')->first();
+
             $credential = Slot::create([
                 'user_id' => $user->id,
                 'company_name' => isset($data['company_name']) && !isset($data['company_id']) ? ucwords($data['company_name']) : null,
+                'company_id' => $company->id,
                 'last_seen' => now()->format('Y-m-d H:i:s'),
                 'recently_seen' => true,
                 'accessing_device' => $data['accessing_device'],
