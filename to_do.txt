@@ -1,8 +1,0 @@
-1) Antes de terminar el pryecto, dentro de App/Http/Kernel.php, habilitar dentro de web y api el HttpsProtocol
-
-
-Cosas pendientes:
-
-- agregar feedback function en react
-
-- agregar los métodos de login
