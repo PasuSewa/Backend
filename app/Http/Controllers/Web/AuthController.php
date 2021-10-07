@@ -22,7 +22,7 @@ class AuthController extends Controller
         $data = $request->validate([
             '2fa_code_email' => $rules,
             '2fa_code' => $rules,
-            'anti_fishing_secret' => ['required', 'string', 'min:4', 'max:190', 'alpha']
+            'anti_fishing_secret' => ['required', 'string', 'min:4', 'max:190']
         ]);
 
         $google2fa = new Google2FA();
