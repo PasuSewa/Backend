@@ -3,9 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Response;
 
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Response;
 
 use App\Models\Slot;
 
@@ -28,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        URL::forceScheme('https');
+
         Paginator::useBootstrap();
 
         Response::macro('success', function ($data, $message) {
