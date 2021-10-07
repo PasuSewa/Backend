@@ -120,12 +120,12 @@ class CredentialController extends Controller
         try {
             $credential = Slot::create([
                 'user_id' => $user->id,
-                'company_name' => isset($data['company_name']) && !isset($data['company_id']) ? $data['company_name'] : null,
+                'company_name' => isset($data['company_name']) && !isset($data['company_id']) ? ucwords($data['company_name']) : null,
                 'last_seen' => now()->format('Y-m-d H:i:s'),
                 'recently_seen' => true,
                 'accessing_device' => $data['accessing_device'],
                 'accessing_platform' => $data['accessing_platform'],
-                'user_name' => isset($data['user_name']) ? Crypt::encryptString($data['user_name']) : null,
+                'user_name' => isset($data['user_name']) ? Crypt::encryptString(ucwords($data['user_name'])) : null,
                 'char_count' => isset($data['user_name']) ? strlen($data['user_name']) : null,
                 'description' => isset($data['description']) ? $data['description'] : '',
             ]);

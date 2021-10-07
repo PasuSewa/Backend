@@ -17,6 +17,7 @@ class CreateSlotsTable extends Migration
             $table->bigIncrements('id');
 
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('company_id')->nullable()->constrained()->onDelete('cascade');
 
             $table->boolean('recently_seen')->nullable(); // this will be set up to "false" after 10 days of seeing it
             $table->string('last_seen')->nullable();

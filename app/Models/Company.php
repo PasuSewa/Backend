@@ -12,4 +12,10 @@ class Company extends Model
     protected $table = "companies";
 
     protected $guarded = [];
+
+    protected $hidden = [
+        "created_at",
+        "updated_at",
+        "file_name",
+    ];
 }

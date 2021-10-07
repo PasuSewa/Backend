@@ -148,7 +148,7 @@ class CredentialTest extends TestCase
 
         $token = JWTAuth::fromUser($user);
 
-        $response = $this->withHeaders(['Authorization' => 'Bearer ' . $token])->json('GET', '/api/credential/delete/' . $credential->id);
+        $response = $this->withHeaders(['Authorization' => 'Bearer ' . $token])->json('DELETE', '/api/credential/delete/' . $credential->id);
         $response->assertOk();
 
         $response->assertJsonStructure([

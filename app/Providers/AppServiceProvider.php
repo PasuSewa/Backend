@@ -55,7 +55,8 @@ class AppServiceProvider extends ServiceProvider
                         'phone_number',
                         'security_code',
                         'security_question_answer',
-                        'username'
+                        'username',
+                        'company'
                     )
                         ->where('user_id', $data['user']->id)
                         ->get();
