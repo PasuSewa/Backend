@@ -117,60 +117,52 @@ class CredentialController extends Controller
             }
         }
 
-        try {
+        $company = Company::where('name', 'LIKE', '%' . $data['company_name'] . '%')->first();
 
-            $company = Company::where('name', 'LIKE', '%' . $data['company_name'] . '%')->first();
+        $credential = Slot::create([
+            'user_id' => $user->id,
+            'company_name' => isset($data['company_name']) && !isset($data['company_id']) ? ucwords($data['company_name']) : null,
+            'company_id' => !is_null($company) ? $company->id : null,
+            'last_seen' => now()->format('Y-m-d H:i:s'),
+            'recently_seen' => true,
+            'accessing_device' => $data['accessing_device'],
+            'accessing_platform' => $data['accessing_platform'],
+            'user_name' => isset($data['user_name']) ? Crypt::encryptString(ucwords($data['user_name'])) : null,
+            'char_count' => isset($data['user_name']) ? strlen($data['user_name']) : null,
+            'description' => isset($data['description']) ? $data['description'] : '',
+        ]);
 
-            $credential = Slot::create([
-                'user_id' => $user->id,
-                'company_name' => isset($data['company_name']) && !isset($data['company_id']) ? ucwords($data['company_name']) : null,
-                'company_id' => $company->id,
-                'last_seen' => now()->format('Y-m-d H:i:s'),
-                'recently_seen' => true,
-                'accessing_device' => $data['accessing_device'],
-                'accessing_platform' => $data['accessing_platform'],
-                'user_name' => isset($data['user_name']) ? Crypt::encryptString(ucwords($data['user_name'])) : null,
-                'char_count' => isset($data['user_name']) ? strlen($data['user_name']) : null,
-                'description' => isset($data['description']) ? $data['description'] : '',
+        if (isset($data['email'])) {
+            (new CredentialService())->email_crud('create', $credential->id, $data['email']);
+        }
+
+        if (isset($data['password'])) {
+            (new CredentialService())->password_crud('create', $credential->id, $data['password']);
+        }
+
+        if (isset($data['phone_number'])) {
+            (new CredentialService())->phone_number_crud('create', $credential->id, $data['phone_number']);
+        }
+
+        if (isset($data['security_question']) && isset($data['security_answer'])) {
+            (new CredentialService())->question_answer_crud('create', $credential->id, [
+                'question' => $data['security_question'],
+                'answer' => $data['security_answer'],
             ]);
+        }
 
-            if (isset($data['email'])) {
-                (new CredentialService())->email_crud('create', $credential->id, $data['email']);
-            }
+        if (isset($data['username'])) {
+            (new CredentialService())->username_crud('create', $credential->id, $data['username']);
+        }
 
-            if (isset($data['password'])) {
-                (new CredentialService())->password_crud('create', $credential->id, $data['password']);
-            }
-
-            if (isset($data['phone_number'])) {
-                (new CredentialService())->phone_number_crud('create', $credential->id, $data['phone_number']);
-            }
-
-            if (isset($data['security_question']) && isset($data['security_answer'])) {
-                (new CredentialService())->question_answer_crud('create', $credential->id, [
-                    'question' => $data['security_question'],
-                    'answer' => $data['security_answer'],
-                ]);
-            }
-
-            if (isset($data['username'])) {
-                (new CredentialService())->username_crud('create', $credential->id, $data['username']);
-            }
-
-            if (
-                isset($data['unique_code'])
-                ||
-                isset($data['multiple_codes'])
-                ||
-                isset($data['crypto_codes'])
-            ) {
-                (new CredentialService())->security_code_crud('create', $credential->id, $data);
-            }
-        } catch (\Throwable $th) {
-            return response()->error([
-                'errors' => $th,
-                'request' => $request->all(),
-            ], 'api_messages.error.generic', 500);
+        if (
+            isset($data['unique_code'])
+            ||
+            isset($data['multiple_codes'])
+            ||
+            isset($data['crypto_codes'])
+        ) {
+            (new CredentialService())->security_code_crud('create', $credential->id, $data);
         }
 
         UpdateCredentialJob::dispatch($credential->id)->delay(now()->addDays(3));
