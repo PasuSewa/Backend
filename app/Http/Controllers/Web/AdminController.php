@@ -16,9 +16,9 @@ class AdminController extends Controller
     {
         $companies = Company::select('id', 'name', 'url_logo')->paginate(25);
 
-        $suggestions = Feedback::where('feedback_type', 'suggestion')->select('id', 'user_name', 'body', 'is_public')->get();
+        $suggestions = Feedback::where('type', 'suggestion')->select('id', 'user_name', 'body', 'is_public')->get();
 
-        $ratings = Feedback::where('feedback_type', 'rating')->select('id', 'user_name', 'body', 'is_public', 'rating')->get();
+        $ratings = Feedback::where('type', 'rating')->select('id', 'user_name', 'body', 'is_public', 'rating')->get();
 
         return view('dashboard', compact('companies', 'ratings', 'suggestions'));
     }
@@ -108,12 +108,12 @@ class AdminController extends Controller
             'title' => 'total amount of users',
         ]);
         array_push($statistics, [
-            'count' => Feedback::where('feedback_type', 'suggestion')->count(),
+            'count' => Feedback::where('type', 'suggestion')->count(),
             'icon' => 'air-baloon',
             'title' => 'total amount of suggestions',
         ]);
         array_push($statistics, [
-            'count' => Feedback::where('feedback_type', 'rating')->count(),
+            'count' => Feedback::where('type', 'rating')->count(),
             'icon' => 'book-bookmark',
             'title' => 'total amount of ratings',
         ]);
