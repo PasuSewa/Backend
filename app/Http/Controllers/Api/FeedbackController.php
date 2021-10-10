@@ -12,6 +12,18 @@ use App\Models\Feedback;
 
 class FeedbackController extends Controller
 {
+    /**
+     * Index
+     * 
+     * Get all the suggestions and ratings that are public
+     * 
+     * <aside class="notice">The results are stored in cache for 1 week</aside>
+     * 
+     * @group Feedback
+     * 
+     * @header Accept-Language es | en | jp
+     * 
+     */
     public function index()
     {
         $data = cache()->remember('feedback', 60 * 60 * 24 * 7, function () {
@@ -28,6 +40,43 @@ class FeedbackController extends Controller
         return response()->success(['feedback' => $data], 'feedback.obtained');
     }
 
+    /**
+     * Create
+     * 
+     * Store a suggestion and/or rating in the database
+     * 
+     * (Reuqires user role to be "premium")
+     * 
+     * @group Feedback
+     * 
+     * @authenticated
+     * 
+     * @bodyParam body string The body of the suggestion/rating (required)
+     * @bodyParam rating int The points given as rating (required only if "type" is false)
+     * @bodyParam type boolean true = this is a suggestion, while false = this is a rating
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "Succes!",
+     *      "data": {}
+     * }
+     * 
+     * @response status=401 scenario="validation failed" {
+     *      "status": 401,
+     *      "message": "error message",
+     *      "data": {
+     *          "errors": [
+     *              {
+     *                  "body": ""body" must have at least 5 characters."
+     *              }
+     *          ],
+     *          "request": {
+     *              "body": "",
+     *              "type": true, 
+     *          }
+     *      }
+     * }
+     */
     public function create(Request $request)
     {
         $data = $request->only('body', 'rating', 'type');
