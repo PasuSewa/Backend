@@ -13,28 +13,60 @@ use App\Notifications\PaymentSucceeded;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Http;
 
 use Validator;
 
+use App\Services\PaymentService;
+
 class PaymentsController extends Controller
 {
-    private $coinbase_shared_secret;
-    private $paypal_base_uri;
-    private $paypal_client_id;
-    private $paypal_client_secret;
     private $use_fake_payments;
 
     public function __construct()
     {
-        $this->coinbase_shared_secret = env('COINBASE_SHARED_SECRET');
-        $this->paypal_base_uri = env('PAYPAL_BASE_URI');
-        $this->paypal_client_id = env('PAYPAL_CLIENT_ID');
-        $this->paypal_client_secret = env('PAYPAL_CLIENT_SECRET');
         $this->use_fake_payments = env('USE_FAKE_PAYMENTS');
     }
 
     /**************************************************************************************************************** init payment instance */
+    /**
+     * Start Payment Instance
+     * 
+     * This method will create an "open payment instance" in the database, so, when the payment is fully confirmed, 
+     * the backend will know how much the user has paid, and what did they actually purchased.
+     * 
+     * @group Payments
+     * 
+     * @authenticated
+     * 
+     * @bodyParam method string required One of two options, either "PayPal" or "Crypto" (be careful, don't forget the capital letters)
+     * @bodyParam amount integer required The amount (in USD) that the user is paying
+     * @bodyParam type string required Either one of two options, "premium" if purchasing premium role, or "slots" if paying for more slots
+     * @bodyParam code string required The id of the transaction in PayPal, or the code of the transaction in Coinbase
+     * 
+     * @response status=200 scenario="success" {
+     *      "status": 200,
+     *      "message": "Succes!",
+     *      "data": {},
+     * }
+     * 
+     * @response status=400 scenario="validation failed" {
+     *      "status": 400,
+     *      "message": "error message",
+     *      "data": {
+     *          "errors": [
+     *              {
+     *                  "body": "body must have at least 5 characters."
+     *              }
+     *          ],
+     *          "request": {
+     *              "method": "PayPal",
+     *              "amount": 100,
+     *              "code": "AAAAA"
+     *              "type": "", 
+     *          }
+     *      }
+     * }
+     */
     public function start_payment_instance(Request $request)
     {
         $data = $request->only('method', 'amount', 'type', 'code');
@@ -72,34 +104,10 @@ class PaymentsController extends Controller
         return response()->success([], 'payment_instance_started');
     }
 
-    /**************************************************************************************************************** get payment instance */
-    private function get_payment_instance($code)
-    {
-        try {
-            if (!$this->use_fake_payments) {
-                return [
-                    'instance' => PaymentInstance::where('code', $code)->firstOrFail(),
-                    'successful' => true,
-                ];
-            } else {
-                return [
-                    'successful' => true,
-                    'instance' => null,
-                ];
-            }
-        } catch (\Throwable $th) {
-            return [
-                'successful' => false,
-                'message' => $th->getMessage(),
-                'errors' => $th
-            ];
-        }
-    }
-
     /**************************************************************************************************************** coinbase webhooks */
     public function crypto_order_received(Request $request)
     {
-        $signature_verified = $this->verify_signature($request);
+        $signature_verified = (new PaymentService())->verify_signature($request);
 
         if (!$signature_verified) {
             return response()->error([
@@ -112,7 +120,7 @@ class PaymentsController extends Controller
 
         $data = $request->all();
 
-        $payment = $this->get_payment_instance($data['event']['data']['code']);
+        $payment = (new PaymentService())->get_payment_instance($data['event']['data']['code']);
 
         if (!$payment['successful']) {
             return response()->error(['errors' => $payment['errors']], $payment['message'], 500);
@@ -129,7 +137,7 @@ class PaymentsController extends Controller
 
     public function crypto_order_failed(Request $request)
     {
-        $signature_verified = $this->verify_signature($request);
+        $signature_verified = (new PaymentService())->verify_signature($request);
 
         if (!$signature_verified) {
             return response()->error([
@@ -142,7 +150,7 @@ class PaymentsController extends Controller
 
         $data = $request->all();
 
-        $payment = $this->get_payment_instance($data['event']['data']['code']);
+        $payment = (new PaymentService())->get_payment_instance($data['event']['data']['code']);
 
         if (!$payment['successful']) {
             return response()->error(['errors' => $payment['errors']], $payment['message'], 500);
@@ -159,7 +167,7 @@ class PaymentsController extends Controller
 
     public function crypto_order_succeeded(Request $request)
     {
-        $signature_verified = $this->verify_signature($request);
+        $signature_verified = (new PaymentService())->verify_signature($request);
 
         if (!$signature_verified) {
             return response()->error([
@@ -174,7 +182,7 @@ class PaymentsController extends Controller
 
         $order_code = $data['event']['data']['code'];
 
-        $payment = $this->get_payment_instance($order_code);
+        $payment = (new PaymentService())->get_payment_instance($order_code);
 
         if (!$payment['successful']) {
             return response()->error(['errors' => $payment['errors']], $payment['message'], 500);
@@ -184,7 +192,7 @@ class PaymentsController extends Controller
 
         $secret = Crypt::decryptString($user->anti_fishing_secret);
 
-        $resolve_purchase = $this->resolve_purchase($order_code);
+        $resolve_purchase = (new PaymentService())->resolve_purchase($order_code);
 
         if (!$resolve_purchase) {
 
@@ -200,23 +208,38 @@ class PaymentsController extends Controller
         return response()->success([], 'coinbase_webhook_received');
     }
 
-    private function verify_signature(Request $request)
-    {
-        /**
-         * Now, here I have a problem. I tried verifying coinbase's signature header with their own php package, but the problem is that
-            I don't know how to get the raw body of the request, and so, I couldn't use their package to verify it.
-         * 
-         * For now, unilt I figure out how to verify the signature, I'll be leaving this function like this.
-         */
-
-        $signature = $request->header('X-CC-Webhook-Signature');
-
-        $body = $request->getContent();
-
-        return true;
-    }
-
     /**************************************************************************************************************** paypal */
+    /**
+     * Verify PayPal Payment
+     * 
+     * This method recieves the transaction id of PayPal, and verifies that the purchase is fully confirmed
+     * 
+     * @group Payments
+     * @authenticated
+     * 
+     * @bodyParam code string required The id of the transaction in PayPal
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "Succes!",
+     *      "data": {}
+     * }
+     * 
+     * @response status=404 scenario="validation failed" {
+     *      "status": 404,
+     *      "message": "error message",
+     *      "data": {
+     *          "errors": [
+     *              {
+     *                  "code": "the code doesn't exist in database"
+     *              }
+     *          ],
+     *          "request": {
+     * "code": "AAAAA"
+     *          }
+     *      }
+     * }
+     */
     public function verify_paypal_payment(Request $request)
     {
         $data = $request->only('code');
@@ -231,10 +254,10 @@ class PaymentsController extends Controller
                 'request' => $request->all(),
             ];
 
-            return response()->error($data, 'api_messages.error.parameter_was_incorrect', 400);
+            return response()->error($data, 'api_messages.error.parameter_was_incorrect', 404);
         }
 
-        $payment = $this->capture_paypal_order($data['code']);
+        $payment = (new PaymentService())->capture_paypal_order($data['code']);
 
         $user = $request->user();
 
@@ -257,7 +280,7 @@ class PaymentsController extends Controller
             );
         }
 
-        $resolve_purchase = $this->resolve_purchase($data['code']);
+        $resolve_purchase = (new PaymentService())->resolve_purchase($data['code']);
 
         if (!$resolve_purchase) {
 
@@ -272,84 +295,4 @@ class PaymentsController extends Controller
 
         return response()->success([], 'purchase_finished');
     }
-
-    private function capture_paypal_order($paypal_order_id)
-    {
-        if ($this->use_fake_payments) {
-            return [
-                'status' => 'COMPLETED'
-            ];
-        }
-
-        $credentials = base64_encode("{$this->paypal_client_id}:{$this->paypal_client_secret}");
-
-        return Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json',
-            'Authorization' => "Basic {$credentials}"
-        ])
-            ->post(
-                $this->paypal_base_uri . "/v2/checkout/orders/{$paypal_order_id}/capture",
-                [
-                    'application_context' =>
-                    [
-                        'return_url' => 'https://pasunashi.xyz/paypal/payment-succeeded',
-                        'cancel_url' => 'https://pasunashi.xyz/paypal/payment-failed'
-                    ]
-                ]
-            )
-            ->json();
-    }
-
-    /**************************************************************************************************************** give the user what they paid for */
-    private function resolve_purchase($code)
-    {
-        $payment = $this->get_payment_instance($code);
-
-        if (!$payment['successful']) {
-            return false;
-        }
-
-        $user = User::find(!$this->use_fake_payments ? $payment['instance']->user_id : 1);
-
-        if ($this->use_fake_payments) {
-            return true;
-        }
-
-        if ($payment['instance']->type === 'premium') {
-
-            if ($user->hasRole('free')) {
-                $user->removeRole('free');
-            }
-
-            if ($user->hasRole('semi-premium')) {
-                $user->removeRole('semi-premium');
-            }
-
-            $user->assignRole('premium');
-
-            $payment['instance']->delete();
-
-            $user->slots_available = 3;
-            $user->save();
-
-            return true;
-        }
-
-        if ($payment['instance']->type === 'slots') {
-            $slots_to_add = $payment['instance']->amount / 10;
-
-            if (is_int($slots_to_add)) {
-                $user->slots_available *= $slots_to_add;
-
-                $payment['instance']->delete();
-
-                return true;
-            } // end if is_int
-
-            return false;
-        } // end if payment type
-
-        return false;
-    } // end method
 }
