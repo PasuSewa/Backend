@@ -63,9 +63,9 @@ return [
              */
             'exclude' => [
                 // '/health', 'admin.*'
-                '/coinbase-webhook/pending',
-                '/coinbase-webhook/error',
-                '/coinbase-webhook/success',
+                'api/coinbase-webhook/pending',
+                'api/coinbase-webhook/error',
+                'api/coinbase-webhook/success',
             ],
 
             /*
