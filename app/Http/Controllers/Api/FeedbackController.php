@@ -51,9 +51,9 @@ class FeedbackController extends Controller
      * 
      * @authenticated
      * 
-     * @bodyParam body string The body of the suggestion/rating (required)
-     * @bodyParam rating int The points given as rating (required only if "type" is false)
-     * @bodyParam type boolean true = this is a suggestion, while false = this is a rating
+     * @bodyParam body string required The body of the suggestion/rating (min: 5 max: 190 char)
+     * @bodyParam rating int required The points given as rating (required only if "type" is false) (min: 0, max: 10)
+     * @bodyParam type boolean required true = this is a suggestion, while false = this is a rating
      * 
      * @response {
      *      "status": 200,

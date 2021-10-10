@@ -40,10 +40,10 @@ class PaymentsController extends Controller
      * 
      * @header Accept-Language es | en | jp
      * 
-     * @bodyParam method string required One of two options, either "PayPal" or "Crypto" (be careful, don't forget the capital letters)
-     * @bodyParam amount integer required The amount (in USD) that the user is paying
-     * @bodyParam type string required Either one of two options, "premium" if purchasing premium role, or "slots" if paying for more slots
-     * @bodyParam code string required The id of the transaction in PayPal, or the code of the transaction in Coinbase
+     * @bodyParam method string required One of two options, either "PayPal" or "Crypto" (be careful, don't forget the capital letters).
+     * @bodyParam amount integer required The amount (in USD) that the user is paying (min: 5 USD).
+     * @bodyParam type string required Either one of two options, "premium" if purchasing premium role, or "slots" if paying for more slots (without cap letters).
+     * @bodyParam code string required The id of the transaction in PayPal, or the code of the transaction in Coinbase.
      * 
      * @response status=200 scenario="success" {
      *      "status": 200,

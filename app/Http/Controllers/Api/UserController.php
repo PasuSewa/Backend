@@ -11,6 +11,47 @@ use Validator;
 
 class UserController extends Controller
 {
+    /**
+     * Update
+     * 
+     * This method is used to edit the user's credentials for accessing their account in PasuNashi.
+     * 
+     * <aside class="notice">All of the parameters are required, even if nothing changed.</aside>
+     * 
+     * @group User
+     * @authenticated
+     * @header Accept-Language es | en | jp
+     * 
+     * @bodyParam name string required (min: 3, max: 190 char).
+     * @bodyParam phone_number string required (min: 8, max: 16 char).
+     * @bodyParam email string required (max: 190 char).
+     * @bodyParam recovery_email required (max: 190 char).
+     * @bodyParam anti_fishing_secret required (min: 5, max: 190 char).
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "Succes!",
+     *      "data": {}
+     * }
+     * 
+     * @response status=401 scenario="validation failed" {
+     *      "status": 401,
+     *      "message": "error message",
+     *      "data": {
+     *          "errors": [
+     *              {
+     *                  "name": ""name" must have at least 3 characters."
+     *              }
+     *          ],
+     *          "request": {
+     *              "neame": "",
+     *              "phone_number": "+1 555-1234-1234",
+     *              "email": "fake@email.com",
+     *              "recovery_email": "fake_email@email_company.com"
+     *              "anti_fishing_secret": "secret",
+     *      }
+     *  }
+     */
     public function update(Request $request)
     {
         $data = $request->only('name', 'phone_number', 'email', 'recovery_email', 'anti_fishing_secret');
@@ -50,6 +91,23 @@ class UserController extends Controller
         return response()->success([], 'auth.user_updated_successfully');
     }
 
+    /**
+     * Stop Premium
+     * 
+     * This method is for the times when some user may want to stop paying for the "premium" role, and go back to their previous role.
+     * 
+     * <aside class="notice">This method can only be used if the user making the request already has the "premium" role.</aside>
+     * 
+     * @group User
+     * @authenticated
+     * @header Accept-Language es | en | jp
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "Succes!",
+     *      "data": {}
+     * }
+     */
     public function stop_premium(Request $request)
     {
         $user = $request->user();
@@ -59,6 +117,23 @@ class UserController extends Controller
         return response()->success([], 'user.stopped_premium');
     }
 
+    /**
+     * Update Preferred Lang
+     * 
+     * It may be obvous at this point, but this is the method used for updating the user's preferred language.
+     * 
+     * @group User
+     * @authenticated
+     * @header Accept-Language es | en | jp
+     * 
+     * @bodyParam preferredLang string required One of these (exact) three options: "en", "es", "jp"
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "Succes!",
+     *      "data": {}
+     * }
+     */
     public function update_preferred_lang(Request $request)
     {
         $data = $request->only('preferredLang');
