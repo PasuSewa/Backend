@@ -382,7 +382,7 @@ class CredentialController extends Controller
      *      "data": {
      *          "errors": [
      *              {
-     *                  "email": "The field "email" must must be a email."
+     *                  "email": "The field "email" must must be a valid email."
      *              }
      *          ],
      *          "request": {
@@ -566,9 +566,9 @@ class CredentialController extends Controller
      *                  },
      *                  "password": {
      *                      "char_count": 16
-     *                  }
-     *              }
-     *      }
+     *                  },
+     *              },
+     *      },
      * }
      * 
      * @response status=404 scenario="credential with id = credential-id was not found" {

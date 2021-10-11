@@ -214,7 +214,7 @@ class PaymentsController extends Controller
     /**
      * Verify PayPal Payment
      * 
-     * This method recieves the transaction id of PayPal, and verifies that the purchase is fully confirmed
+     * This method receives the transaction id of PayPal, and verifies that the purchase is fully confirmed
      * 
      * @group Payments
      * 

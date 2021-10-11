@@ -19,6 +19,49 @@ use App\Services\AuthService;
 
 class AuthController extends Controller
 {
+    /**
+     * Send Code By Email
+     * 
+     * This method will send the security code needed for the user to login by the "login with email code" method.
+     * 
+     * Remember that the email parameter must exists either on the "emails" or in "recovery_emails" columns
+     * 
+     * @group Auth
+     * 
+     * @header Accept-Language es | en | jp
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "Succes!",
+     *      "data": {}
+     * }
+     * 
+     * @response status=401 scenario="validation failed" {
+     *      "status": 401,
+     *      "message": "error message",
+     *      "data": {
+     *          "errors": [
+     *              {
+     *                  "email": "The field "email" must be a valid email."
+     *              }
+     *          ],
+     *          "request": {
+     *              "isSeconadry": false,
+     *              "email": "fake_email.com",
+     *          }
+     *      }
+     * }
+     * 
+     * @response status=404 scenario="user with email = user-email was not found" {
+     *      "status": 404,
+     *      "errors": [
+     *          {
+     *              "message": "The user was not found.",
+     *          }
+     *      ],
+     *      "message": "The user was not found.",
+     * }
+     */
     public function send_code_by_email(Request $request)
     {
         $data = $request->only('email', 'isSecondary');
@@ -78,10 +121,49 @@ class AuthController extends Controller
             return response()->error($data, 'api_messages.error.generic', 500);
         }
 
-        return response()->success(null, 'auth.email_sent');
+        return response()->success([], 'auth.email_sent');
     }
 
     /**************************************************************************************************************** register process */
+    /**
+     * Register, Step One
+     * 
+     * The first step in order to register a new user. This method stores the user's accessing information, and dispatches an event to send security codes
+     * to both, the main and the recovery, emails.
+     * 
+     * @group Register
+     * 
+     * @header Accept-Language es | en | jp
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "success!",
+     *      "data": {
+     *          "registered_email": "main_email@email_company.com"
+     *      }
+     * }
+     * 
+     * @response status=401 scenario="validation failed" {
+     *      "status": 401,
+     *      "message": "error message",
+     *      "data": {
+     *          "errors": [
+     *              {
+     *                  "mainEmail": "The field "mainEmail" must be a valid email."
+     *              }
+     *          ],
+     *          "request": {
+     *              "name": "user's name",
+     *              "phoneNumber": "+1 555-1234-5678",
+     *              "mainEmail": "fake_email.com",
+     *              "recoveryEmail": "fake_mail@email_company.com",
+     *              "secretAntiFishing": "secret",
+     *              "secretAntiFishing_confirmation": "secret",
+     *              "invitationCode": "AAAAAAAAAA"
+     *          }
+     *      }
+     * }
+     */
     public function create_user(Request $request)
     {
         $data = $request->only(
@@ -129,6 +211,44 @@ class AuthController extends Controller
         return response()->success(['registered_email' => $user->email], 'auth.user_created');
     }
 
+    /**
+     * Register, Step Two
+     * 
+     * This method will receive both of the security codes that were sent to the user on the previous step, and verify that both of them are correct.
+     * 
+     * @group Register
+     * 
+     * @header Accept-Language es | en | jp
+     * 
+     * @bodyParam mainEmailCode int required Must be a number of 6 digits.
+     * @bodyParam recoveryEmailCode int required Must be a number of 6 digits.
+     * @bodyParam MainEmail string required The email must already exist on the database.
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "success!",
+     *      "data": {
+     *          "token": "the authorization token needed for the third step."
+     *      }
+     * }
+     * 
+     * @response status=401 scenario="validation failed" {
+     *      "status": 401,
+     *      "message": "error message",
+     *      "data": {
+     *          "errors": [
+     *              {
+     *                  "mainEmail": "The field "mainEmail" must be a valid email."
+     *              }
+     *          ],
+     *          "request": {
+     *              "mainEmail": "fake_email.com",
+     *              "mainEmailCode": 123456,
+     *              "recoveryEmailCode": 123456,
+     *          }
+     *      }
+     * }
+     */
     public function verify_emails(Request $request)
     {
         $rules = ['required', 'integer', 'min:000000', 'max:999999'];
@@ -178,6 +298,55 @@ class AuthController extends Controller
         return response()->success(['token' => auth('api')->setTTL(7200)->tokenById($user->id)], 'auth.email_verified');
     }
 
+    /**
+     * Register, Step Three
+     * 
+     * This method will invalidate the auth token sent with the request.
+     * 
+     * <aside class="notice">This method is also used to verify the 2FA code if the user decides to renew it.</aside>
+     * 
+     * @group Register
+     * 
+     * @header Accept-Language es | en | jp
+     * 
+     * @authenticated
+     * 
+     * @bodyParam twoFactorCode int required Must be a 6 digits number.
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "success!",
+     *      "data": {
+     *          "user_data": {
+     *              "id": 2,
+     *              "name": "user's name",
+     *              "email": "email@email_company.com",
+     *              "recovery_email": "second_email@email.company",
+     *              "slots_available": 5,
+     *              "invitation_code": "AAAAAAAAAA",
+     *              "role": "free",
+     *              "preferred_lang": "jp",
+     *          },
+     *          "user_credentials": [],
+     *          "token": "the auth token renewed"
+     *      }
+     * }
+     * 
+     * @response status=401 scenario="validation failed" {
+     *      "status": 401,
+     *      "message": "error message",
+     *      "data": {
+     *          "errors": [
+     *              {
+     *                  "twoFactorCode": "The field "twoFactorCode" must be an integer."
+     *              }
+     *          ],
+     *          "request": {
+     *              "twoFactorCode": "123456",
+     *          }
+     *      }
+     * }
+     */
     public function verify_2fa(Request $request)
     {
         $data = $request->only('twoFactorCode');
@@ -206,6 +375,55 @@ class AuthController extends Controller
     }
 
     /**************************************************************************************************************** login options */
+    /**
+     * Login By 2 Factor Code (TOTP)
+     * 
+     * This is the method to login using the user's main email, and the time-based one-time-password (the code generated in apps like Google Authenticator).
+     * 
+     * <aside class="notice">This method will return an array of Credentials, you can see the Credential interface on the README file.</aside>
+     * 
+     * @group Login
+     * 
+     * @header Accept-Language es | en | jp
+     * 
+     * @bodyParam email string required The main email of the user.
+     * @bodyParam twoFactorCode int required Must be a 6 digits number.
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "success!",
+     *      "data": {
+     *          "user_data": {
+     *              "id": 2,
+     *              "name": "user's name",
+     *              "email": "email@email_company.com",
+     *              "recovery_email": "second_email@email.company",
+     *              "slots_available": 5,
+     *              "invitation_code": "AAAAAAAAAA",
+     *              "role": "free",
+     *              "preferred_lang": "jp",
+     *          },
+     *          "user_credentials": [],
+     *          "token": "the auth token"
+     *      }
+     * }
+     * 
+     * @response status=401 scenario="validation failed" {
+     *      "status": 401,
+     *      "message": "error message",
+     *      "data": {
+     *          "errors": [
+     *              {
+     *                  "twoFactorCode": "The field "twoFactorCode" must be an integer."
+     *              }
+     *          ],
+     *          "request": {
+     *              "twoFactorCode": "123456",
+     *              "email": "email@email_company.com"
+     *          }
+     *      }
+     * }
+     */
     public function login_by_g2fa(Request $request)
     {
         $data = $request->only('email', 'twoFactorCode');
@@ -230,6 +448,57 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * Login By Email Code
+     * 
+     * In order for this method to work, the user must already have the correct security code in the database. If the user asked to send an email code to their 
+     * recovery email, they won't be able to login by this method, if they're using their main email on this request.
+     * 
+     * <aside class="notice">This method will return an array of Credentials, you can see the Credential interface on the README file.</aside>
+     * 
+     * @group Login
+     * 
+     * @header Accept-Language es | en | jp
+     * 
+     * @bodyParam mainEmail string required The main email of the user.
+     * @bodyParam recoveryEmail string Is required only if the user has sent the security code to their recovery email.
+     * @bodyParam code int required Must be a 6 digits number.
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "success!",
+     *      "data": {
+     *          "user_data": {
+     *              "id": 2,
+     *              "name": "user's name",
+     *              "email": "email@email_company.com",
+     *              "recovery_email": "second_email@email.company",
+     *              "slots_available": 5,
+     *              "invitation_code": "AAAAAAAAAA",
+     *              "role": "free",
+     *              "preferred_lang": "jp",
+     *          },
+     *          "user_credentials": [],
+     *          "token": "the auth token"
+     *      }
+     * }
+     * 
+     * @response status=401 scenario="validation failed" {
+     *      "status": 401,
+     *      "message": "error message",
+     *      "data": {
+     *          "errors": [
+     *              {
+     *                  "code": "The field "code" must be an integer."
+     *              }
+     *          ],
+     *          "request": {
+     *              "code": "123456",
+     *              "mainEmail": "email@email_company.com",
+     *          }
+     *      }
+     * }
+     */
     public function login_by_email_code(Request $request)
     {
         $data = $request->only('mainEmail', 'recoveryEmail', 'code');
@@ -257,6 +526,60 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * Login By Security Code
+     * 
+     * This is the only method that does not require 2-factor-authentication.
+     * 
+     * <aside class="notice">This method will return an array of Credentials, you can see the Credential interface on the README file.</aside>
+     * 
+     * @group Login
+     * 
+     * @header Accept-Language es | en | jp
+     * 
+     * @bodyParam mainEmail string required
+     * @bodyParam recoveryEmail string required
+     * @bodyParam antiFishingSecret string required
+     * @bodyParam securityCode string required All users have one 10-character recovery code for logging into ther account if they aren't able
+     *  to use any 2-factor-authentication
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "success!",
+     *      "data": {
+     *          "user_data": {
+     *              "id": 2,
+     *              "name": "user's name",
+     *              "email": "email@email_company.com",
+     *              "recovery_email": "second_email@email.company",
+     *              "slots_available": 5,
+     *              "invitation_code": "AAAAAAAAAA",
+     *              "role": "free",
+     *              "preferred_lang": "jp",
+     *          },
+     *          "user_credentials": [],
+     *          "token": "the auth token"
+     *      }
+     * }
+     * 
+     * @response status=401 scenario="validation failed" {
+     *      "status": 401,
+     *      "message": "error message",
+     *      "data": {
+     *          "errors": [
+     *              {
+     *                  "securityCode": "The field "securityCode" must have at least 10 characters."
+     *              }
+     *          ],
+     *          "request": {
+     *              "mainEmail": "email@email_company.com",
+     *              "recoveryEmail": "second@email.com",
+     *              "antiFishingSecret": "secret",
+     *              "securityCode": 123456,
+     *          }
+     *      }
+     * }
+     */
     public function login_by_security_code(Request $request)
     {
         $data = $request->only('mainEmail', 'recoveryEmail', 'antiFishingSecret', 'securityCode');
@@ -294,6 +617,24 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * Logout
+     * 
+     * This method does not require anything, except for a valid authentication token.
+     * 
+     * @authenticated
+     * 
+     * @group Login
+     * 
+     * @header Accept-Language es | en | jp
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "Succes!",
+     *      "data": {}
+     * }
+     * 
+     */
     public function logout()
     {
         auth('api')->invalidate();
@@ -302,6 +643,70 @@ class AuthController extends Controller
     }
 
     /**************************************************************************************************************** access encrypted data */
+    /**
+     * Grant Access to Confidential Information
+     * 
+     * This method is used to access the encrypted data of a Credential, or the encrypted data of the user itself.
+     * 
+     * <aside class="notice">This method may return a decrypted Credential, you can see the Credential interface on the README file.</aside>
+     * 
+     * @authenticated
+     * 
+     * @group Auth
+     * 
+     * @header Accept-Language es | en | jp
+     * 
+     * @bodyParam accessTo string required Must be either one of these exact two options: "user-data" or "credential-data".
+     * @bodyParam credentialId integer Its required, only if "accessTo" is equal to "credential-data".
+     * @bodyParam accessingDevice string required The user agent of the navigator, or the unique ID of the device. (min: 1, max: 190 char).
+     * @bodyParam accessingPlattform string required Must be one of these exact three options: "web", "desktop", "mobile".
+     * 
+     * @response status=200 scenario="access to credential data" {
+     *      "status": 200,
+     *      "message": "Success!"
+     *      "data": {
+     *          "id": 1,
+     *          "user_id": 1,
+     *          "company_id": null,
+     *          "company_name": "company's name",
+     *          "email": "main@email.com",
+     *          "password": "my_secret_password1234",
+     *          "last_seen": "2021-12-23 10:05:31",
+     *          "created_at": "2021-12-23 10:05:31",
+     *          "updated_at": "2021-12-23 10:05:31",
+     *      },
+     *  }
+     * 
+     * @response status=200 scenario="access to user data" {
+     *      "status": 200,
+     *      "message": "Success!"
+     *      "data": {
+     *          "name": "jhon doe",
+     *          "email": "main@email.com",
+     *          "recovery_email": "recovery@email.com",
+     *          "phone_number": "+1 555-1234-5678",
+     *          "anti_fishing_secret": "secret",
+     *          "security_access_code": "AAAAAAAAAA"
+     *      }
+     * }
+     * 
+     * @response status=401 scenario="validation failed" {
+     *      "status": 401,
+     *      "message": "error message",
+     *      "data": {
+     *          "errors": [
+     *              {
+     *                  "accessTo": "The field "accessTo" must be "credential-data" or "user-data"."
+     *              }
+     *          ],
+     *          "request": {
+     *              "accessTo": "encrypted-data",
+     *              "accessingDevice": "Windows NT 6.1; Win64; x64; rv:47.0",
+     *              "accessingPlatform": "web",
+     *          }
+     *      }
+     * }
+     */
     public function grant_access(Request $request)
     {
         $data = $request->only('accessTo', 'credentialId', 'accessingDevice', 'accessingPlatform');
@@ -339,6 +744,30 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * Refresh 2-Factor-Authentication Secret
+     * 
+     * This method is responsible for updating and returning the secret key for the time-based one-time-password 
+     * (the code generated in apps like Google Authenticator). In order to check if the user has set up correctly the new secret key, you can verify it
+     * using the endpoint of Register, Third Step.
+     * 
+     * <aside class="notice">You can generate a QR-code for the user to scan using the structure given in the README file.</aside>
+     * 
+     * @group Auth
+     * 
+     * @header Accept-Language es | en | jp
+     * 
+     * @authenticated
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "Succes!",
+     *      "data": {
+     *          "secret": "AAAAAAAAAA",
+     *          "email": "main@email.com",
+     *      },
+     * }
+     */
     public function refresh_2fa_secret(Request $request)
     {
         $user = $request->user();
@@ -351,6 +780,26 @@ class AuthController extends Controller
         return response()->success(['secret' => $secret, 'email' => $user->email], 'auth.refresh_2fa_secret');
     }
 
+    /**
+     * Renew Security Access Code
+     * 
+     * This method is used to generate a new security access code for the user. This code can be used to login in the case that the user has lost access to all
+     * 2-factor-authentication methods.
+     * 
+     * @group Auth
+     * 
+     * @authenticated 
+     * 
+     * @header Accept-Language es | en | jp
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "Succes!",
+     *      "data": {
+     *          "renewed_code": "AAAAAAAAAA",
+     *      },
+     * }
+     */
     public function renew_security_code(Request $request)
     {
         $user = $request->user();
