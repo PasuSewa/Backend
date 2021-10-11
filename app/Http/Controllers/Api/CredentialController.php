@@ -45,6 +45,29 @@ class CredentialController extends Controller
         'accessing_platform' =>                 ['required', 'string', 'min:3', 'max:7', 'in:mobile,web,desktop']
     ];
 
+    /**
+     * Get Companies
+     * 
+     * This is the method used to get all the available options for companies.
+     * 
+     * <aside class="notice">This method stores the results in cache for 1 week, so no change will take place until that time.</aside>
+     * 
+     * @group Companies
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "Success!",
+     *      "data": {
+     *      "companies": [
+     *              {
+     *                  "name": "AFIP",
+     *                  "url_logo": "https://www.afip.gob.ar/frameworkAFIP/v1/img/logo_afip.png",
+     *                   "id": 1
+     *              }
+     *          ]
+     *      }
+     * }
+     */
     public function get_companies()
     {                                                   // 1 week
         $companies = cache()->remember('companies', 60 * 60 * 24 * 7, function () {
@@ -56,6 +79,44 @@ class CredentialController extends Controller
         ], 'success');
     }
 
+    /**
+     * Index
+     * 
+     * Since all the user's credentials are returned on the endpoints for login, and the final register step, this method can be called to get all the credentials when there is an error on the local storage of the device.
+     * 
+     * <aside class="notice">You can check the README file to see the interface of Credentials.</aside>
+     * 
+     * @group Credential
+     * 
+     * @authenticated
+     * 
+     * @header Accept-Language es | en | jp
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "Success!",
+     *      "data": {
+     *          "credentials": [
+     *              {
+     *                  "company_id": 1,
+     *                  "company": {
+     *                      "name": "AFIP",
+     *                      "url_logo": "https://www.afip.gob.ar/frameworkAFIP/v1/img/logo_afip.png",
+     *                      "id": 1,
+     *                  },
+     *                  "email": {
+     *                      "opening": "mr",
+     *                      "char_count": 8,
+     *                      "ending": "@gmail.com"
+     *                  },
+     *                  "password": {
+     *                      "char_count": 16
+     *                  }
+     *              }
+     *          ]
+     *      }
+     * }
+     */
     public function index(Request $request)
     {
         $user = $request->user();
@@ -76,6 +137,74 @@ class CredentialController extends Controller
         return response()->success(['credentials' => $user_credentials], 'success');
     }
 
+    /**
+     * Create
+     * 
+     * This is the method used to create a new credential.
+     * 
+     * <aside class="notice">This method will return the created Credential, you can see the Credential interface on the README file.</aside>
+     * 
+     * @group Credential
+     * 
+     * @authenticated
+     * 
+     * @header Accept-Language es | en | jp
+     * 
+     * @bodyParam company_name stribg required (min: 1, max: 190 char).
+     * @bodyParam description string (min: 0, max: 500 char).
+     * @bodyParam user_name string (min: 1, max: 190 char).
+     * @bodyParam email string (min:5, max: 190 char).
+     * @bodyParam password string (min: 5, max: 190 char).
+     * @bodyParam username string (min:1, max: 190 char).
+     * @bodyParam phone_number string (min: 8, max 190 char).
+     * @bodyParam security_question string (min: 5, max: 190 char).
+     * @bodyParam security_answer string Is required if security_question is not null (min: 5, max: 190 char).
+     * @bodyParam unique_code string (min: 1, max: 190 char).
+     * @bodyParam multiple_codes string[] Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.
+     * @bodyParam crypto_codes string[] Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.
+     * @bodyParam accessing_device string required The user agent of the navigator, or the unique ID of the device. (min: 1, max: 190 char).
+     * @bodyParam accessing_plattform string required Must be one of these exact three options: "web", "desktop", "mobile".
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "Success!",
+     *      "data": {
+     *          "credentials": {
+     *                  "company_id": 1,
+     *                  "company": {
+     *                      "name": "AFIP",
+     *                      "url_logo": "https://www.afip.gob.ar/frameworkAFIP/v1/img/logo_afip.png",
+     *                      "id": 1,
+     *                  },
+     *                  "email": {
+     *                      "opening": "fa",
+     *                      "char_count": 8,
+     *                      "ending": "@email_company.com"
+     *                  },
+     *                  "password": {
+     *                      "char_count": 16
+     *                  }
+     *              }
+     *      }
+     * }
+     * 
+     * @response status=401 scenario="validation failed" {
+     *      "status": 401,
+     *      "message": "error message",
+     *      "data": {
+     *          "errors": [
+     *              {
+     *                  "password": "\"password\" must have at least 5 characters."
+     *              }
+     *          ],
+     *          "request": {
+     *              "password": "pass",
+     *              "company_name": "AFIP",
+     *              "email": "fake_email@email_company.com"
+     *          }
+     *      }
+     * }
+     */
     public function create(Request $request)
     {
         $data = $request->only(
@@ -95,7 +224,10 @@ class CredentialController extends Controller
             'accessing_platform',
         );
 
-        $validation = Validator::make($data, $this->validation_rules);
+        $rules = $this->validation_rules;
+        $rules['company_name'][0] = 'required';
+
+        $validation = Validator::make($data, $rules);
 
         if ($validation->fails()) {
             $data = [
@@ -179,6 +311,89 @@ class CredentialController extends Controller
         return response()->success(['credential' => $credential_created], 'credentials.created');
     }
 
+    /**
+     * Update 
+     * 
+     * This is the method used for updating a credential. If any field is absent, it will be updated to a null type, or deleted.
+     * 
+     * The company_name cannot be updated.
+     * 
+     * <aside class="notice">This method will return the updated Credential, you can see the Credential interface on the README file.</aside>
+     * 
+     * @group Credential
+     * 
+     * @authenticated
+     * 
+     * @header Accept-Language es | en | jp
+     * 
+     * @urlParam credential_id int required The id of the credential to update.
+     * 
+     * @bodyParam description string (min: 0, max: 500 char).
+     * @bodyParam user_name string (min: 1, max: 190 char).
+     * @bodyParam email string (min:5, max: 190 char).
+     * @bodyParam password string (min: 5, max: 190 char).
+     * @bodyParam username string (min:1, max: 190 char).
+     * @bodyParam phone_number string (min: 8, max 190 char).
+     * @bodyParam security_question string (min: 5, max: 190 char).
+     * @bodyParam security_answer string Is required if security_question is not null (min: 5, max: 190 char).
+     * @bodyParam unique_code string (min: 1, max: 190 char).
+     * @bodyParam multiple_codes string[] Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.
+     * @bodyParam crypto_codes string[] Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.
+     * @bodyParam accessing_device string required The user agent of the navigator, or the unique ID of the device. (min: 1, max: 190 char).
+     * @bodyParam accessing_plattform string required Must be one of these exact three options: "web", "desktop", "mobile".
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "Success!",
+     *      "data": {
+     *          "credential": {
+     *                  "id": 1,
+     *                  "company_id": 1,
+     *                  "company": {
+     *                      "name": "AFIP",
+     *                      "url_logo": "https://www.afip.gob.ar/frameworkAFIP/v1/img/logo_afip.png",
+     *                      "id": 1,
+     *                  },
+     *                  "email": {
+     *                      "opening": "fa",
+     *                      "char_count": 8,
+     *                      "ending": "@email_company.com"
+     *                  },
+     *                  "password": {
+     *                      "char_count": 16
+     *                  }
+     *              }
+     *      }
+     * }
+     * 
+     * @response status=404 scenario="credential with id = credential-id was not found" {
+     *      "status": 404,
+     *      "errors": [
+     *          {
+     *              "message": "The credential was not found.",
+     *          }
+     *      ],
+     *      "message": "The credential was not found.",
+     * }
+     * 
+     * @response status=401 scenario="validation failed" {
+     *      "status": 401,
+     *      "message": "error message",
+     *      "data": {
+     *          "errors": [
+     *              {
+     *                  "email": "The field "email" must must be a email."
+     *              }
+     *          ],
+     *          "request": {
+     *              "password": "pass",
+     *              "company_name": "AFIP",
+     *              "email": "fake_email.com",
+     *              "id:" 1,
+     *          }
+     *      }
+     * }
+     */
     public function update(Request $request, $credential_id)
     {
         $data = $request->only(
@@ -266,6 +481,35 @@ class CredentialController extends Controller
         return response()->success(['credential' => $credential_updated], 'success');
     }
 
+    /**
+     * Delete
+     * 
+     * This method is used to delete a credential.
+     * 
+     * @group Credential
+     * 
+     * @authenticated
+     * 
+     * @header Accept-Language es | en | jp
+     * 
+     * @urlParam credential_id int required The id of the credential to delete.
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "Succes!",
+     *      "data": {}
+     * }
+     * 
+     * @response status=404 scenario="credential with id = credential-id was not found" {
+     *      "status": 404,
+     *      "errors": [
+     *          {
+     *              "message": "The credential was not found.",
+     *          }
+     *      ],
+     *      "message": "The credential was not found.",
+     * }
+     */
     public function delete(Request $request, $credential_id)
     {
         $user = $request->user();
@@ -289,6 +533,54 @@ class CredentialController extends Controller
         return response()->success([], 'success');
     }
 
+    /**
+     * Find
+     * 
+     * This method can be called when the frontend app has failed to find a credential on the local storage of the device.
+     * 
+     * <aside class="notice">This method will return the Credential that was found, you can see the Credential interface on the README file.</aside>
+     * 
+     * @group Credential
+     * 
+     * @authenticated
+     * 
+     * @header Accept-Language es | en | jp
+     * 
+     * @urlParam credential_id int required The id of the credential to delete.
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "Success!",
+     *      "data": {
+     *          "credential": {
+     *                  "company_id": 1,
+     *                  "company": {
+     *                      "name": "AFIP",
+     *                      "url_logo": "https://www.afip.gob.ar/frameworkAFIP/v1/img/logo_afip.png",
+     *                      "id": 1,
+     *                  },
+     *                  "email": {
+     *                      "opening": "mr",
+     *                      "char_count": 8,
+     *                      "ending": "@gmail.com"
+     *                  },
+     *                  "password": {
+     *                      "char_count": 16
+     *                  }
+     *              }
+     *      }
+     * }
+     * 
+     * @response status=404 scenario="credential with id = credential-id was not found" {
+     *      "status": 404,
+     *      "errors": [
+     *          {
+     *              "message": "The credential was not found.",
+     *          }
+     *      ],
+     *      "message": "The credential was not found.",
+     * }
+     */
     public function find(Request $request, $credential_id)
     {
         $user = $request->user();
@@ -308,6 +600,43 @@ class CredentialController extends Controller
         return response()->success(['credential' => $credential], 'success');
     }
 
+    /**
+     * Get Recently Seen
+     * 
+     * This method will return some info of the credentials that were accessed within the last 3 days. 
+     * 
+     * @group Credential
+     * 
+     * @authenticated
+     * 
+     * @header Accept-Language es | en | jp
+     * 
+     * @response {
+     *      "message": "Success!",
+     *      "status": 200,
+     *      "data": {
+     *          "recently_seen": [
+     *              {
+     *                  "company_name": "AFIP",
+     *                  "last_seen": "2021-12-23 10:05:31",
+     *                  "id": 1,
+     *                  "accessing_device": "Windows NT 6.1; Win64; x64; rv:47.0",
+     *                  "accessing_plattform": "web",
+     *                  "created_at": "2021-12-23 10:05:31",
+     *                  "updated_at": "2021-12-23 10:05:31",
+     *              },
+     *          ]
+     *      }
+     * }
+     * 
+     * @response status=200 scenario="no credential was recently accessed" {
+     *      "message": "Success!",
+     *      "status": 200,
+     *      "data": {
+     *          "recently_seen": []
+     *      }
+     * }
+     */
     public function get_recently_seen(Request $request)
     {
         $user = $request->user();
