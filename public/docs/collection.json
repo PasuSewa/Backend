@@ -1,0 +1,1221 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "pasunashi-backend.herokuapp.com"
+        }
+    ],
+    "info": {
+        "name": "API Documentation for PasuNashi Backend",
+        "_postman_id": "948a2fb5-87b4-4477-8671-78ec656e3ebe",
+        "description": "",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Auth",
+            "description": "",
+            "item": [
+                {
+                    "name": "Send Code By Email",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/send-code-by-email",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/send-code-by-email"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"email\":\"akdyjvjsjzpcvsyjaesvjssxbhmfkwgugnoagndaibpyvvbrhphhqanqxyfxmsvkngtnuhkcuaahkactsqnvh\",\"isSecondary\":false}"
+                        },
+                        "description": "This method will send the security code needed for the user to login by the \"login with email code\" method.\n\nRemember that the email parameter must exists either on the \"emails\" or in \"recovery_emails\" columns",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"Succes!\",\n     \"data\": {}\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"email\": \"The field \"email\" must be a valid email.\"\n             }\n         ],\n         \"request\": {\n             \"isSeconadry\": false,\n             \"email\": \"fake_email.com\",\n         }\n     }\n}",
+                            "name": "validation failed"
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n     \"status\": 404,\n     \"errors\": [\n         {\n             \"message\": \"The user was not found.\",\n         }\n     ],\n     \"message\": \"The user was not found.\",\n}",
+                            "name": "user with email = user-email was not found"
+                        }
+                    ]
+                },
+                {
+                    "name": "Renew Security Access Code",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/renew-security-code",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/auth\/renew-security-code"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": null,
+                        "description": "This method is used to generate a new security access code for the user. This code can be used to login in the case that the user has lost access to all\n2-factor-authentication methods."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"Succes!\",\n     \"data\": {\n         \"renewed_code\": \"AAAAAAAAAA\",\n     },\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Refresh 2-Factor-Authentication Secret",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/refresh-2fa-secret",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/auth\/refresh-2fa-secret"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": null,
+                        "description": "This method is responsible for updating and returning the secret key for the time-based one-time-password\n(the code generated in apps like Google Authenticator). In order to check if the user has set up correctly the new secret key, you can verify it\nusing the endpoint of Register, Third Step.\n\n<aside class=\"notice\">You can generate a QR-code for the user to scan using the structure given in the README file.<\/aside>"
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"Succes!\",\n     \"data\": {\n         \"secret\": \"AAAAAAAAAA\",\n         \"email\": \"main@email.com\",\n     },\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Grant Access to Confidential Information",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/grant-access",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/auth\/grant-access"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"accessTo\":\"quibusdam\",\"credentialId\":13,\"accessingDevice\":\"sit\",\"accessingPlatform\":\"\",\"accessingPlattform\":\"voluptatibus\"}"
+                        },
+                        "description": "This method is used to access the encrypted data of a Credential, or the encrypted data of the user itself.\n\n<aside class=\"notice\">This method may return a decrypted Credential, you can see the Credential interface on the README file.<\/aside>"
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"Success!\"\n     \"data\": {\n         \"id\": 1,\n         \"user_id\": 1,\n         \"company_id\": null,\n         \"company_name\": \"company's name\",\n         \"email\": \"main@email.com\",\n         \"password\": \"my_secret_password1234\",\n         \"last_seen\": \"2021-12-23 10:05:31\",\n         \"created_at\": \"2021-12-23 10:05:31\",\n         \"updated_at\": \"2021-12-23 10:05:31\",\n     },\n }",
+                            "name": "access to credential data"
+                        },
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"Success!\"\n     \"data\": {\n         \"name\": \"jhon doe\",\n         \"email\": \"main@email.com\",\n         \"recovery_email\": \"recovery@email.com\",\n         \"phone_number\": \"+1 555-1234-5678\",\n         \"anti_fishing_secret\": \"secret\",\n         \"security_access_code\": \"AAAAAAAAAA\"\n     }\n}",
+                            "name": "access to user data"
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"accessTo\": \"The field \"accessTo\" must be \"credential-data\" or \"user-data\".\"\n             }\n         ],\n         \"request\": {\n             \"accessTo\": \"encrypted-data\",\n             \"accessingDevice\": \"Windows NT 6.1; Win64; x64; rv:47.0\",\n             \"accessingPlatform\": \"web\",\n         }\n     }\n}",
+                            "name": "validation failed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Companies",
+            "description": "",
+            "item": [
+                {
+                    "name": "Get Companies",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/companies\/index",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/companies\/index"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "This is the method used to get all the available options for companies.\n\n<aside class=\"notice\">This method stores the results in cache for 1 week, so no change will take place until that time.<\/aside>",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"Success!\",\n     \"data\": {\n     \"companies\": [\n             {\n                 \"name\": \"AFIP\",\n                 \"url_logo\": \"https:\/\/www.afip.gob.ar\/frameworkAFIP\/v1\/img\/logo_afip.png\",\n                  \"id\": 1\n             }\n         ]\n     }\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Credential",
+            "description": "",
+            "item": [
+                {
+                    "name": "Create",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/credential\/create",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/credential\/create"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"company_name\":\"dolor\",\"description\":\"dolores\",\"user_name\":\"est\",\"email\":\"dolorem\",\"password\":\"asperiores\",\"username\":\"et\",\"phone_number\":\"omnis\",\"security_question\":\"fugiat\",\"security_answer\":\"ut\",\"unique_code\":\"sint\",\"multiple_codes\":[\"voluptatum\"],\"crypto_codes\":[\"molestiae\"],\"accessing_device\":\"nam\",\"accessing_plattform\":\"tenetur\"}"
+                        },
+                        "description": "This is the method used to create a new credential.\n\n<aside class=\"notice\">This method will return the created Credential, you can see the Credential interface on the README file.<\/aside>"
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"Success!\",\n     \"data\": {\n         \"credentials\": {\n                 \"company_id\": 1,\n                 \"company\": {\n                     \"name\": \"AFIP\",\n                     \"url_logo\": \"https:\/\/www.afip.gob.ar\/frameworkAFIP\/v1\/img\/logo_afip.png\",\n                     \"id\": 1,\n                 },\n                 \"email\": {\n                     \"opening\": \"fa\",\n                     \"char_count\": 8,\n                     \"ending\": \"@email_company.com\"\n                 },\n                 \"password\": {\n                     \"char_count\": 16\n                 }\n             }\n     }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"password\": \"\\\"password\\\" must have at least 5 characters.\"\n             }\n         ],\n         \"request\": {\n             \"password\": \"pass\",\n             \"company_name\": \"AFIP\",\n             \"email\": \"fake_email@email_company.com\"\n         }\n     }\n}",
+                            "name": "validation failed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Index",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/credential\/index",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/credential\/index"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Since all the user's credentials are returned on the endpoints for login, and the final register step, this method can be called to get all the credentials when there is an error on the local storage of the device.\n\n<aside class=\"notice\">You can check the README file to see the interface of Credentials.<\/aside>"
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"Success!\",\n     \"data\": {\n         \"credentials\": [\n             {\n                 \"company_id\": 1,\n                 \"company\": {\n                     \"name\": \"AFIP\",\n                     \"url_logo\": \"https:\/\/www.afip.gob.ar\/frameworkAFIP\/v1\/img\/logo_afip.png\",\n                     \"id\": 1,\n                 },\n                 \"email\": {\n                     \"opening\": \"mr\",\n                     \"char_count\": 8,\n                     \"ending\": \"@gmail.com\"\n                 },\n                 \"password\": {\n                     \"char_count\": 16\n                 }\n             }\n         ]\n     }\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Find",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/credential\/find\/:credential_id",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/credential\/find\/:credential_id",
+                            "variable": [
+                                {
+                                    "id": "credential_id",
+                                    "key": "credential_id",
+                                    "value": "4",
+                                    "description": "The id of the credential to delete."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": null,
+                        "description": "This method can be called when the frontend app has failed to find a credential on the local storage of the device.\n\n<aside class=\"notice\">This method will return the Credential that was found, you can see the Credential interface on the README file.<\/aside>"
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"Success!\",\n     \"data\": {\n         \"credential\": {\n                 \"company_id\": 1,\n                 \"company\": {\n                     \"name\": \"AFIP\",\n                     \"url_logo\": \"https:\/\/www.afip.gob.ar\/frameworkAFIP\/v1\/img\/logo_afip.png\",\n                     \"id\": 1,\n                 },\n                 \"email\": {\n                     \"opening\": \"mr\",\n                     \"char_count\": 8,\n                     \"ending\": \"@gmail.com\"\n                 },\n                 \"password\": {\n                     \"char_count\": 16\n                 },\n             },\n     },\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n     \"status\": 404,\n     \"errors\": [\n         {\n             \"message\": \"The credential was not found.\",\n         }\n     ],\n     \"message\": \"The credential was not found.\",\n}",
+                            "name": "credential with id = credential-id was not found"
+                        }
+                    ]
+                },
+                {
+                    "name": "Update",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/credential\/update\/:credential_id",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/credential\/update\/:credential_id",
+                            "variable": [
+                                {
+                                    "id": "credential_id",
+                                    "key": "credential_id",
+                                    "value": "11",
+                                    "description": "The id of the credential to update."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"description\":\"molestiae\",\"user_name\":\"blanditiis\",\"email\":\"perspiciatis\",\"password\":\"neque\",\"username\":\"quibusdam\",\"phone_number\":\"debitis\",\"security_question\":\"incidunt\",\"security_answer\":\"ratione\",\"unique_code\":\"molestiae\",\"multiple_codes\":[\"quod\"],\"crypto_codes\":[\"vitae\"],\"accessing_device\":\"ut\",\"accessing_plattform\":\"vel\"}"
+                        },
+                        "description": "This is the method used for updating a credential. If any field is absent, it will be updated to a null type, or deleted.\n\nThe company_name cannot be updated.\n\n<aside class=\"notice\">This method will return the updated Credential, you can see the Credential interface on the README file.<\/aside>"
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"Success!\",\n     \"data\": {\n         \"credential\": {\n                 \"id\": 1,\n                 \"company_id\": 1,\n                 \"company\": {\n                     \"name\": \"AFIP\",\n                     \"url_logo\": \"https:\/\/www.afip.gob.ar\/frameworkAFIP\/v1\/img\/logo_afip.png\",\n                     \"id\": 1,\n                 },\n                 \"email\": {\n                     \"opening\": \"fa\",\n                     \"char_count\": 8,\n                     \"ending\": \"@email_company.com\"\n                 },\n                 \"password\": {\n                     \"char_count\": 16\n                 }\n             }\n     }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n     \"status\": 404,\n     \"errors\": [\n         {\n             \"message\": \"The credential was not found.\",\n         }\n     ],\n     \"message\": \"The credential was not found.\",\n}",
+                            "name": "credential with id = credential-id was not found"
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"email\": \"The field \"email\" must must be a valid email.\"\n             }\n         ],\n         \"request\": {\n             \"password\": \"pass\",\n             \"company_name\": \"AFIP\",\n             \"email\": \"fake_email.com\",\n             \"id:\" 1,\n         }\n     }\n}",
+                            "name": "validation failed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/credential\/delete\/:credential_id",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/credential\/delete\/:credential_id",
+                            "variable": [
+                                {
+                                    "id": "credential_id",
+                                    "key": "credential_id",
+                                    "value": "3",
+                                    "description": "The id of the credential to delete."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": null,
+                        "description": "This method is used to delete a credential."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"Succes!\",\n     \"data\": {}\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n     \"status\": 404,\n     \"errors\": [\n         {\n             \"message\": \"The credential was not found.\",\n         }\n     ],\n     \"message\": \"The credential was not found.\",\n}",
+                            "name": "credential with id = credential-id was not found"
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Recently Seen",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/credential\/get-recently-seen",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/credential\/get-recently-seen"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": null,
+                        "description": "This method will return some info of the credentials that were accessed within the last 3 days."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"message\": \"Success!\",\n     \"status\": 200,\n     \"data\": {\n         \"recently_seen\": [\n             {\n                 \"company_name\": \"AFIP\",\n                 \"last_seen\": \"2021-12-23 10:05:31\",\n                 \"id\": 1,\n                 \"accessing_device\": \"Windows NT 6.1; Win64; x64; rv:47.0\",\n                 \"accessing_plattform\": \"web\",\n                 \"created_at\": \"2021-12-23 10:05:31\",\n                 \"updated_at\": \"2021-12-23 10:05:31\",\n             },\n         ]\n     }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"message\": \"Success!\",\n     \"status\": 200,\n     \"data\": {\n         \"recently_seen\": []\n     }\n}",
+                            "name": "no credential was recently accessed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Feedback",
+            "description": "",
+            "item": [
+                {
+                    "name": "Index",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/feedback\/index",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/feedback\/index"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Get all the suggestions and ratings that are public\n\n<aside class=\"notice\">The results are stored in cache for 1 week<\/aside>",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "x-ratelimit-limit",
+                                    "value": "60"
+                                },
+                                {
+                                    "key": "x-ratelimit-remaining",
+                                    "value": "59"
+                                },
+                                {
+                                    "key": "vary",
+                                    "value": "Origin"
+                                }
+                            ],
+                            "code": 200,
+                            "body": "{\"status\":200,\"message\":\"Ratings and Suggestions obtained successfully.\",\"data\":{\"feedback\":{\"suggestions\":[{\"id\":1,\"user_name\":\"Federico Torp\",\"body\":\"Id porro excepturi hic et saepe consequuntur possimus porro cumque.\",\"rating\":null,\"type\":1,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:08.000000Z\",\"updated_at\":\"2021-10-10T19:17:08.000000Z\"},{\"id\":2,\"user_name\":\"Ms. Cassandre Funk DVM\",\"body\":\"Atque aperiam laboriosam asperiores voluptatum incidunt voluptas harum ut quae.\",\"rating\":null,\"type\":1,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:08.000000Z\",\"updated_at\":\"2021-10-10T19:17:08.000000Z\"},{\"id\":3,\"user_name\":\"Lilla Spinka\",\"body\":\"Quas sint deserunt dolorem molestias impedit et minima omnis iste.\",\"rating\":null,\"type\":1,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:08.000000Z\",\"updated_at\":\"2021-10-10T19:17:08.000000Z\"},{\"id\":4,\"user_name\":\"Jordon Lebsack\",\"body\":\"Consequatur aut et aut voluptatem eaque eos sed totam commodi.\",\"rating\":null,\"type\":1,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:08.000000Z\",\"updated_at\":\"2021-10-10T19:17:08.000000Z\"},{\"id\":5,\"user_name\":\"Aliyah Cronin\",\"body\":\"Ab sit sunt sit rerum mollitia ullam architecto quis optio.\",\"rating\":null,\"type\":1,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:08.000000Z\",\"updated_at\":\"2021-10-10T19:17:08.000000Z\"}],\"ratings\":[{\"id\":6,\"user_name\":\"Prof. Jackeline Wisoky\",\"body\":\"Voluptatem veritatis nam odit incidunt quisquam ab ut alias aut.\",\"rating\":2,\"type\":0,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:08.000000Z\",\"updated_at\":\"2021-10-10T19:17:08.000000Z\"},{\"id\":7,\"user_name\":\"Bette Paucek\",\"body\":\"Neque aspernatur qui est nesciunt sequi quidem iure et perferendis.\",\"rating\":8,\"type\":0,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:08.000000Z\",\"updated_at\":\"2021-10-10T19:17:08.000000Z\"},{\"id\":8,\"user_name\":\"Hallie Swift\",\"body\":\"Ad maxime eveniet et sit consequatur nihil ratione commodi corporis.\",\"rating\":8,\"type\":0,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:09.000000Z\",\"updated_at\":\"2021-10-10T19:17:09.000000Z\"},{\"id\":9,\"user_name\":\"Ms. Natalie Turcotte Sr.\",\"body\":\"Itaque saepe amet maiores eum hic excepturi iure quaerat placeat.\",\"rating\":5,\"type\":0,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:09.000000Z\",\"updated_at\":\"2021-10-10T19:17:09.000000Z\"},{\"id\":10,\"user_name\":\"Eliza Moore\",\"body\":\"Nobis dolor ducimus laborum qui facere ipsum totam eos possimus.\",\"rating\":9,\"type\":0,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:09.000000Z\",\"updated_at\":\"2021-10-10T19:17:09.000000Z\"}]}}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/feedback\/create",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/feedback\/create"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"body\":\"velit\",\"rating\":12,\"type\":true}"
+                        },
+                        "description": "Store a suggestion and\/or rating in the database\n\n(Reuqires user role to be \"premium\")"
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"Succes!\",\n     \"data\": {}\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"body\": \"\"body\" must have at least 5 characters.\"\n             }\n         ],\n         \"request\": {\n             \"body\": \"\",\n             \"type\": true,\n         }\n     }\n}",
+                            "name": "validation failed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Login",
+            "description": "",
+            "item": [
+                {
+                    "name": "Login By 2 Factor Code (TOTP)",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/login\/two-factor-code",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/auth\/login\/two-factor-code"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"email\":\"odit\",\"twoFactorCode\":15}"
+                        },
+                        "description": "This is the method to login using the user's main email, and the time-based one-time-password (the code generated in apps like Google Authenticator).\n\n<aside class=\"notice\">This method will return an array of Credentials, you can see the Credential interface on the README file.<\/aside>",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"success!\",\n     \"data\": {\n         \"user_data\": {\n             \"id\": 2,\n             \"name\": \"user's name\",\n             \"email\": \"email@email_company.com\",\n             \"recovery_email\": \"second_email@email.company\",\n             \"slots_available\": 5,\n             \"invitation_code\": \"AAAAAAAAAA\",\n             \"role\": \"free\",\n             \"preferred_lang\": \"jp\",\n         },\n         \"user_credentials\": [],\n         \"token\": \"the auth token\"\n     }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"twoFactorCode\": \"The field \"twoFactorCode\" must be an integer.\"\n             }\n         ],\n         \"request\": {\n             \"twoFactorCode\": \"123456\",\n             \"email\": \"email@email_company.com\"\n         }\n     }\n}",
+                            "name": "validation failed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Login By Email Code",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/login\/email-code",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/auth\/login\/email-code"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"mainEmail\":\"ut\",\"recoveryEmail\":\"culpa\",\"code\":14}"
+                        },
+                        "description": "In order for this method to work, the user must already have the correct security code in the database. If the user asked to send an email code to their\nrecovery email, they won't be able to login by this method, if they're using their main email on this request.\n\n<aside class=\"notice\">This method will return an array of Credentials, you can see the Credential interface on the README file.<\/aside>",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"success!\",\n     \"data\": {\n         \"user_data\": {\n             \"id\": 2,\n             \"name\": \"user's name\",\n             \"email\": \"email@email_company.com\",\n             \"recovery_email\": \"second_email@email.company\",\n             \"slots_available\": 5,\n             \"invitation_code\": \"AAAAAAAAAA\",\n             \"role\": \"free\",\n             \"preferred_lang\": \"jp\",\n         },\n         \"user_credentials\": [],\n         \"token\": \"the auth token\"\n     }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"code\": \"The field \"code\" must be an integer.\"\n             }\n         ],\n         \"request\": {\n             \"code\": \"123456\",\n             \"mainEmail\": \"email@email_company.com\",\n         }\n     }\n}",
+                            "name": "validation failed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Login By Security Code",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/login\/security-code",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/auth\/login\/security-code"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"mainEmail\":\"temporibus\",\"recoveryEmail\":\"deserunt\",\"antiFishingSecret\":\"nulla\",\"securityCode\":\"dolor\"}"
+                        },
+                        "description": "This is the only method that does not require 2-factor-authentication.\n\n<aside class=\"notice\">This method will return an array of Credentials, you can see the Credential interface on the README file.<\/aside>",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"success!\",\n     \"data\": {\n         \"user_data\": {\n             \"id\": 2,\n             \"name\": \"user's name\",\n             \"email\": \"email@email_company.com\",\n             \"recovery_email\": \"second_email@email.company\",\n             \"slots_available\": 5,\n             \"invitation_code\": \"AAAAAAAAAA\",\n             \"role\": \"free\",\n             \"preferred_lang\": \"jp\",\n         },\n         \"user_credentials\": [],\n         \"token\": \"the auth token\"\n     }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"securityCode\": \"The field \"securityCode\" must have at least 10 characters.\"\n             }\n         ],\n         \"request\": {\n             \"mainEmail\": \"email@email_company.com\",\n             \"recoveryEmail\": \"second@email.com\",\n             \"antiFishingSecret\": \"secret\",\n             \"securityCode\": 123456,\n         }\n     }\n}",
+                            "name": "validation failed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Logout",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/logout",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/auth\/logout"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": null,
+                        "description": "This method does not require anything, except for a valid authentication token."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"Succes!\",\n     \"data\": {}\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Payments",
+            "description": "",
+            "item": [
+                {
+                    "name": "Verify PayPal Payment",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/verify-paypal-payment",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/verify-paypal-payment"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"code\":\"sit\"}"
+                        },
+                        "description": "This method receives the transaction id of PayPal, and verifies that the purchase is fully confirmed"
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"Succes!\",\n     \"data\": {}\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n     \"status\": 404,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"code\": \"the code doesn't exist in database\"\n             }\n         ],\n         \"request\": {\n\"code\": \"AAAAA\"\n         }\n     }\n}",
+                            "name": "validation failed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Start Payment Instance",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/start-payment-instance",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/start-payment-instance"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"method\":\"quaerat\",\"amount\":19,\"type\":\"quaerat\",\"code\":\"explicabo\"}"
+                        },
+                        "description": "This method will create an \"open payment instance\" in the database, so, when the payment is fully confirmed,\nthe backend will know how much the user has paid, and what did they actually purchased."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"Succes!\",\n     \"data\": {},\n}",
+                            "name": "success"
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\n     \"status\": 400,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"body\": \"body must have at least 5 characters.\"\n             }\n         ],\n         \"request\": {\n             \"method\": \"PayPal\",\n             \"amount\": 100,\n             \"code\": \"AAAAA\"\n             \"type\": \"\",\n         }\n     }\n}",
+                            "name": "validation failed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Register",
+            "description": "",
+            "item": [
+                {
+                    "name": "Register, Step One",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/register\/step-1",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/auth\/register\/step-1"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"iogvgrwkofferk\",\"phoneNumber\":\"vtqd\",\"mainEmail\":\"alemgpbjadqidrzkfxxocuntqapymzwhlzgxcjimvspneaybkbbviqb\",\"recoveryEmail\":\"shvohrmchbmglttubxpkawbkqiq\",\"secretAntiFishing\":\"zfabnjbcztelmwi\",\"secretAntiFishing_confirmation\":\"hktjanbbgeulgilgtsubfoatklftqtvbvmjzymhoesuoqoguqpvragekvwqtmpjpdswdnfdjylnbbgtqmtjewjqfszsixiuihxeanazlppyosyvqtflzpwempfsntejygykmoadeksdorfwwcvtdzhocpqmvzzxs\",\"invitationCode\":\"m\"}"
+                        },
+                        "description": "The first step in order to register a new user. This method stores the user's accessing information, and dispatches an event to send security codes\nto both, the main and the recovery, emails.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"success!\",\n     \"data\": {\n         \"registered_email\": \"main_email@email_company.com\"\n     }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"mainEmail\": \"The field \"mainEmail\" must be a valid email.\"\n             }\n         ],\n         \"request\": {\n             \"name\": \"user's name\",\n             \"phoneNumber\": \"+1 555-1234-5678\",\n             \"mainEmail\": \"fake_email.com\",\n             \"recoveryEmail\": \"fake_mail@email_company.com\",\n             \"secretAntiFishing\": \"secret\",\n             \"secretAntiFishing_confirmation\": \"secret\",\n             \"invitationCode\": \"AAAAAAAAAA\"\n         }\n     }\n}",
+                            "name": "validation failed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Register, Step Two",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/register\/step-2",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/auth\/register\/step-2"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"mainEmailCode\":19,\"recoveryEmailCode\":16,\"mainEmail\":\"ezbxvnydvddabxtndnvjdtuulipluoxpibmxlsoowakibmmculewzvusrcenixzgsmclrohzxys\",\"MainEmail\":\"molestias\"}"
+                        },
+                        "description": "This method will receive both of the security codes that were sent to the user on the previous step, and verify that both of them are correct.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"success!\",\n     \"data\": {\n         \"token\": \"the authorization token needed for the third step.\"\n     }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"mainEmail\": \"The field \"mainEmail\" must be a valid email.\"\n             }\n         ],\n         \"request\": {\n             \"mainEmail\": \"fake_email.com\",\n             \"mainEmailCode\": 123456,\n             \"recoveryEmailCode\": 123456,\n         }\n     }\n}",
+                            "name": "validation failed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Register, Step Three",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/register\/step-3",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/auth\/register\/step-3"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"twoFactorCode\":9}"
+                        },
+                        "description": "This method will invalidate the auth token sent with the request.\n\n<aside class=\"notice\">This method is also used to verify the 2FA code if the user decides to renew it.<\/aside>"
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"success!\",\n     \"data\": {\n         \"user_data\": {\n             \"id\": 2,\n             \"name\": \"user's name\",\n             \"email\": \"email@email_company.com\",\n             \"recovery_email\": \"second_email@email.company\",\n             \"slots_available\": 5,\n             \"invitation_code\": \"AAAAAAAAAA\",\n             \"role\": \"free\",\n             \"preferred_lang\": \"jp\",\n         },\n         \"user_credentials\": [],\n         \"token\": \"the auth token renewed\"\n     }\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"twoFactorCode\": \"The field \"twoFactorCode\" must be an integer.\"\n             }\n         ],\n         \"request\": {\n             \"twoFactorCode\": \"123456\",\n         }\n     }\n}",
+                            "name": "validation failed"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "User",
+            "description": "",
+            "item": [
+                {
+                    "name": "Update",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/user\/update",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/user\/update"
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"iure\",\"phone_number\":\"sint\",\"email\":\"exercitationem\",\"recovery_email\":\"sint\",\"anti_fishing_secret\":\"qui\"}"
+                        },
+                        "description": "This method is used to edit the user's credentials for accessing their account in PasuNashi.\n\n<aside class=\"notice\">All of the parameters are required, even if nothing changed.<\/aside>"
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"Succes!\",\n     \"data\": {}\n}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"name\": \"\"name\" must have at least 3 characters.\"\n             }\n         ],\n         \"request\": {\n             \"neame\": \"\",\n             \"phone_number\": \"+1 555-1234-1234\",\n             \"email\": \"fake@email.com\",\n             \"recovery_email\": \"fake_email@email_company.com\"\n             \"anti_fishing_secret\": \"secret\",\n     }\n }",
+                            "name": "validation failed"
+                        }
+                    ]
+                },
+                {
+                    "name": "Stop Premium",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/user\/stop-premium",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/user\/stop-premium"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": null,
+                        "description": "This method is for the times when some user may want to stop paying for the \"premium\" role, and go back to their previous role.\n\n<aside class=\"notice\">This method can only be used if the user making the request already has the \"premium\" role.<\/aside>"
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"Succes!\",\n     \"data\": {}\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update Preferred Lang",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/user\/update-preferred-lang",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/user\/update-preferred-lang"
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"preferredLang\":\"dolore\"}"
+                        },
+                        "description": "It may be obvous at this point, but this is the method used for updating the user's preferred language."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"Succes!\",\n     \"data\": {}\n}",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "noauth"
+    }
+}

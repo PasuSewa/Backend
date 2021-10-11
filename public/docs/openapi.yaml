@@ -1,0 +1,1952 @@
+openapi: 3.0.3
+info:
+  title: 'API Documentation for PasuNashi Backend'
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'https://pasunashi-backend.herokuapp.com'
+paths:
+  /api/send-code-by-email:
+    post:
+      summary: 'Send Code By Email'
+      description: "This method will send the security code needed for the user to login by the \"login with email code\" method.\n\nRemember that the email parameter must exists either on the \"emails\" or in \"recovery_emails\" columns"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: 200
+                  message: Succes!
+                  data: {  }
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Succes!
+                  data:
+                    type: object
+                    example: {  }
+        401:
+          description: 'validation failed'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"email\": \"The field \"email\" must be a valid email.\"\n             }\n         ],\n         \"request\": {\n             \"isSeconadry\": false,\n             \"email\": \"fake_email.com\",\n         }\n     }\n}"
+        404:
+          description: 'user with email = user-email was not found'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 404,\n     \"errors\": [\n         {\n             \"message\": \"The user was not found.\",\n         }\n     ],\n     \"message\": \"The user was not found.\",\n}"
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address. Must be at least 5 characters. Must not be greater than 190 characters.'
+                  example: akdyjvjsjzpcvsyjaesvjssxbhmfkwgugnoagndaibpyvvbrhphhqanqxyfxmsvkngtnuhkcuaahkactsqnvh
+                isSecondary:
+                  type: boolean
+                  description: ''
+                  example: false
+              required:
+                - email
+                - isSecondary
+      security: []
+  /api/auth/renew-security-code:
+    get:
+      summary: 'Renew Security Access Code'
+      description: "This method is used to generate a new security access code for the user. This code can be used to login in the case that the user has lost access to all\n2-factor-authentication methods."
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 200,\n     \"message\": \"Succes!\",\n     \"data\": {\n         \"renewed_code\": \"AAAAAAAAAA\",\n     },\n}"
+      tags:
+        - Auth
+  /api/auth/refresh-2fa-secret:
+    get:
+      summary: 'Refresh 2-Factor-Authentication Secret'
+      description: "This method is responsible for updating and returning the secret key for the time-based one-time-password\n(the code generated in apps like Google Authenticator). In order to check if the user has set up correctly the new secret key, you can verify it\nusing the endpoint of Register, Third Step.\n\n<aside class=\"notice\">You can generate a QR-code for the user to scan using the structure given in the README file.</aside>"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 200,\n     \"message\": \"Succes!\",\n     \"data\": {\n         \"secret\": \"AAAAAAAAAA\",\n         \"email\": \"main@email.com\",\n     },\n}"
+      tags:
+        - Auth
+  /api/auth/grant-access:
+    post:
+      summary: 'Grant Access to Confidential Information'
+      description: "This method is used to access the encrypted data of a Credential, or the encrypted data of the user itself.\n\n<aside class=\"notice\">This method may return a decrypted Credential, you can see the Credential interface on the README file.</aside>"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'access to user data'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 200,\n     \"message\": \"Success!\"\n     \"data\": {\n         \"name\": \"jhon doe\",\n         \"email\": \"main@email.com\",\n         \"recovery_email\": \"recovery@email.com\",\n         \"phone_number\": \"+1 555-1234-5678\",\n         \"anti_fishing_secret\": \"secret\",\n         \"security_access_code\": \"AAAAAAAAAA\"\n     }\n}"
+        401:
+          description: 'validation failed'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"accessTo\": \"The field \"accessTo\" must be \"credential-data\" or \"user-data\".\"\n             }\n         ],\n         \"request\": {\n             \"accessTo\": \"encrypted-data\",\n             \"accessingDevice\": \"Windows NT 6.1; Win64; x64; rv:47.0\",\n             \"accessingPlatform\": \"web\",\n         }\n     }\n}"
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accessTo:
+                  type: string
+                  description: 'Must be either one of these exact two options: "user-data" or "credential-data".'
+                  example: quibusdam
+                credentialId:
+                  type: integer
+                  description: 'Its required, only if "accessTo" is equal to "credential-data".'
+                  example: 13
+                accessingDevice:
+                  type: string
+                  description: 'The user agent of the navigator, or the unique ID of the device. (min: 1, max: 190 char).'
+                  example: sit
+                accessingPlatform:
+                  type: string
+                  description: 'Must be one of <code>mobile</code>, <code>web</code>, or <code>desktop</code> Must be at least 3 characters. Must not be greater than 7 characters.'
+                  example: ''
+                accessingPlattform:
+                  type: string
+                  description: 'Must be one of these exact three options: "web", "desktop", "mobile".'
+                  example: voluptatibus
+              required:
+                - accessTo
+                - accessingDevice
+                - accessingPlatform
+                - accessingPlattform
+  /api/companies/index:
+    get:
+      summary: 'Get Companies'
+      description: "This is the method used to get all the available options for companies.\n\n<aside class=\"notice\">This method stores the results in cache for 1 week, so no change will take place until that time.</aside>"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: 200
+                  message: Success!
+                  data:
+                    companies:
+                      -
+                        name: AFIP
+                        url_logo: 'https://www.afip.gob.ar/frameworkAFIP/v1/img/logo_afip.png'
+                        id: 1
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Success!
+                  data:
+                    type: object
+                    example:
+                      companies:
+                        -
+                          name: AFIP
+                          url_logo: 'https://www.afip.gob.ar/frameworkAFIP/v1/img/logo_afip.png'
+                          id: 1
+      tags:
+        - Companies
+      security: []
+  /api/credential/create:
+    post:
+      summary: Create
+      description: "This is the method used to create a new credential.\n\n<aside class=\"notice\">This method will return the created Credential, you can see the Credential interface on the README file.</aside>"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 200,\n     \"message\": \"Success!\",\n     \"data\": {\n         \"credentials\": {\n                 \"company_id\": 1,\n                 \"company\": {\n                     \"name\": \"AFIP\",\n                     \"url_logo\": \"https://www.afip.gob.ar/frameworkAFIP/v1/img/logo_afip.png\",\n                     \"id\": 1,\n                 },\n                 \"email\": {\n                     \"opening\": \"fa\",\n                     \"char_count\": 8,\n                     \"ending\": \"@email_company.com\"\n                 },\n                 \"password\": {\n                     \"char_count\": 16\n                 }\n             }\n     }\n}"
+        401:
+          description: 'validation failed'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: 401
+                  message: 'error message'
+                  data:
+                    errors:
+                      -
+                        password: '"password" must have at least 5 characters.'
+                    request:
+                      password: pass
+                      company_name: AFIP
+                      email: fake_email@email_company.com
+                properties:
+                  status:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: 'error message'
+                  data:
+                    type: object
+                    example:
+                      errors:
+                        -
+                          password: '"password" must have at least 5 characters.'
+                      request:
+                        password: pass
+                        company_name: AFIP
+                        email: fake_email@email_company.com
+      tags:
+        - Credential
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company_name:
+                  type: stribg
+                  description: '(min: 1, max: 190 char).'
+                  example: dolor
+                description:
+                  type: string
+                  description: '(min: 0, max: 500 char).'
+                  example: dolores
+                user_name:
+                  type: string
+                  description: '(min: 1, max: 190 char).'
+                  example: est
+                email:
+                  type: string
+                  description: '(min:5, max: 190 char).'
+                  example: dolorem
+                password:
+                  type: string
+                  description: '(min: 5, max: 190 char).'
+                  example: asperiores
+                username:
+                  type: string
+                  description: '(min:1, max: 190 char).'
+                  example: et
+                phone_number:
+                  type: string
+                  description: '(min: 8, max 190 char).'
+                  example: omnis
+                security_question:
+                  type: string
+                  description: '(min: 5, max: 190 char).'
+                  example: fugiat
+                security_answer:
+                  type: string
+                  description: 'Is required if security_question is not null (min: 5, max: 190 char).'
+                  example: ut
+                unique_code:
+                  type: string
+                  description: '(min: 1, max: 190 char).'
+                  example: sint
+                multiple_codes:
+                  type: array
+                  description: 'Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.'
+                  example:
+                    - voluptatum
+                  items:
+                    type: string
+                crypto_codes:
+                  type: array
+                  description: 'Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.'
+                  example:
+                    - molestiae
+                  items:
+                    type: string
+                accessing_device:
+                  type: string
+                  description: 'The user agent of the navigator, or the unique ID of the device. (min: 1, max: 190 char).'
+                  example: nam
+                accessing_plattform:
+                  type: string
+                  description: 'Must be one of these exact three options: "web", "desktop", "mobile".'
+                  example: tenetur
+              required:
+                - company_name
+                - accessing_device
+                - accessing_plattform
+  /api/credential/index:
+    get:
+      summary: Index
+      description: "Since all the user's credentials are returned on the endpoints for login, and the final register step, this method can be called to get all the credentials when there is an error on the local storage of the device.\n\n<aside class=\"notice\">You can check the README file to see the interface of Credentials.</aside>"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 200,\n     \"message\": \"Success!\",\n     \"data\": {\n         \"credentials\": [\n             {\n                 \"company_id\": 1,\n                 \"company\": {\n                     \"name\": \"AFIP\",\n                     \"url_logo\": \"https://www.afip.gob.ar/frameworkAFIP/v1/img/logo_afip.png\",\n                     \"id\": 1,\n                 },\n                 \"email\": {\n                     \"opening\": \"mr\",\n                     \"char_count\": 8,\n                     \"ending\": \"@gmail.com\"\n                 },\n                 \"password\": {\n                     \"char_count\": 16\n                 }\n             }\n         ]\n     }\n}"
+      tags:
+        - Credential
+  '/api/credential/find/{credential_id}':
+    get:
+      summary: Find
+      description: "This method can be called when the frontend app has failed to find a credential on the local storage of the device.\n\n<aside class=\"notice\">This method will return the Credential that was found, you can see the Credential interface on the README file.</aside>"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 200,\n     \"message\": \"Success!\",\n     \"data\": {\n         \"credential\": {\n                 \"company_id\": 1,\n                 \"company\": {\n                     \"name\": \"AFIP\",\n                     \"url_logo\": \"https://www.afip.gob.ar/frameworkAFIP/v1/img/logo_afip.png\",\n                     \"id\": 1,\n                 },\n                 \"email\": {\n                     \"opening\": \"mr\",\n                     \"char_count\": 8,\n                     \"ending\": \"@gmail.com\"\n                 },\n                 \"password\": {\n                     \"char_count\": 16\n                 },\n             },\n     },\n}"
+        404:
+          description: 'credential with id = credential-id was not found'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 404,\n     \"errors\": [\n         {\n             \"message\": \"The credential was not found.\",\n         }\n     ],\n     \"message\": \"The credential was not found.\",\n}"
+      tags:
+        - Credential
+    parameters:
+      -
+        in: path
+        name: credential_id
+        description: 'The id of the credential to delete.'
+        example: 4
+        required: true
+        schema:
+          type: integer
+  '/api/credential/update/{credential_id}':
+    put:
+      summary: Update
+      description: "This is the method used for updating a credential. If any field is absent, it will be updated to a null type, or deleted.\n\nThe company_name cannot be updated.\n\n<aside class=\"notice\">This method will return the updated Credential, you can see the Credential interface on the README file.</aside>"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 200,\n     \"message\": \"Success!\",\n     \"data\": {\n         \"credential\": {\n                 \"id\": 1,\n                 \"company_id\": 1,\n                 \"company\": {\n                     \"name\": \"AFIP\",\n                     \"url_logo\": \"https://www.afip.gob.ar/frameworkAFIP/v1/img/logo_afip.png\",\n                     \"id\": 1,\n                 },\n                 \"email\": {\n                     \"opening\": \"fa\",\n                     \"char_count\": 8,\n                     \"ending\": \"@email_company.com\"\n                 },\n                 \"password\": {\n                     \"char_count\": 16\n                 }\n             }\n     }\n}"
+        404:
+          description: 'credential with id = credential-id was not found'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 404,\n     \"errors\": [\n         {\n             \"message\": \"The credential was not found.\",\n         }\n     ],\n     \"message\": \"The credential was not found.\",\n}"
+        401:
+          description: 'validation failed'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"email\": \"The field \"email\" must must be a valid email.\"\n             }\n         ],\n         \"request\": {\n             \"password\": \"pass\",\n             \"company_name\": \"AFIP\",\n             \"email\": \"fake_email.com\",\n             \"id:\" 1,\n         }\n     }\n}"
+      tags:
+        - Credential
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                  description: '(min: 0, max: 500 char).'
+                  example: molestiae
+                user_name:
+                  type: string
+                  description: '(min: 1, max: 190 char).'
+                  example: blanditiis
+                email:
+                  type: string
+                  description: '(min:5, max: 190 char).'
+                  example: perspiciatis
+                password:
+                  type: string
+                  description: '(min: 5, max: 190 char).'
+                  example: neque
+                username:
+                  type: string
+                  description: '(min:1, max: 190 char).'
+                  example: quibusdam
+                phone_number:
+                  type: string
+                  description: '(min: 8, max 190 char).'
+                  example: debitis
+                security_question:
+                  type: string
+                  description: '(min: 5, max: 190 char).'
+                  example: incidunt
+                security_answer:
+                  type: string
+                  description: 'Is required if security_question is not null (min: 5, max: 190 char).'
+                  example: ratione
+                unique_code:
+                  type: string
+                  description: '(min: 1, max: 190 char).'
+                  example: molestiae
+                multiple_codes:
+                  type: array
+                  description: 'Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.'
+                  example:
+                    - quod
+                  items:
+                    type: string
+                crypto_codes:
+                  type: array
+                  description: 'Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.'
+                  example:
+                    - vitae
+                  items:
+                    type: string
+                accessing_device:
+                  type: string
+                  description: 'The user agent of the navigator, or the unique ID of the device. (min: 1, max: 190 char).'
+                  example: ut
+                accessing_plattform:
+                  type: string
+                  description: 'Must be one of these exact three options: "web", "desktop", "mobile".'
+                  example: vel
+              required:
+                - accessing_device
+                - accessing_plattform
+    parameters:
+      -
+        in: path
+        name: credential_id
+        description: 'The id of the credential to update.'
+        example: 11
+        required: true
+        schema:
+          type: integer
+  '/api/credential/delete/{credential_id}':
+    delete:
+      summary: Delete
+      description: 'This method is used to delete a credential.'
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: 200
+                  message: Succes!
+                  data: {  }
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Succes!
+                  data:
+                    type: object
+                    example: {  }
+        404:
+          description: 'credential with id = credential-id was not found'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 404,\n     \"errors\": [\n         {\n             \"message\": \"The credential was not found.\",\n         }\n     ],\n     \"message\": \"The credential was not found.\",\n}"
+      tags:
+        - Credential
+    parameters:
+      -
+        in: path
+        name: credential_id
+        description: 'The id of the credential to delete.'
+        example: 3
+        required: true
+        schema:
+          type: integer
+  /api/credential/get-recently-seen:
+    get:
+      summary: 'Get Recently Seen'
+      description: 'This method will return some info of the credentials that were accessed within the last 3 days.'
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'no credential was recently accessed'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Success!
+                  status: 200
+                  data:
+                    recently_seen: []
+                properties:
+                  message:
+                    type: string
+                    example: Success!
+                  status:
+                    type: integer
+                    example: 200
+                  data:
+                    type: object
+                    example:
+                      recently_seen: []
+      tags:
+        - Credential
+  /api/feedback/index:
+    get:
+      summary: Index
+      description: "Get all the suggestions and ratings that are public\n\n<aside class=\"notice\">The results are stored in cache for 1 week</aside>"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: 200
+                  message: 'Ratings and Suggestions obtained successfully.'
+                  data:
+                    feedback:
+                      suggestions:
+                        -
+                          id: 1
+                          user_name: 'Federico Torp'
+                          body: 'Id porro excepturi hic et saepe consequuntur possimus porro cumque.'
+                          rating: null
+                          type: 1
+                          is_public: 1
+                          created_at: '2021-10-10T19:17:08.000000Z'
+                          updated_at: '2021-10-10T19:17:08.000000Z'
+                        -
+                          id: 2
+                          user_name: 'Ms. Cassandre Funk DVM'
+                          body: 'Atque aperiam laboriosam asperiores voluptatum incidunt voluptas harum ut quae.'
+                          rating: null
+                          type: 1
+                          is_public: 1
+                          created_at: '2021-10-10T19:17:08.000000Z'
+                          updated_at: '2021-10-10T19:17:08.000000Z'
+                        -
+                          id: 3
+                          user_name: 'Lilla Spinka'
+                          body: 'Quas sint deserunt dolorem molestias impedit et minima omnis iste.'
+                          rating: null
+                          type: 1
+                          is_public: 1
+                          created_at: '2021-10-10T19:17:08.000000Z'
+                          updated_at: '2021-10-10T19:17:08.000000Z'
+                        -
+                          id: 4
+                          user_name: 'Jordon Lebsack'
+                          body: 'Consequatur aut et aut voluptatem eaque eos sed totam commodi.'
+                          rating: null
+                          type: 1
+                          is_public: 1
+                          created_at: '2021-10-10T19:17:08.000000Z'
+                          updated_at: '2021-10-10T19:17:08.000000Z'
+                        -
+                          id: 5
+                          user_name: 'Aliyah Cronin'
+                          body: 'Ab sit sunt sit rerum mollitia ullam architecto quis optio.'
+                          rating: null
+                          type: 1
+                          is_public: 1
+                          created_at: '2021-10-10T19:17:08.000000Z'
+                          updated_at: '2021-10-10T19:17:08.000000Z'
+                      ratings:
+                        -
+                          id: 6
+                          user_name: 'Prof. Jackeline Wisoky'
+                          body: 'Voluptatem veritatis nam odit incidunt quisquam ab ut alias aut.'
+                          rating: 2
+                          type: 0
+                          is_public: 1
+                          created_at: '2021-10-10T19:17:08.000000Z'
+                          updated_at: '2021-10-10T19:17:08.000000Z'
+                        -
+                          id: 7
+                          user_name: 'Bette Paucek'
+                          body: 'Neque aspernatur qui est nesciunt sequi quidem iure et perferendis.'
+                          rating: 8
+                          type: 0
+                          is_public: 1
+                          created_at: '2021-10-10T19:17:08.000000Z'
+                          updated_at: '2021-10-10T19:17:08.000000Z'
+                        -
+                          id: 8
+                          user_name: 'Hallie Swift'
+                          body: 'Ad maxime eveniet et sit consequatur nihil ratione commodi corporis.'
+                          rating: 8
+                          type: 0
+                          is_public: 1
+                          created_at: '2021-10-10T19:17:09.000000Z'
+                          updated_at: '2021-10-10T19:17:09.000000Z'
+                        -
+                          id: 9
+                          user_name: 'Ms. Natalie Turcotte Sr.'
+                          body: 'Itaque saepe amet maiores eum hic excepturi iure quaerat placeat.'
+                          rating: 5
+                          type: 0
+                          is_public: 1
+                          created_at: '2021-10-10T19:17:09.000000Z'
+                          updated_at: '2021-10-10T19:17:09.000000Z'
+                        -
+                          id: 10
+                          user_name: 'Eliza Moore'
+                          body: 'Nobis dolor ducimus laborum qui facere ipsum totam eos possimus.'
+                          rating: 9
+                          type: 0
+                          is_public: 1
+                          created_at: '2021-10-10T19:17:09.000000Z'
+                          updated_at: '2021-10-10T19:17:09.000000Z'
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: 'Ratings and Suggestions obtained successfully.'
+                  data:
+                    type: object
+                    example:
+                      feedback:
+                        suggestions:
+                          -
+                            id: 1
+                            user_name: 'Federico Torp'
+                            body: 'Id porro excepturi hic et saepe consequuntur possimus porro cumque.'
+                            rating: null
+                            type: 1
+                            is_public: 1
+                            created_at: '2021-10-10T19:17:08.000000Z'
+                            updated_at: '2021-10-10T19:17:08.000000Z'
+                          -
+                            id: 2
+                            user_name: 'Ms. Cassandre Funk DVM'
+                            body: 'Atque aperiam laboriosam asperiores voluptatum incidunt voluptas harum ut quae.'
+                            rating: null
+                            type: 1
+                            is_public: 1
+                            created_at: '2021-10-10T19:17:08.000000Z'
+                            updated_at: '2021-10-10T19:17:08.000000Z'
+                          -
+                            id: 3
+                            user_name: 'Lilla Spinka'
+                            body: 'Quas sint deserunt dolorem molestias impedit et minima omnis iste.'
+                            rating: null
+                            type: 1
+                            is_public: 1
+                            created_at: '2021-10-10T19:17:08.000000Z'
+                            updated_at: '2021-10-10T19:17:08.000000Z'
+                          -
+                            id: 4
+                            user_name: 'Jordon Lebsack'
+                            body: 'Consequatur aut et aut voluptatem eaque eos sed totam commodi.'
+                            rating: null
+                            type: 1
+                            is_public: 1
+                            created_at: '2021-10-10T19:17:08.000000Z'
+                            updated_at: '2021-10-10T19:17:08.000000Z'
+                          -
+                            id: 5
+                            user_name: 'Aliyah Cronin'
+                            body: 'Ab sit sunt sit rerum mollitia ullam architecto quis optio.'
+                            rating: null
+                            type: 1
+                            is_public: 1
+                            created_at: '2021-10-10T19:17:08.000000Z'
+                            updated_at: '2021-10-10T19:17:08.000000Z'
+                        ratings:
+                          -
+                            id: 6
+                            user_name: 'Prof. Jackeline Wisoky'
+                            body: 'Voluptatem veritatis nam odit incidunt quisquam ab ut alias aut.'
+                            rating: 2
+                            type: 0
+                            is_public: 1
+                            created_at: '2021-10-10T19:17:08.000000Z'
+                            updated_at: '2021-10-10T19:17:08.000000Z'
+                          -
+                            id: 7
+                            user_name: 'Bette Paucek'
+                            body: 'Neque aspernatur qui est nesciunt sequi quidem iure et perferendis.'
+                            rating: 8
+                            type: 0
+                            is_public: 1
+                            created_at: '2021-10-10T19:17:08.000000Z'
+                            updated_at: '2021-10-10T19:17:08.000000Z'
+                          -
+                            id: 8
+                            user_name: 'Hallie Swift'
+                            body: 'Ad maxime eveniet et sit consequatur nihil ratione commodi corporis.'
+                            rating: 8
+                            type: 0
+                            is_public: 1
+                            created_at: '2021-10-10T19:17:09.000000Z'
+                            updated_at: '2021-10-10T19:17:09.000000Z'
+                          -
+                            id: 9
+                            user_name: 'Ms. Natalie Turcotte Sr.'
+                            body: 'Itaque saepe amet maiores eum hic excepturi iure quaerat placeat.'
+                            rating: 5
+                            type: 0
+                            is_public: 1
+                            created_at: '2021-10-10T19:17:09.000000Z'
+                            updated_at: '2021-10-10T19:17:09.000000Z'
+                          -
+                            id: 10
+                            user_name: 'Eliza Moore'
+                            body: 'Nobis dolor ducimus laborum qui facere ipsum totam eos possimus.'
+                            rating: 9
+                            type: 0
+                            is_public: 1
+                            created_at: '2021-10-10T19:17:09.000000Z'
+                            updated_at: '2021-10-10T19:17:09.000000Z'
+      tags:
+        - Feedback
+      security: []
+  /api/feedback/create:
+    post:
+      summary: Create
+      description: "Store a suggestion and/or rating in the database\n\n(Reuqires user role to be \"premium\")"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: 200
+                  message: Succes!
+                  data: {  }
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Succes!
+                  data:
+                    type: object
+                    example: {  }
+        401:
+          description: 'validation failed'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"body\": \"\"body\" must have at least 5 characters.\"\n             }\n         ],\n         \"request\": {\n             \"body\": \"\",\n             \"type\": true,\n         }\n     }\n}"
+      tags:
+        - Feedback
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+                  description: 'The body of the suggestion/rating (min: 5 max: 190 char)'
+                  example: velit
+                rating:
+                  type: integer
+                  description: 'The points given as rating (required only if "type" is false) (min: 0, max: 10)'
+                  example: 12
+                type:
+                  type: boolean
+                  description: 'true = this is a suggestion, while false = this is a rating'
+                  example: true
+              required:
+                - body
+                - rating
+                - type
+  /api/auth/login/two-factor-code:
+    post:
+      summary: 'Login By 2 Factor Code (TOTP)'
+      description: "This is the method to login using the user's main email, and the time-based one-time-password (the code generated in apps like Google Authenticator).\n\n<aside class=\"notice\">This method will return an array of Credentials, you can see the Credential interface on the README file.</aside>"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 200,\n     \"message\": \"success!\",\n     \"data\": {\n         \"user_data\": {\n             \"id\": 2,\n             \"name\": \"user's name\",\n             \"email\": \"email@email_company.com\",\n             \"recovery_email\": \"second_email@email.company\",\n             \"slots_available\": 5,\n             \"invitation_code\": \"AAAAAAAAAA\",\n             \"role\": \"free\",\n             \"preferred_lang\": \"jp\",\n         },\n         \"user_credentials\": [],\n         \"token\": \"the auth token\"\n     }\n}"
+        401:
+          description: 'validation failed'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"twoFactorCode\": \"The field \"twoFactorCode\" must be an integer.\"\n             }\n         ],\n         \"request\": {\n             \"twoFactorCode\": \"123456\",\n             \"email\": \"email@email_company.com\"\n         }\n     }\n}"
+      tags:
+        - Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'The main email of the user.'
+                  example: odit
+                twoFactorCode:
+                  type: integer
+                  description: 'Must be a 6 digits number.'
+                  example: 15
+              required:
+                - email
+                - twoFactorCode
+      security: []
+  /api/auth/login/email-code:
+    post:
+      summary: 'Login By Email Code'
+      description: "In order for this method to work, the user must already have the correct security code in the database. If the user asked to send an email code to their\nrecovery email, they won't be able to login by this method, if they're using their main email on this request.\n\n<aside class=\"notice\">This method will return an array of Credentials, you can see the Credential interface on the README file.</aside>"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 200,\n     \"message\": \"success!\",\n     \"data\": {\n         \"user_data\": {\n             \"id\": 2,\n             \"name\": \"user's name\",\n             \"email\": \"email@email_company.com\",\n             \"recovery_email\": \"second_email@email.company\",\n             \"slots_available\": 5,\n             \"invitation_code\": \"AAAAAAAAAA\",\n             \"role\": \"free\",\n             \"preferred_lang\": \"jp\",\n         },\n         \"user_credentials\": [],\n         \"token\": \"the auth token\"\n     }\n}"
+        401:
+          description: 'validation failed'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"code\": \"The field \"code\" must be an integer.\"\n             }\n         ],\n         \"request\": {\n             \"code\": \"123456\",\n             \"mainEmail\": \"email@email_company.com\",\n         }\n     }\n}"
+      tags:
+        - Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mainEmail:
+                  type: string
+                  description: 'The main email of the user.'
+                  example: ut
+                recoveryEmail:
+                  type: string
+                  description: 'Is required only if the user has sent the security code to their recovery email.'
+                  example: culpa
+                code:
+                  type: integer
+                  description: 'Must be a 6 digits number.'
+                  example: 14
+              required:
+                - mainEmail
+                - code
+      security: []
+  /api/auth/login/security-code:
+    post:
+      summary: 'Login By Security Code'
+      description: "This is the only method that does not require 2-factor-authentication.\n\n<aside class=\"notice\">This method will return an array of Credentials, you can see the Credential interface on the README file.</aside>"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 200,\n     \"message\": \"success!\",\n     \"data\": {\n         \"user_data\": {\n             \"id\": 2,\n             \"name\": \"user's name\",\n             \"email\": \"email@email_company.com\",\n             \"recovery_email\": \"second_email@email.company\",\n             \"slots_available\": 5,\n             \"invitation_code\": \"AAAAAAAAAA\",\n             \"role\": \"free\",\n             \"preferred_lang\": \"jp\",\n         },\n         \"user_credentials\": [],\n         \"token\": \"the auth token\"\n     }\n}"
+        401:
+          description: 'validation failed'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"securityCode\": \"The field \"securityCode\" must have at least 10 characters.\"\n             }\n         ],\n         \"request\": {\n             \"mainEmail\": \"email@email_company.com\",\n             \"recoveryEmail\": \"second@email.com\",\n             \"antiFishingSecret\": \"secret\",\n             \"securityCode\": 123456,\n         }\n     }\n}"
+      tags:
+        - Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mainEmail:
+                  type: string
+                  description: ''
+                  example: temporibus
+                recoveryEmail:
+                  type: string
+                  description: ''
+                  example: deserunt
+                antiFishingSecret:
+                  type: string
+                  description: ''
+                  example: nulla
+                securityCode:
+                  type: string
+                  description: "All users have one 10-character recovery code for logging into ther account if they aren't able\n to use any 2-factor-authentication"
+                  example: dolor
+              required:
+                - mainEmail
+                - recoveryEmail
+                - antiFishingSecret
+                - securityCode
+      security: []
+  /api/auth/logout:
+    get:
+      summary: Logout
+      description: 'This method does not require anything, except for a valid authentication token.'
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: 200
+                  message: Succes!
+                  data: {  }
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Succes!
+                  data:
+                    type: object
+                    example: {  }
+      tags:
+        - Login
+  /api/verify-paypal-payment:
+    post:
+      summary: 'Verify PayPal Payment'
+      description: 'This method receives the transaction id of PayPal, and verifies that the purchase is fully confirmed'
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: 200
+                  message: Succes!
+                  data: {  }
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Succes!
+                  data:
+                    type: object
+                    example: {  }
+        404:
+          description: 'validation failed'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: 404
+                  message: 'error message'
+                  data:
+                    errors:
+                      -
+                        code: 'the code doesn''t exist in database'
+                    request:
+                      code: AAAAA
+                properties:
+                  status:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: 'error message'
+                  data:
+                    type: object
+                    example:
+                      errors:
+                        -
+                          code: 'the code doesn''t exist in database'
+                      request:
+                        code: AAAAA
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  description: 'The id of the transaction in PayPal'
+                  example: sit
+              required:
+                - code
+  /api/start-payment-instance:
+    post:
+      summary: 'Start Payment Instance'
+      description: "This method will create an \"open payment instance\" in the database, so, when the payment is fully confirmed,\nthe backend will know how much the user has paid, and what did they actually purchased."
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: success
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 200,\n     \"message\": \"Succes!\",\n     \"data\": {},\n}"
+        400:
+          description: 'validation failed'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 400,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"body\": \"body must have at least 5 characters.\"\n             }\n         ],\n         \"request\": {\n             \"method\": \"PayPal\",\n             \"amount\": 100,\n             \"code\": \"AAAAA\"\n             \"type\": \"\",\n         }\n     }\n}"
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                method:
+                  type: string
+                  description: 'One of two options, either "PayPal" or "Crypto" (be careful, don''t forget the capital letters).'
+                  example: quaerat
+                amount:
+                  type: integer
+                  description: 'The amount (in USD) that the user is paying (min: 5 USD).'
+                  example: 19
+                type:
+                  type: string
+                  description: 'Either one of two options, "premium" if purchasing premium role, or "slots" if paying for more slots (without cap letters).'
+                  example: quaerat
+                code:
+                  type: string
+                  description: 'The id of the transaction in PayPal, or the code of the transaction in Coinbase.'
+                  example: explicabo
+              required:
+                - method
+                - amount
+                - type
+                - code
+  /api/auth/register/step-1:
+    post:
+      summary: 'Register, Step One'
+      description: "The first step in order to register a new user. This method stores the user's accessing information, and dispatches an event to send security codes\nto both, the main and the recovery, emails."
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: 200
+                  message: success!
+                  data:
+                    registered_email: main_email@email_company.com
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: success!
+                  data:
+                    type: object
+                    example:
+                      registered_email: main_email@email_company.com
+        401:
+          description: 'validation failed'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"mainEmail\": \"The field \"mainEmail\" must be a valid email.\"\n             }\n         ],\n         \"request\": {\n             \"name\": \"user's name\",\n             \"phoneNumber\": \"+1 555-1234-5678\",\n             \"mainEmail\": \"fake_email.com\",\n             \"recoveryEmail\": \"fake_mail@email_company.com\",\n             \"secretAntiFishing\": \"secret\",\n             \"secretAntiFishing_confirmation\": \"secret\",\n             \"invitationCode\": \"AAAAAAAAAA\"\n         }\n     }\n}"
+      tags:
+        - Register
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must be at least 5 characters. Must not be greater than 100 characters.'
+                  example: iogvgrwkofferk
+                phoneNumber:
+                  type: string
+                  description: 'Must be at least 6 characters. Must not be greater than 20 characters.'
+                  example: vtqd
+                mainEmail:
+                  type: string
+                  description: 'Must be a valid email address. Must be at least 5 characters. Must not be greater than 190 characters.'
+                  example: alemgpbjadqidrzkfxxocuntqapymzwhlzgxcjimvspneaybkbbviqb
+                recoveryEmail:
+                  type: string
+                  description: 'Must be a valid email address. Must be at least 5 characters. Must not be greater than 190 characters.'
+                  example: shvohrmchbmglttubxpkawbkqiq
+                secretAntiFishing:
+                  type: string
+                  description: 'Must be at least 5 characters. Must not be greater than 190 characters.'
+                  example: zfabnjbcztelmwi
+                secretAntiFishing_confirmation:
+                  type: string
+                  description: 'Must be at least 5 characters. Must not be greater than 190 characters.'
+                  example: hktjanbbgeulgilgtsubfoatklftqtvbvmjzymhoesuoqoguqpvragekvwqtmpjpdswdnfdjylnbbgtqmtjewjqfszsixiuihxeanazlppyosyvqtflzpwempfsntejygykmoadeksdorfwwcvtdzhocpqmvzzxs
+                invitationCode:
+                  type: string
+                  description: 'Must be at least 10 characters. Must not be greater than 10 characters.'
+                  example: m
+              required:
+                - name
+                - phoneNumber
+                - mainEmail
+                - recoveryEmail
+                - secretAntiFishing
+                - secretAntiFishing_confirmation
+      security: []
+  /api/auth/register/step-2:
+    post:
+      summary: 'Register, Step Two'
+      description: 'This method will receive both of the security codes that were sent to the user on the previous step, and verify that both of them are correct.'
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: 200
+                  message: success!
+                  data:
+                    token: 'the authorization token needed for the third step.'
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: success!
+                  data:
+                    type: object
+                    example:
+                      token: 'the authorization token needed for the third step.'
+        401:
+          description: 'validation failed'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"mainEmail\": \"The field \"mainEmail\" must be a valid email.\"\n             }\n         ],\n         \"request\": {\n             \"mainEmail\": \"fake_email.com\",\n             \"mainEmailCode\": 123456,\n             \"recoveryEmailCode\": 123456,\n         }\n     }\n}"
+      tags:
+        - Register
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mainEmailCode:
+                  type: integer
+                  description: 'Must be a number of 6 digits.'
+                  example: 19
+                recoveryEmailCode:
+                  type: integer
+                  description: 'Must be a number of 6 digits.'
+                  example: 16
+                mainEmail:
+                  type: string
+                  description: 'Must be a valid email address. Must be at least 4 characters. Must not be greater than 190 characters.'
+                  example: ezbxvnydvddabxtndnvjdtuulipluoxpibmxlsoowakibmmculewzvusrcenixzgsmclrohzxys
+                MainEmail:
+                  type: string
+                  description: 'The email must already exist on the database.'
+                  example: molestias
+              required:
+                - mainEmailCode
+                - recoveryEmailCode
+                - mainEmail
+                - MainEmail
+      security: []
+  /api/auth/register/step-3:
+    post:
+      summary: 'Register, Step Three'
+      description: "This method will invalidate the auth token sent with the request.\n\n<aside class=\"notice\">This method is also used to verify the 2FA code if the user decides to renew it.</aside>"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 200,\n     \"message\": \"success!\",\n     \"data\": {\n         \"user_data\": {\n             \"id\": 2,\n             \"name\": \"user's name\",\n             \"email\": \"email@email_company.com\",\n             \"recovery_email\": \"second_email@email.company\",\n             \"slots_available\": 5,\n             \"invitation_code\": \"AAAAAAAAAA\",\n             \"role\": \"free\",\n             \"preferred_lang\": \"jp\",\n         },\n         \"user_credentials\": [],\n         \"token\": \"the auth token renewed\"\n     }\n}"
+        401:
+          description: 'validation failed'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"twoFactorCode\": \"The field \"twoFactorCode\" must be an integer.\"\n             }\n         ],\n         \"request\": {\n             \"twoFactorCode\": \"123456\",\n         }\n     }\n}"
+      tags:
+        - Register
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                twoFactorCode:
+                  type: integer
+                  description: 'Must be a 6 digits number.'
+                  example: 9
+              required:
+                - twoFactorCode
+  /api/user/update:
+    put:
+      summary: Update
+      description: "This method is used to edit the user's credentials for accessing their account in PasuNashi.\n\n<aside class=\"notice\">All of the parameters are required, even if nothing changed.</aside>"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: 200
+                  message: Succes!
+                  data: {  }
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Succes!
+                  data:
+                    type: object
+                    example: {  }
+        401:
+          description: 'validation failed'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 401,\n     \"message\": \"error message\",\n     \"data\": {\n         \"errors\": [\n             {\n                 \"name\": \"\"name\" must have at least 3 characters.\"\n             }\n         ],\n         \"request\": {\n             \"neame\": \"\",\n             \"phone_number\": \"+1 555-1234-1234\",\n             \"email\": \"fake@email.com\",\n             \"recovery_email\": \"fake_email@email_company.com\"\n             \"anti_fishing_secret\": \"secret\",\n     }\n }"
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: '(min: 3, max: 190 char).'
+                  example: iure
+                phone_number:
+                  type: string
+                  description: '(min: 8, max: 16 char).'
+                  example: sint
+                email:
+                  type: string
+                  description: '(max: 190 char).'
+                  example: exercitationem
+                recovery_email:
+                  type: required
+                  description: '(max: 190 char).'
+                  example: sint
+                anti_fishing_secret:
+                  type: required
+                  description: '(min: 5, max: 190 char).'
+                  example: qui
+              required:
+                - name
+                - phone_number
+                - email
+  /api/user/stop-premium:
+    get:
+      summary: 'Stop Premium'
+      description: "This method is for the times when some user may want to stop paying for the \"premium\" role, and go back to their previous role.\n\n<aside class=\"notice\">This method can only be used if the user making the request already has the \"premium\" role.</aside>"
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: 200
+                  message: Succes!
+                  data: {  }
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Succes!
+                  data:
+                    type: object
+                    example: {  }
+      tags:
+        - User
+  /api/user/update-preferred-lang:
+    put:
+      summary: 'Update Preferred Lang'
+      description: 'It may be obvous at this point, but this is the method used for updating the user''s preferred language.'
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: 200
+                  message: Succes!
+                  data: {  }
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Succes!
+                  data:
+                    type: object
+                    example: {  }
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                preferredLang:
+                  type: string
+                  description: 'One of these (exact) three options: "en", "es", "jp"'
+                  example: dolore
+              required:
+                - preferredLang
+tags:
+  -
+    name: Auth
+    description: ''
+  -
+    name: Companies
+    description: ''
+  -
+    name: Credential
+    description: ''
+  -
+    name: Feedback
+    description: ''
+  -
+    name: Login
+    description: ''
+  -
+    name: Payments
+    description: ''
+  -
+    name: Register
+    description: ''
+  -
+    name: User
+    description: ''

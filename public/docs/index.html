@@ -1,0 +1,4054 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>API Documentation for PasuNashi Backend</title>
+
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../docs/css/theme-default.style.css" media="screen">
+    <link rel="stylesheet" href="../docs/css/theme-default.print.css" media="print">
+    <script src="../docs/js/theme-default-3.11.1.js"></script>
+
+    <link rel="stylesheet"
+          href="//unpkg.com/@highlightjs/cdn-assets@10.7.2/styles/obsidian.min.css">
+    <script src="//unpkg.com/@highlightjs/cdn-assets@10.7.2/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <script src="//cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+    <script>
+        var baseUrl = "http://localhost:8000";
+        var useCsrf = Boolean();
+        var csrfUrl = "/sanctum/csrf-cookie";
+    </script>
+    <script src="../docs/js/tryitout-3.11.1.js"></script>
+
+</head>
+
+<body data-languages="[&quot;bash&quot;,&quot;javascript&quot;]">
+<a href="#" id="nav-button">
+      <span>
+        MENU
+        <img src="../docs/images/navbar.png" alt="navbar-image" />
+      </span>
+</a>
+<div class="tocify-wrapper">
+                <div class="lang-selector">
+                            <a href="#" data-language-name="bash">bash</a>
+                            <a href="#" data-language-name="javascript">javascript</a>
+                    </div>
+        <div class="search">
+        <input type="text" class="search" id="input-search" placeholder="Search">
+    </div>
+    <ul class="search-results"></ul>
+
+    <ul id="toc">
+    </ul>
+
+            <ul class="toc-footer" id="toc-footer">
+                            <li><a href="../docs/collection.json">View Postman collection</a></li>
+                            <li><a href="../docs/openapi.yaml">View OpenAPI spec</a></li>
+                            <li><a href="http://github.com/knuckleswtf/scribe">Documentation powered by Scribe ✍</a></li>
+                    </ul>
+            <ul class="toc-footer" id="last-updated">
+            <li>Last updated: October 11 2021</li>
+        </ul>
+</div>
+<div class="page-wrapper">
+    <div class="dark-box"></div>
+    <div class="content">
+        <h1>Introduction</h1>
+<p>This documentation aims to provide all the information you need to work with our API.</p>
+<aside>As you scroll, you'll see code examples for working with the API in different programming languages in the dark area to the right (or as part of the content on mobile).
+You can switch the language used with the tabs at the top right (or from the nav menu at the top left on mobile).</aside>
+<blockquote>
+<p>Base URL</p>
+</blockquote>
+<pre><code class="language-yaml">https://pasunashi-backend.herokuapp.com</code></pre>
+
+        <h1>Authenticating requests</h1>
+<p>This API is not authenticated.</p>
+
+        <h1 id="auth">Auth</h1>
+
+    
+
+            <h2 id="auth-POSTapi-send-code-by-email">Send Code By Email</h2>
+
+<p>
+</p>
+
+<p>This method will send the security code needed for the user to login by the &quot;login with email code&quot; method.</p>
+<p>Remember that the email parameter must exists either on the &quot;emails&quot; or in &quot;recovery_emails&quot; columns</p>
+
+<span id="example-requests-POSTapi-send-code-by-email">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request POST \
+    "https://pasunashi-backend.herokuapp.com/api/send-code-by-email" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp" \
+    --data "{
+    \"email\": \"akdyjvjsjzpcvsyjaesvjssxbhmfkwgugnoagndaibpyvvbrhphhqanqxyfxmsvkngtnuhkcuaahkactsqnvh\",
+    \"isSecondary\": false
+}"
+</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/send-code-by-email"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+let body = {
+    "email": "akdyjvjsjzpcvsyjaesvjssxbhmfkwgugnoagndaibpyvvbrhphhqanqxyfxmsvkngtnuhkcuaahkactsqnvh",
+    "isSecondary": false
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-POSTapi-send-code-by-email">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;status&quot;: 200,
+    &quot;message&quot;: &quot;Succes!&quot;,
+    &quot;data&quot;: {}
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401, validation failed):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 401,
+     &quot;message&quot;: &quot;error message&quot;,
+     &quot;data&quot;: {
+         &quot;errors&quot;: [
+             {
+                 &quot;email&quot;: &quot;The field &quot;email&quot; must be a valid email.&quot;
+             }
+         ],
+         &quot;request&quot;: {
+             &quot;isSeconadry&quot;: false,
+             &quot;email&quot;: &quot;fake_email.com&quot;,
+         }
+     }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404, user with email = user-email was not found):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 404,
+     &quot;errors&quot;: [
+         {
+             &quot;message&quot;: &quot;The user was not found.&quot;,
+         }
+     ],
+     &quot;message&quot;: &quot;The user was not found.&quot;,
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-send-code-by-email" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-send-code-by-email"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-send-code-by-email"></code></pre>
+</span>
+<span id="execution-error-POSTapi-send-code-by-email" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-send-code-by-email"></code></pre>
+</span>
+<form id="form-POSTapi-send-code-by-email" data-method="POST"
+      data-path="api/send-code-by-email"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-send-code-by-email', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-send-code-by-email"
+                    onclick="tryItOut('POSTapi-send-code-by-email');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-send-code-by-email"
+                    onclick="cancelTryOut('POSTapi-send-code-by-email');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-send-code-by-email" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/send-code-by-email</code></b>
+        </p>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <p>
+            <b><code>email</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="email"
+               data-endpoint="POSTapi-send-code-by-email"
+               data-component="body" required  hidden>
+    <br>
+<p>Must be a valid email address. Must be at least 5 characters. Must not be greater than 190 characters.</p>        </p>
+                <p>
+            <b><code>isSecondary</code></b>&nbsp;&nbsp;<small>boolean</small>  &nbsp;
+                <label data-endpoint="POSTapi-send-code-by-email" hidden>
+            <input type="radio" name="isSecondary"
+                   value="true"
+                   data-endpoint="POSTapi-send-code-by-email"
+                   data-component="body" required             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="POSTapi-send-code-by-email" hidden>
+            <input type="radio" name="isSecondary"
+                   value="false"
+                   data-endpoint="POSTapi-send-code-by-email"
+                   data-component="body" required             >
+            <code>false</code>
+        </label>
+    <br>
+        </p>
+    
+    </form>
+
+            <h2 id="auth-GETapi-auth-renew-security-code">Renew Security Access Code</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>This method is used to generate a new security access code for the user. This code can be used to login in the case that the user has lost access to all
+2-factor-authentication methods.</p>
+
+<span id="example-requests-GETapi-auth-renew-security-code">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request GET \
+    --get "https://pasunashi-backend.herokuapp.com/api/auth/renew-security-code" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp"</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/auth/renew-security-code"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-GETapi-auth-renew-security-code">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 200,
+     &quot;message&quot;: &quot;Succes!&quot;,
+     &quot;data&quot;: {
+         &quot;renewed_code&quot;: &quot;AAAAAAAAAA&quot;,
+     },
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-auth-renew-security-code" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-auth-renew-security-code"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-auth-renew-security-code"></code></pre>
+</span>
+<span id="execution-error-GETapi-auth-renew-security-code" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-auth-renew-security-code"></code></pre>
+</span>
+<form id="form-GETapi-auth-renew-security-code" data-method="GET"
+      data-path="api/auth/renew-security-code"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-auth-renew-security-code', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-auth-renew-security-code"
+                    onclick="tryItOut('GETapi-auth-renew-security-code');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-auth-renew-security-code"
+                    onclick="cancelTryOut('GETapi-auth-renew-security-code');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-auth-renew-security-code" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/auth/renew-security-code</code></b>
+        </p>
+                <p>
+            <label id="auth-GETapi-auth-renew-security-code" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="GETapi-auth-renew-security-code"
+                                                                data-component="header"></label>
+        </p>
+                </form>
+
+            <h2 id="auth-GETapi-auth-refresh-2fa-secret">Refresh 2-Factor-Authentication Secret</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>This method is responsible for updating and returning the secret key for the time-based one-time-password
+(the code generated in apps like Google Authenticator). In order to check if the user has set up correctly the new secret key, you can verify it
+using the endpoint of Register, Third Step.</p>
+<aside class="notice">You can generate a QR-code for the user to scan using the structure given in the README file.</aside>
+
+<span id="example-requests-GETapi-auth-refresh-2fa-secret">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request GET \
+    --get "https://pasunashi-backend.herokuapp.com/api/auth/refresh-2fa-secret" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp"</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/auth/refresh-2fa-secret"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-GETapi-auth-refresh-2fa-secret">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 200,
+     &quot;message&quot;: &quot;Succes!&quot;,
+     &quot;data&quot;: {
+         &quot;secret&quot;: &quot;AAAAAAAAAA&quot;,
+         &quot;email&quot;: &quot;main@email.com&quot;,
+     },
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-auth-refresh-2fa-secret" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-auth-refresh-2fa-secret"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-auth-refresh-2fa-secret"></code></pre>
+</span>
+<span id="execution-error-GETapi-auth-refresh-2fa-secret" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-auth-refresh-2fa-secret"></code></pre>
+</span>
+<form id="form-GETapi-auth-refresh-2fa-secret" data-method="GET"
+      data-path="api/auth/refresh-2fa-secret"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-auth-refresh-2fa-secret', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-auth-refresh-2fa-secret"
+                    onclick="tryItOut('GETapi-auth-refresh-2fa-secret');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-auth-refresh-2fa-secret"
+                    onclick="cancelTryOut('GETapi-auth-refresh-2fa-secret');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-auth-refresh-2fa-secret" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/auth/refresh-2fa-secret</code></b>
+        </p>
+                <p>
+            <label id="auth-GETapi-auth-refresh-2fa-secret" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="GETapi-auth-refresh-2fa-secret"
+                                                                data-component="header"></label>
+        </p>
+                </form>
+
+            <h2 id="auth-POSTapi-auth-grant-access">Grant Access to Confidential Information</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>This method is used to access the encrypted data of a Credential, or the encrypted data of the user itself.</p>
+<aside class="notice">This method may return a decrypted Credential, you can see the Credential interface on the README file.</aside>
+
+<span id="example-requests-POSTapi-auth-grant-access">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request POST \
+    "https://pasunashi-backend.herokuapp.com/api/auth/grant-access" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp" \
+    --data "{
+    \"accessTo\": \"quibusdam\",
+    \"credentialId\": 13,
+    \"accessingDevice\": \"sit\",
+    \"accessingPlatform\": \"\",
+    \"accessingPlattform\": \"voluptatibus\"
+}"
+</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/auth/grant-access"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+let body = {
+    "accessTo": "quibusdam",
+    "credentialId": 13,
+    "accessingDevice": "sit",
+    "accessingPlatform": "",
+    "accessingPlattform": "voluptatibus"
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-POSTapi-auth-grant-access">
+            <blockquote>
+            <p>Example response (200, access to credential data):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 200,
+     &quot;message&quot;: &quot;Success!&quot;
+     &quot;data&quot;: {
+         &quot;id&quot;: 1,
+         &quot;user_id&quot;: 1,
+         &quot;company_id&quot;: null,
+         &quot;company_name&quot;: &quot;company's name&quot;,
+         &quot;email&quot;: &quot;main@email.com&quot;,
+         &quot;password&quot;: &quot;my_secret_password1234&quot;,
+         &quot;last_seen&quot;: &quot;2021-12-23 10:05:31&quot;,
+         &quot;created_at&quot;: &quot;2021-12-23 10:05:31&quot;,
+         &quot;updated_at&quot;: &quot;2021-12-23 10:05:31&quot;,
+     },
+ }</code>
+ </pre>
+            <blockquote>
+            <p>Example response (200, access to user data):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 200,
+     &quot;message&quot;: &quot;Success!&quot;
+     &quot;data&quot;: {
+         &quot;name&quot;: &quot;jhon doe&quot;,
+         &quot;email&quot;: &quot;main@email.com&quot;,
+         &quot;recovery_email&quot;: &quot;recovery@email.com&quot;,
+         &quot;phone_number&quot;: &quot;+1 555-1234-5678&quot;,
+         &quot;anti_fishing_secret&quot;: &quot;secret&quot;,
+         &quot;security_access_code&quot;: &quot;AAAAAAAAAA&quot;
+     }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401, validation failed):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 401,
+     &quot;message&quot;: &quot;error message&quot;,
+     &quot;data&quot;: {
+         &quot;errors&quot;: [
+             {
+                 &quot;accessTo&quot;: &quot;The field &quot;accessTo&quot; must be &quot;credential-data&quot; or &quot;user-data&quot;.&quot;
+             }
+         ],
+         &quot;request&quot;: {
+             &quot;accessTo&quot;: &quot;encrypted-data&quot;,
+             &quot;accessingDevice&quot;: &quot;Windows NT 6.1; Win64; x64; rv:47.0&quot;,
+             &quot;accessingPlatform&quot;: &quot;web&quot;,
+         }
+     }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-auth-grant-access" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-auth-grant-access"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-auth-grant-access"></code></pre>
+</span>
+<span id="execution-error-POSTapi-auth-grant-access" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-auth-grant-access"></code></pre>
+</span>
+<form id="form-POSTapi-auth-grant-access" data-method="POST"
+      data-path="api/auth/grant-access"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-grant-access', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-auth-grant-access"
+                    onclick="tryItOut('POSTapi-auth-grant-access');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-auth-grant-access"
+                    onclick="cancelTryOut('POSTapi-auth-grant-access');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-auth-grant-access" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/auth/grant-access</code></b>
+        </p>
+                <p>
+            <label id="auth-POSTapi-auth-grant-access" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="POSTapi-auth-grant-access"
+                                                                data-component="header"></label>
+        </p>
+                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <p>
+            <b><code>accessTo</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="accessTo"
+               data-endpoint="POSTapi-auth-grant-access"
+               data-component="body" required  hidden>
+    <br>
+<p>Must be either one of these exact two options: &quot;user-data&quot; or &quot;credential-data&quot;.</p>        </p>
+                <p>
+            <b><code>credentialId</code></b>&nbsp;&nbsp;<small>integer</small>     <i>optional</i> &nbsp;
+                <input type="number"
+               name="credentialId"
+               data-endpoint="POSTapi-auth-grant-access"
+               data-component="body"  hidden>
+    <br>
+<p>Its required, only if &quot;accessTo&quot; is equal to &quot;credential-data&quot;.</p>        </p>
+                <p>
+            <b><code>accessingDevice</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="accessingDevice"
+               data-endpoint="POSTapi-auth-grant-access"
+               data-component="body" required  hidden>
+    <br>
+<p>The user agent of the navigator, or the unique ID of the device. (min: 1, max: 190 char).</p>        </p>
+                <p>
+            <b><code>accessingPlatform</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="accessingPlatform"
+               data-endpoint="POSTapi-auth-grant-access"
+               data-component="body" required  hidden>
+    <br>
+<p>Must be one of <code>mobile</code>, <code>web</code>, or <code>desktop</code> Must be at least 3 characters. Must not be greater than 7 characters.</p>        </p>
+                <p>
+            <b><code>accessingPlattform</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="accessingPlattform"
+               data-endpoint="POSTapi-auth-grant-access"
+               data-component="body" required  hidden>
+    <br>
+<p>Must be one of these exact three options: &quot;web&quot;, &quot;desktop&quot;, &quot;mobile&quot;.</p>        </p>
+    
+    </form>
+
+        <h1 id="companies">Companies</h1>
+
+    
+
+            <h2 id="companies-GETapi-companies-index">Get Companies</h2>
+
+<p>
+</p>
+
+<p>This is the method used to get all the available options for companies.</p>
+<aside class="notice">This method stores the results in cache for 1 week, so no change will take place until that time.</aside>
+
+<span id="example-requests-GETapi-companies-index">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request GET \
+    --get "https://pasunashi-backend.herokuapp.com/api/companies/index" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/companies/index"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-GETapi-companies-index">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;status&quot;: 200,
+    &quot;message&quot;: &quot;Success!&quot;,
+    &quot;data&quot;: {
+        &quot;companies&quot;: [
+            {
+                &quot;name&quot;: &quot;AFIP&quot;,
+                &quot;url_logo&quot;: &quot;https://www.afip.gob.ar/frameworkAFIP/v1/img/logo_afip.png&quot;,
+                &quot;id&quot;: 1
+            }
+        ]
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-companies-index" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-companies-index"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-companies-index"></code></pre>
+</span>
+<span id="execution-error-GETapi-companies-index" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-companies-index"></code></pre>
+</span>
+<form id="form-GETapi-companies-index" data-method="GET"
+      data-path="api/companies/index"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-companies-index', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-companies-index"
+                    onclick="tryItOut('GETapi-companies-index');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-companies-index"
+                    onclick="cancelTryOut('GETapi-companies-index');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-companies-index" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/companies/index</code></b>
+        </p>
+                    </form>
+
+        <h1 id="credential">Credential</h1>
+
+    
+
+            <h2 id="credential-POSTapi-credential-create">Create</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>This is the method used to create a new credential.</p>
+<aside class="notice">This method will return the created Credential, you can see the Credential interface on the README file.</aside>
+
+<span id="example-requests-POSTapi-credential-create">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request POST \
+    "https://pasunashi-backend.herokuapp.com/api/credential/create" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp" \
+    --data "{
+    \"company_name\": \"dolor\",
+    \"description\": \"dolores\",
+    \"user_name\": \"est\",
+    \"email\": \"dolorem\",
+    \"password\": \"asperiores\",
+    \"username\": \"et\",
+    \"phone_number\": \"omnis\",
+    \"security_question\": \"fugiat\",
+    \"security_answer\": \"ut\",
+    \"unique_code\": \"sint\",
+    \"multiple_codes\": [
+        \"voluptatum\"
+    ],
+    \"crypto_codes\": [
+        \"molestiae\"
+    ],
+    \"accessing_device\": \"nam\",
+    \"accessing_plattform\": \"tenetur\"
+}"
+</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/credential/create"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+let body = {
+    "company_name": "dolor",
+    "description": "dolores",
+    "user_name": "est",
+    "email": "dolorem",
+    "password": "asperiores",
+    "username": "et",
+    "phone_number": "omnis",
+    "security_question": "fugiat",
+    "security_answer": "ut",
+    "unique_code": "sint",
+    "multiple_codes": [
+        "voluptatum"
+    ],
+    "crypto_codes": [
+        "molestiae"
+    ],
+    "accessing_device": "nam",
+    "accessing_plattform": "tenetur"
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-POSTapi-credential-create">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 200,
+     &quot;message&quot;: &quot;Success!&quot;,
+     &quot;data&quot;: {
+         &quot;credentials&quot;: {
+                 &quot;company_id&quot;: 1,
+                 &quot;company&quot;: {
+                     &quot;name&quot;: &quot;AFIP&quot;,
+                     &quot;url_logo&quot;: &quot;https://www.afip.gob.ar/frameworkAFIP/v1/img/logo_afip.png&quot;,
+                     &quot;id&quot;: 1,
+                 },
+                 &quot;email&quot;: {
+                     &quot;opening&quot;: &quot;fa&quot;,
+                     &quot;char_count&quot;: 8,
+                     &quot;ending&quot;: &quot;@email_company.com&quot;
+                 },
+                 &quot;password&quot;: {
+                     &quot;char_count&quot;: 16
+                 }
+             }
+     }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401, validation failed):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;status&quot;: 401,
+    &quot;message&quot;: &quot;error message&quot;,
+    &quot;data&quot;: {
+        &quot;errors&quot;: [
+            {
+                &quot;password&quot;: &quot;\&quot;password\&quot; must have at least 5 characters.&quot;
+            }
+        ],
+        &quot;request&quot;: {
+            &quot;password&quot;: &quot;pass&quot;,
+            &quot;company_name&quot;: &quot;AFIP&quot;,
+            &quot;email&quot;: &quot;fake_email@email_company.com&quot;
+        }
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-credential-create" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-credential-create"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-credential-create"></code></pre>
+</span>
+<span id="execution-error-POSTapi-credential-create" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-credential-create"></code></pre>
+</span>
+<form id="form-POSTapi-credential-create" data-method="POST"
+      data-path="api/credential/create"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-credential-create', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-credential-create"
+                    onclick="tryItOut('POSTapi-credential-create');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-credential-create"
+                    onclick="cancelTryOut('POSTapi-credential-create');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-credential-create" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/credential/create</code></b>
+        </p>
+                <p>
+            <label id="auth-POSTapi-credential-create" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="POSTapi-credential-create"
+                                                                data-component="header"></label>
+        </p>
+                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <p>
+            <b><code>company_name</code></b>&nbsp;&nbsp;<small>stribg</small>  &nbsp;
+                <input type="text"
+               name="company_name"
+               data-endpoint="POSTapi-credential-create"
+               data-component="body" required  hidden>
+    <br>
+<p>(min: 1, max: 190 char).</p>        </p>
+                <p>
+            <b><code>description</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="description"
+               data-endpoint="POSTapi-credential-create"
+               data-component="body"  hidden>
+    <br>
+<p>(min: 0, max: 500 char).</p>        </p>
+                <p>
+            <b><code>user_name</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="user_name"
+               data-endpoint="POSTapi-credential-create"
+               data-component="body"  hidden>
+    <br>
+<p>(min: 1, max: 190 char).</p>        </p>
+                <p>
+            <b><code>email</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="email"
+               data-endpoint="POSTapi-credential-create"
+               data-component="body"  hidden>
+    <br>
+<p>(min:5, max: 190 char).</p>        </p>
+                <p>
+            <b><code>password</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="password"
+               data-endpoint="POSTapi-credential-create"
+               data-component="body"  hidden>
+    <br>
+<p>(min: 5, max: 190 char).</p>        </p>
+                <p>
+            <b><code>username</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="username"
+               data-endpoint="POSTapi-credential-create"
+               data-component="body"  hidden>
+    <br>
+<p>(min:1, max: 190 char).</p>        </p>
+                <p>
+            <b><code>phone_number</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="phone_number"
+               data-endpoint="POSTapi-credential-create"
+               data-component="body"  hidden>
+    <br>
+<p>(min: 8, max 190 char).</p>        </p>
+                <p>
+            <b><code>security_question</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="security_question"
+               data-endpoint="POSTapi-credential-create"
+               data-component="body"  hidden>
+    <br>
+<p>(min: 5, max: 190 char).</p>        </p>
+                <p>
+            <b><code>security_answer</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="security_answer"
+               data-endpoint="POSTapi-credential-create"
+               data-component="body"  hidden>
+    <br>
+<p>Is required if security_question is not null (min: 5, max: 190 char).</p>        </p>
+                <p>
+            <b><code>unique_code</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="unique_code"
+               data-endpoint="POSTapi-credential-create"
+               data-component="body"  hidden>
+    <br>
+<p>(min: 1, max: 190 char).</p>        </p>
+                <p>
+            <b><code>multiple_codes</code></b>&nbsp;&nbsp;<small>string[]</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="multiple_codes.0"
+               data-endpoint="POSTapi-credential-create"
+               data-component="body"  hidden>
+        <input type="text"
+               name="multiple_codes.1"
+               data-endpoint="POSTapi-credential-create"
+               data-component="body" hidden>
+    <br>
+<p>Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.</p>        </p>
+                <p>
+            <b><code>crypto_codes</code></b>&nbsp;&nbsp;<small>string[]</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="crypto_codes.0"
+               data-endpoint="POSTapi-credential-create"
+               data-component="body"  hidden>
+        <input type="text"
+               name="crypto_codes.1"
+               data-endpoint="POSTapi-credential-create"
+               data-component="body" hidden>
+    <br>
+<p>Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.</p>        </p>
+                <p>
+            <b><code>accessing_device</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="accessing_device"
+               data-endpoint="POSTapi-credential-create"
+               data-component="body" required  hidden>
+    <br>
+<p>The user agent of the navigator, or the unique ID of the device. (min: 1, max: 190 char).</p>        </p>
+                <p>
+            <b><code>accessing_plattform</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="accessing_plattform"
+               data-endpoint="POSTapi-credential-create"
+               data-component="body" required  hidden>
+    <br>
+<p>Must be one of these exact three options: &quot;web&quot;, &quot;desktop&quot;, &quot;mobile&quot;.</p>        </p>
+    
+    </form>
+
+            <h2 id="credential-GETapi-credential-index">Index</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Since all the user's credentials are returned on the endpoints for login, and the final register step, this method can be called to get all the credentials when there is an error on the local storage of the device.</p>
+<aside class="notice">You can check the README file to see the interface of Credentials.</aside>
+
+<span id="example-requests-GETapi-credential-index">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request GET \
+    --get "https://pasunashi-backend.herokuapp.com/api/credential/index" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp"</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/credential/index"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-GETapi-credential-index">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 200,
+     &quot;message&quot;: &quot;Success!&quot;,
+     &quot;data&quot;: {
+         &quot;credentials&quot;: [
+             {
+                 &quot;company_id&quot;: 1,
+                 &quot;company&quot;: {
+                     &quot;name&quot;: &quot;AFIP&quot;,
+                     &quot;url_logo&quot;: &quot;https://www.afip.gob.ar/frameworkAFIP/v1/img/logo_afip.png&quot;,
+                     &quot;id&quot;: 1,
+                 },
+                 &quot;email&quot;: {
+                     &quot;opening&quot;: &quot;mr&quot;,
+                     &quot;char_count&quot;: 8,
+                     &quot;ending&quot;: &quot;@gmail.com&quot;
+                 },
+                 &quot;password&quot;: {
+                     &quot;char_count&quot;: 16
+                 }
+             }
+         ]
+     }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-credential-index" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-credential-index"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-credential-index"></code></pre>
+</span>
+<span id="execution-error-GETapi-credential-index" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-credential-index"></code></pre>
+</span>
+<form id="form-GETapi-credential-index" data-method="GET"
+      data-path="api/credential/index"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-credential-index', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-credential-index"
+                    onclick="tryItOut('GETapi-credential-index');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-credential-index"
+                    onclick="cancelTryOut('GETapi-credential-index');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-credential-index" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/credential/index</code></b>
+        </p>
+                <p>
+            <label id="auth-GETapi-credential-index" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="GETapi-credential-index"
+                                                                data-component="header"></label>
+        </p>
+                </form>
+
+            <h2 id="credential-GETapi-credential-find--credential_id-">Find</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>This method can be called when the frontend app has failed to find a credential on the local storage of the device.</p>
+<aside class="notice">This method will return the Credential that was found, you can see the Credential interface on the README file.</aside>
+
+<span id="example-requests-GETapi-credential-find--credential_id-">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request GET \
+    --get "https://pasunashi-backend.herokuapp.com/api/credential/find/4" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp"</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/credential/find/4"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-GETapi-credential-find--credential_id-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 200,
+     &quot;message&quot;: &quot;Success!&quot;,
+     &quot;data&quot;: {
+         &quot;credential&quot;: {
+                 &quot;company_id&quot;: 1,
+                 &quot;company&quot;: {
+                     &quot;name&quot;: &quot;AFIP&quot;,
+                     &quot;url_logo&quot;: &quot;https://www.afip.gob.ar/frameworkAFIP/v1/img/logo_afip.png&quot;,
+                     &quot;id&quot;: 1,
+                 },
+                 &quot;email&quot;: {
+                     &quot;opening&quot;: &quot;mr&quot;,
+                     &quot;char_count&quot;: 8,
+                     &quot;ending&quot;: &quot;@gmail.com&quot;
+                 },
+                 &quot;password&quot;: {
+                     &quot;char_count&quot;: 16
+                 },
+             },
+     },
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404, credential with id = credential-id was not found):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 404,
+     &quot;errors&quot;: [
+         {
+             &quot;message&quot;: &quot;The credential was not found.&quot;,
+         }
+     ],
+     &quot;message&quot;: &quot;The credential was not found.&quot;,
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-credential-find--credential_id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-credential-find--credential_id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-credential-find--credential_id-"></code></pre>
+</span>
+<span id="execution-error-GETapi-credential-find--credential_id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-credential-find--credential_id-"></code></pre>
+</span>
+<form id="form-GETapi-credential-find--credential_id-" data-method="GET"
+      data-path="api/credential/find/{credential_id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-credential-find--credential_id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-credential-find--credential_id-"
+                    onclick="tryItOut('GETapi-credential-find--credential_id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-credential-find--credential_id-"
+                    onclick="cancelTryOut('GETapi-credential-find--credential_id-');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-credential-find--credential_id-" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/credential/find/{credential_id}</code></b>
+        </p>
+                <p>
+            <label id="auth-GETapi-credential-find--credential_id-" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="GETapi-credential-find--credential_id-"
+                                                                data-component="header"></label>
+        </p>
+                <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <p>
+                <b><code>credential_id</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
+                <input type="number"
+               name="credential_id"
+               data-endpoint="GETapi-credential-find--credential_id-"
+               data-component="url" required  hidden>
+    <br>
+<p>The id of the credential to delete.</p>            </p>
+                    </form>
+
+            <h2 id="credential-PUTapi-credential-update--credential_id-">Update</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>This is the method used for updating a credential. If any field is absent, it will be updated to a null type, or deleted.</p>
+<p>The company_name cannot be updated.</p>
+<aside class="notice">This method will return the updated Credential, you can see the Credential interface on the README file.</aside>
+
+<span id="example-requests-PUTapi-credential-update--credential_id-">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request PUT \
+    "https://pasunashi-backend.herokuapp.com/api/credential/update/11" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp" \
+    --data "{
+    \"description\": \"molestiae\",
+    \"user_name\": \"blanditiis\",
+    \"email\": \"perspiciatis\",
+    \"password\": \"neque\",
+    \"username\": \"quibusdam\",
+    \"phone_number\": \"debitis\",
+    \"security_question\": \"incidunt\",
+    \"security_answer\": \"ratione\",
+    \"unique_code\": \"molestiae\",
+    \"multiple_codes\": [
+        \"quod\"
+    ],
+    \"crypto_codes\": [
+        \"vitae\"
+    ],
+    \"accessing_device\": \"ut\",
+    \"accessing_plattform\": \"vel\"
+}"
+</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/credential/update/11"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+let body = {
+    "description": "molestiae",
+    "user_name": "blanditiis",
+    "email": "perspiciatis",
+    "password": "neque",
+    "username": "quibusdam",
+    "phone_number": "debitis",
+    "security_question": "incidunt",
+    "security_answer": "ratione",
+    "unique_code": "molestiae",
+    "multiple_codes": [
+        "quod"
+    ],
+    "crypto_codes": [
+        "vitae"
+    ],
+    "accessing_device": "ut",
+    "accessing_plattform": "vel"
+}
+
+fetch(url, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-PUTapi-credential-update--credential_id-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 200,
+     &quot;message&quot;: &quot;Success!&quot;,
+     &quot;data&quot;: {
+         &quot;credential&quot;: {
+                 &quot;id&quot;: 1,
+                 &quot;company_id&quot;: 1,
+                 &quot;company&quot;: {
+                     &quot;name&quot;: &quot;AFIP&quot;,
+                     &quot;url_logo&quot;: &quot;https://www.afip.gob.ar/frameworkAFIP/v1/img/logo_afip.png&quot;,
+                     &quot;id&quot;: 1,
+                 },
+                 &quot;email&quot;: {
+                     &quot;opening&quot;: &quot;fa&quot;,
+                     &quot;char_count&quot;: 8,
+                     &quot;ending&quot;: &quot;@email_company.com&quot;
+                 },
+                 &quot;password&quot;: {
+                     &quot;char_count&quot;: 16
+                 }
+             }
+     }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404, credential with id = credential-id was not found):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 404,
+     &quot;errors&quot;: [
+         {
+             &quot;message&quot;: &quot;The credential was not found.&quot;,
+         }
+     ],
+     &quot;message&quot;: &quot;The credential was not found.&quot;,
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401, validation failed):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 401,
+     &quot;message&quot;: &quot;error message&quot;,
+     &quot;data&quot;: {
+         &quot;errors&quot;: [
+             {
+                 &quot;email&quot;: &quot;The field &quot;email&quot; must must be a valid email.&quot;
+             }
+         ],
+         &quot;request&quot;: {
+             &quot;password&quot;: &quot;pass&quot;,
+             &quot;company_name&quot;: &quot;AFIP&quot;,
+             &quot;email&quot;: &quot;fake_email.com&quot;,
+             &quot;id:&quot; 1,
+         }
+     }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-PUTapi-credential-update--credential_id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PUTapi-credential-update--credential_id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PUTapi-credential-update--credential_id-"></code></pre>
+</span>
+<span id="execution-error-PUTapi-credential-update--credential_id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PUTapi-credential-update--credential_id-"></code></pre>
+</span>
+<form id="form-PUTapi-credential-update--credential_id-" data-method="PUT"
+      data-path="api/credential/update/{credential_id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PUTapi-credential-update--credential_id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PUTapi-credential-update--credential_id-"
+                    onclick="tryItOut('PUTapi-credential-update--credential_id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PUTapi-credential-update--credential_id-"
+                    onclick="cancelTryOut('PUTapi-credential-update--credential_id-');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PUTapi-credential-update--credential_id-" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-darkblue">PUT</small>
+            <b><code>api/credential/update/{credential_id}</code></b>
+        </p>
+                <p>
+            <label id="auth-PUTapi-credential-update--credential_id-" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="PUTapi-credential-update--credential_id-"
+                                                                data-component="header"></label>
+        </p>
+                <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <p>
+                <b><code>credential_id</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
+                <input type="number"
+               name="credential_id"
+               data-endpoint="PUTapi-credential-update--credential_id-"
+               data-component="url" required  hidden>
+    <br>
+<p>The id of the credential to update.</p>            </p>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <p>
+            <b><code>description</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="description"
+               data-endpoint="PUTapi-credential-update--credential_id-"
+               data-component="body"  hidden>
+    <br>
+<p>(min: 0, max: 500 char).</p>        </p>
+                <p>
+            <b><code>user_name</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="user_name"
+               data-endpoint="PUTapi-credential-update--credential_id-"
+               data-component="body"  hidden>
+    <br>
+<p>(min: 1, max: 190 char).</p>        </p>
+                <p>
+            <b><code>email</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="email"
+               data-endpoint="PUTapi-credential-update--credential_id-"
+               data-component="body"  hidden>
+    <br>
+<p>(min:5, max: 190 char).</p>        </p>
+                <p>
+            <b><code>password</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="password"
+               data-endpoint="PUTapi-credential-update--credential_id-"
+               data-component="body"  hidden>
+    <br>
+<p>(min: 5, max: 190 char).</p>        </p>
+                <p>
+            <b><code>username</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="username"
+               data-endpoint="PUTapi-credential-update--credential_id-"
+               data-component="body"  hidden>
+    <br>
+<p>(min:1, max: 190 char).</p>        </p>
+                <p>
+            <b><code>phone_number</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="phone_number"
+               data-endpoint="PUTapi-credential-update--credential_id-"
+               data-component="body"  hidden>
+    <br>
+<p>(min: 8, max 190 char).</p>        </p>
+                <p>
+            <b><code>security_question</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="security_question"
+               data-endpoint="PUTapi-credential-update--credential_id-"
+               data-component="body"  hidden>
+    <br>
+<p>(min: 5, max: 190 char).</p>        </p>
+                <p>
+            <b><code>security_answer</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="security_answer"
+               data-endpoint="PUTapi-credential-update--credential_id-"
+               data-component="body"  hidden>
+    <br>
+<p>Is required if security_question is not null (min: 5, max: 190 char).</p>        </p>
+                <p>
+            <b><code>unique_code</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="unique_code"
+               data-endpoint="PUTapi-credential-update--credential_id-"
+               data-component="body"  hidden>
+    <br>
+<p>(min: 1, max: 190 char).</p>        </p>
+                <p>
+            <b><code>multiple_codes</code></b>&nbsp;&nbsp;<small>string[]</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="multiple_codes.0"
+               data-endpoint="PUTapi-credential-update--credential_id-"
+               data-component="body"  hidden>
+        <input type="text"
+               name="multiple_codes.1"
+               data-endpoint="PUTapi-credential-update--credential_id-"
+               data-component="body" hidden>
+    <br>
+<p>Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.</p>        </p>
+                <p>
+            <b><code>crypto_codes</code></b>&nbsp;&nbsp;<small>string[]</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="crypto_codes.0"
+               data-endpoint="PUTapi-credential-update--credential_id-"
+               data-component="body"  hidden>
+        <input type="text"
+               name="crypto_codes.1"
+               data-endpoint="PUTapi-credential-update--credential_id-"
+               data-component="body" hidden>
+    <br>
+<p>Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.</p>        </p>
+                <p>
+            <b><code>accessing_device</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="accessing_device"
+               data-endpoint="PUTapi-credential-update--credential_id-"
+               data-component="body" required  hidden>
+    <br>
+<p>The user agent of the navigator, or the unique ID of the device. (min: 1, max: 190 char).</p>        </p>
+                <p>
+            <b><code>accessing_plattform</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="accessing_plattform"
+               data-endpoint="PUTapi-credential-update--credential_id-"
+               data-component="body" required  hidden>
+    <br>
+<p>Must be one of these exact three options: &quot;web&quot;, &quot;desktop&quot;, &quot;mobile&quot;.</p>        </p>
+    
+    </form>
+
+            <h2 id="credential-DELETEapi-credential-delete--credential_id-">Delete</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>This method is used to delete a credential.</p>
+
+<span id="example-requests-DELETEapi-credential-delete--credential_id-">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request DELETE \
+    "https://pasunashi-backend.herokuapp.com/api/credential/delete/3" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp"</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/credential/delete/3"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+fetch(url, {
+    method: "DELETE",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-DELETEapi-credential-delete--credential_id-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;status&quot;: 200,
+    &quot;message&quot;: &quot;Succes!&quot;,
+    &quot;data&quot;: {}
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404, credential with id = credential-id was not found):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 404,
+     &quot;errors&quot;: [
+         {
+             &quot;message&quot;: &quot;The credential was not found.&quot;,
+         }
+     ],
+     &quot;message&quot;: &quot;The credential was not found.&quot;,
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-DELETEapi-credential-delete--credential_id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-DELETEapi-credential-delete--credential_id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-DELETEapi-credential-delete--credential_id-"></code></pre>
+</span>
+<span id="execution-error-DELETEapi-credential-delete--credential_id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-DELETEapi-credential-delete--credential_id-"></code></pre>
+</span>
+<form id="form-DELETEapi-credential-delete--credential_id-" data-method="DELETE"
+      data-path="api/credential/delete/{credential_id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('DELETEapi-credential-delete--credential_id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-DELETEapi-credential-delete--credential_id-"
+                    onclick="tryItOut('DELETEapi-credential-delete--credential_id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-DELETEapi-credential-delete--credential_id-"
+                    onclick="cancelTryOut('DELETEapi-credential-delete--credential_id-');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-DELETEapi-credential-delete--credential_id-" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-red">DELETE</small>
+            <b><code>api/credential/delete/{credential_id}</code></b>
+        </p>
+                <p>
+            <label id="auth-DELETEapi-credential-delete--credential_id-" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="DELETEapi-credential-delete--credential_id-"
+                                                                data-component="header"></label>
+        </p>
+                <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <p>
+                <b><code>credential_id</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
+                <input type="number"
+               name="credential_id"
+               data-endpoint="DELETEapi-credential-delete--credential_id-"
+               data-component="url" required  hidden>
+    <br>
+<p>The id of the credential to delete.</p>            </p>
+                    </form>
+
+            <h2 id="credential-GETapi-credential-get-recently-seen">Get Recently Seen</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>This method will return some info of the credentials that were accessed within the last 3 days.</p>
+
+<span id="example-requests-GETapi-credential-get-recently-seen">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request GET \
+    --get "https://pasunashi-backend.herokuapp.com/api/credential/get-recently-seen" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp"</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/credential/get-recently-seen"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-GETapi-credential-get-recently-seen">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;message&quot;: &quot;Success!&quot;,
+     &quot;status&quot;: 200,
+     &quot;data&quot;: {
+         &quot;recently_seen&quot;: [
+             {
+                 &quot;company_name&quot;: &quot;AFIP&quot;,
+                 &quot;last_seen&quot;: &quot;2021-12-23 10:05:31&quot;,
+                 &quot;id&quot;: 1,
+                 &quot;accessing_device&quot;: &quot;Windows NT 6.1; Win64; x64; rv:47.0&quot;,
+                 &quot;accessing_plattform&quot;: &quot;web&quot;,
+                 &quot;created_at&quot;: &quot;2021-12-23 10:05:31&quot;,
+                 &quot;updated_at&quot;: &quot;2021-12-23 10:05:31&quot;,
+             },
+         ]
+     }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (200, no credential was recently accessed):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;message&quot;: &quot;Success!&quot;,
+    &quot;status&quot;: 200,
+    &quot;data&quot;: {
+        &quot;recently_seen&quot;: []
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-credential-get-recently-seen" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-credential-get-recently-seen"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-credential-get-recently-seen"></code></pre>
+</span>
+<span id="execution-error-GETapi-credential-get-recently-seen" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-credential-get-recently-seen"></code></pre>
+</span>
+<form id="form-GETapi-credential-get-recently-seen" data-method="GET"
+      data-path="api/credential/get-recently-seen"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-credential-get-recently-seen', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-credential-get-recently-seen"
+                    onclick="tryItOut('GETapi-credential-get-recently-seen');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-credential-get-recently-seen"
+                    onclick="cancelTryOut('GETapi-credential-get-recently-seen');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-credential-get-recently-seen" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/credential/get-recently-seen</code></b>
+        </p>
+                <p>
+            <label id="auth-GETapi-credential-get-recently-seen" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="GETapi-credential-get-recently-seen"
+                                                                data-component="header"></label>
+        </p>
+                </form>
+
+        <h1 id="feedback">Feedback</h1>
+
+    
+
+            <h2 id="feedback-GETapi-feedback-index">Index</h2>
+
+<p>
+</p>
+
+<p>Get all the suggestions and ratings that are public</p>
+<aside class="notice">The results are stored in cache for 1 week</aside>
+
+<span id="example-requests-GETapi-feedback-index">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request GET \
+    --get "https://pasunashi-backend.herokuapp.com/api/feedback/index" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp"</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/feedback/index"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-GETapi-feedback-index">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary>
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 59
+vary: Origin
+ </code></pre>
+        </details>         <pre>
+
+<code class="language-json">{
+    &quot;status&quot;: 200,
+    &quot;message&quot;: &quot;Ratings and Suggestions obtained successfully.&quot;,
+    &quot;data&quot;: {
+        &quot;feedback&quot;: {
+            &quot;suggestions&quot;: [
+                {
+                    &quot;id&quot;: 1,
+                    &quot;user_name&quot;: &quot;Federico Torp&quot;,
+                    &quot;body&quot;: &quot;Id porro excepturi hic et saepe consequuntur possimus porro cumque.&quot;,
+                    &quot;rating&quot;: null,
+                    &quot;type&quot;: 1,
+                    &quot;is_public&quot;: 1,
+                    &quot;created_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;
+                },
+                {
+                    &quot;id&quot;: 2,
+                    &quot;user_name&quot;: &quot;Ms. Cassandre Funk DVM&quot;,
+                    &quot;body&quot;: &quot;Atque aperiam laboriosam asperiores voluptatum incidunt voluptas harum ut quae.&quot;,
+                    &quot;rating&quot;: null,
+                    &quot;type&quot;: 1,
+                    &quot;is_public&quot;: 1,
+                    &quot;created_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;
+                },
+                {
+                    &quot;id&quot;: 3,
+                    &quot;user_name&quot;: &quot;Lilla Spinka&quot;,
+                    &quot;body&quot;: &quot;Quas sint deserunt dolorem molestias impedit et minima omnis iste.&quot;,
+                    &quot;rating&quot;: null,
+                    &quot;type&quot;: 1,
+                    &quot;is_public&quot;: 1,
+                    &quot;created_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;
+                },
+                {
+                    &quot;id&quot;: 4,
+                    &quot;user_name&quot;: &quot;Jordon Lebsack&quot;,
+                    &quot;body&quot;: &quot;Consequatur aut et aut voluptatem eaque eos sed totam commodi.&quot;,
+                    &quot;rating&quot;: null,
+                    &quot;type&quot;: 1,
+                    &quot;is_public&quot;: 1,
+                    &quot;created_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;
+                },
+                {
+                    &quot;id&quot;: 5,
+                    &quot;user_name&quot;: &quot;Aliyah Cronin&quot;,
+                    &quot;body&quot;: &quot;Ab sit sunt sit rerum mollitia ullam architecto quis optio.&quot;,
+                    &quot;rating&quot;: null,
+                    &quot;type&quot;: 1,
+                    &quot;is_public&quot;: 1,
+                    &quot;created_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;
+                }
+            ],
+            &quot;ratings&quot;: [
+                {
+                    &quot;id&quot;: 6,
+                    &quot;user_name&quot;: &quot;Prof. Jackeline Wisoky&quot;,
+                    &quot;body&quot;: &quot;Voluptatem veritatis nam odit incidunt quisquam ab ut alias aut.&quot;,
+                    &quot;rating&quot;: 2,
+                    &quot;type&quot;: 0,
+                    &quot;is_public&quot;: 1,
+                    &quot;created_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;
+                },
+                {
+                    &quot;id&quot;: 7,
+                    &quot;user_name&quot;: &quot;Bette Paucek&quot;,
+                    &quot;body&quot;: &quot;Neque aspernatur qui est nesciunt sequi quidem iure et perferendis.&quot;,
+                    &quot;rating&quot;: 8,
+                    &quot;type&quot;: 0,
+                    &quot;is_public&quot;: 1,
+                    &quot;created_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;
+                },
+                {
+                    &quot;id&quot;: 8,
+                    &quot;user_name&quot;: &quot;Hallie Swift&quot;,
+                    &quot;body&quot;: &quot;Ad maxime eveniet et sit consequatur nihil ratione commodi corporis.&quot;,
+                    &quot;rating&quot;: 8,
+                    &quot;type&quot;: 0,
+                    &quot;is_public&quot;: 1,
+                    &quot;created_at&quot;: &quot;2021-10-10T19:17:09.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:09.000000Z&quot;
+                },
+                {
+                    &quot;id&quot;: 9,
+                    &quot;user_name&quot;: &quot;Ms. Natalie Turcotte Sr.&quot;,
+                    &quot;body&quot;: &quot;Itaque saepe amet maiores eum hic excepturi iure quaerat placeat.&quot;,
+                    &quot;rating&quot;: 5,
+                    &quot;type&quot;: 0,
+                    &quot;is_public&quot;: 1,
+                    &quot;created_at&quot;: &quot;2021-10-10T19:17:09.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:09.000000Z&quot;
+                },
+                {
+                    &quot;id&quot;: 10,
+                    &quot;user_name&quot;: &quot;Eliza Moore&quot;,
+                    &quot;body&quot;: &quot;Nobis dolor ducimus laborum qui facere ipsum totam eos possimus.&quot;,
+                    &quot;rating&quot;: 9,
+                    &quot;type&quot;: 0,
+                    &quot;is_public&quot;: 1,
+                    &quot;created_at&quot;: &quot;2021-10-10T19:17:09.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:09.000000Z&quot;
+                }
+            ]
+        }
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-feedback-index" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-feedback-index"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-feedback-index"></code></pre>
+</span>
+<span id="execution-error-GETapi-feedback-index" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-feedback-index"></code></pre>
+</span>
+<form id="form-GETapi-feedback-index" data-method="GET"
+      data-path="api/feedback/index"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-feedback-index', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-feedback-index"
+                    onclick="tryItOut('GETapi-feedback-index');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-feedback-index"
+                    onclick="cancelTryOut('GETapi-feedback-index');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-feedback-index" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/feedback/index</code></b>
+        </p>
+                    </form>
+
+            <h2 id="feedback-POSTapi-feedback-create">Create</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Store a suggestion and/or rating in the database</p>
+<p>(Reuqires user role to be &quot;premium&quot;)</p>
+
+<span id="example-requests-POSTapi-feedback-create">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request POST \
+    "https://pasunashi-backend.herokuapp.com/api/feedback/create" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"body\": \"velit\",
+    \"rating\": 12,
+    \"type\": true
+}"
+</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/feedback/create"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "body": "velit",
+    "rating": 12,
+    "type": true
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-POSTapi-feedback-create">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;status&quot;: 200,
+    &quot;message&quot;: &quot;Succes!&quot;,
+    &quot;data&quot;: {}
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401, validation failed):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 401,
+     &quot;message&quot;: &quot;error message&quot;,
+     &quot;data&quot;: {
+         &quot;errors&quot;: [
+             {
+                 &quot;body&quot;: &quot;&quot;body&quot; must have at least 5 characters.&quot;
+             }
+         ],
+         &quot;request&quot;: {
+             &quot;body&quot;: &quot;&quot;,
+             &quot;type&quot;: true,
+         }
+     }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-feedback-create" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-feedback-create"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-feedback-create"></code></pre>
+</span>
+<span id="execution-error-POSTapi-feedback-create" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-feedback-create"></code></pre>
+</span>
+<form id="form-POSTapi-feedback-create" data-method="POST"
+      data-path="api/feedback/create"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-feedback-create', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-feedback-create"
+                    onclick="tryItOut('POSTapi-feedback-create');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-feedback-create"
+                    onclick="cancelTryOut('POSTapi-feedback-create');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-feedback-create" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/feedback/create</code></b>
+        </p>
+                <p>
+            <label id="auth-POSTapi-feedback-create" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="POSTapi-feedback-create"
+                                                                data-component="header"></label>
+        </p>
+                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <p>
+            <b><code>body</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="body"
+               data-endpoint="POSTapi-feedback-create"
+               data-component="body" required  hidden>
+    <br>
+<p>The body of the suggestion/rating (min: 5 max: 190 char)</p>        </p>
+                <p>
+            <b><code>rating</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
+                <input type="number"
+               name="rating"
+               data-endpoint="POSTapi-feedback-create"
+               data-component="body" required  hidden>
+    <br>
+<p>The points given as rating (required only if &quot;type&quot; is false) (min: 0, max: 10)</p>        </p>
+                <p>
+            <b><code>type</code></b>&nbsp;&nbsp;<small>boolean</small>  &nbsp;
+                <label data-endpoint="POSTapi-feedback-create" hidden>
+            <input type="radio" name="type"
+                   value="true"
+                   data-endpoint="POSTapi-feedback-create"
+                   data-component="body" required             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="POSTapi-feedback-create" hidden>
+            <input type="radio" name="type"
+                   value="false"
+                   data-endpoint="POSTapi-feedback-create"
+                   data-component="body" required             >
+            <code>false</code>
+        </label>
+    <br>
+<p>true = this is a suggestion, while false = this is a rating</p>        </p>
+    
+    </form>
+
+        <h1 id="login">Login</h1>
+
+    
+
+            <h2 id="login-POSTapi-auth-login-two-factor-code">Login By 2 Factor Code (TOTP)</h2>
+
+<p>
+</p>
+
+<p>This is the method to login using the user's main email, and the time-based one-time-password (the code generated in apps like Google Authenticator).</p>
+<aside class="notice">This method will return an array of Credentials, you can see the Credential interface on the README file.</aside>
+
+<span id="example-requests-POSTapi-auth-login-two-factor-code">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request POST \
+    "https://pasunashi-backend.herokuapp.com/api/auth/login/two-factor-code" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp" \
+    --data "{
+    \"email\": \"odit\",
+    \"twoFactorCode\": 15
+}"
+</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/auth/login/two-factor-code"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+let body = {
+    "email": "odit",
+    "twoFactorCode": 15
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-POSTapi-auth-login-two-factor-code">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 200,
+     &quot;message&quot;: &quot;success!&quot;,
+     &quot;data&quot;: {
+         &quot;user_data&quot;: {
+             &quot;id&quot;: 2,
+             &quot;name&quot;: &quot;user's name&quot;,
+             &quot;email&quot;: &quot;email@email_company.com&quot;,
+             &quot;recovery_email&quot;: &quot;second_email@email.company&quot;,
+             &quot;slots_available&quot;: 5,
+             &quot;invitation_code&quot;: &quot;AAAAAAAAAA&quot;,
+             &quot;role&quot;: &quot;free&quot;,
+             &quot;preferred_lang&quot;: &quot;jp&quot;,
+         },
+         &quot;user_credentials&quot;: [],
+         &quot;token&quot;: &quot;the auth token&quot;
+     }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401, validation failed):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 401,
+     &quot;message&quot;: &quot;error message&quot;,
+     &quot;data&quot;: {
+         &quot;errors&quot;: [
+             {
+                 &quot;twoFactorCode&quot;: &quot;The field &quot;twoFactorCode&quot; must be an integer.&quot;
+             }
+         ],
+         &quot;request&quot;: {
+             &quot;twoFactorCode&quot;: &quot;123456&quot;,
+             &quot;email&quot;: &quot;email@email_company.com&quot;
+         }
+     }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-auth-login-two-factor-code" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-auth-login-two-factor-code"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-auth-login-two-factor-code"></code></pre>
+</span>
+<span id="execution-error-POSTapi-auth-login-two-factor-code" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-auth-login-two-factor-code"></code></pre>
+</span>
+<form id="form-POSTapi-auth-login-two-factor-code" data-method="POST"
+      data-path="api/auth/login/two-factor-code"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-login-two-factor-code', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-auth-login-two-factor-code"
+                    onclick="tryItOut('POSTapi-auth-login-two-factor-code');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-auth-login-two-factor-code"
+                    onclick="cancelTryOut('POSTapi-auth-login-two-factor-code');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-auth-login-two-factor-code" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/auth/login/two-factor-code</code></b>
+        </p>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <p>
+            <b><code>email</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="email"
+               data-endpoint="POSTapi-auth-login-two-factor-code"
+               data-component="body" required  hidden>
+    <br>
+<p>The main email of the user.</p>        </p>
+                <p>
+            <b><code>twoFactorCode</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
+                <input type="number"
+               name="twoFactorCode"
+               data-endpoint="POSTapi-auth-login-two-factor-code"
+               data-component="body" required  hidden>
+    <br>
+<p>Must be a 6 digits number.</p>        </p>
+    
+    </form>
+
+            <h2 id="login-POSTapi-auth-login-email-code">Login By Email Code</h2>
+
+<p>
+</p>
+
+<p>In order for this method to work, the user must already have the correct security code in the database. If the user asked to send an email code to their
+recovery email, they won't be able to login by this method, if they're using their main email on this request.</p>
+<aside class="notice">This method will return an array of Credentials, you can see the Credential interface on the README file.</aside>
+
+<span id="example-requests-POSTapi-auth-login-email-code">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request POST \
+    "https://pasunashi-backend.herokuapp.com/api/auth/login/email-code" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp" \
+    --data "{
+    \"mainEmail\": \"ut\",
+    \"recoveryEmail\": \"culpa\",
+    \"code\": 14
+}"
+</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/auth/login/email-code"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+let body = {
+    "mainEmail": "ut",
+    "recoveryEmail": "culpa",
+    "code": 14
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-POSTapi-auth-login-email-code">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 200,
+     &quot;message&quot;: &quot;success!&quot;,
+     &quot;data&quot;: {
+         &quot;user_data&quot;: {
+             &quot;id&quot;: 2,
+             &quot;name&quot;: &quot;user's name&quot;,
+             &quot;email&quot;: &quot;email@email_company.com&quot;,
+             &quot;recovery_email&quot;: &quot;second_email@email.company&quot;,
+             &quot;slots_available&quot;: 5,
+             &quot;invitation_code&quot;: &quot;AAAAAAAAAA&quot;,
+             &quot;role&quot;: &quot;free&quot;,
+             &quot;preferred_lang&quot;: &quot;jp&quot;,
+         },
+         &quot;user_credentials&quot;: [],
+         &quot;token&quot;: &quot;the auth token&quot;
+     }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401, validation failed):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 401,
+     &quot;message&quot;: &quot;error message&quot;,
+     &quot;data&quot;: {
+         &quot;errors&quot;: [
+             {
+                 &quot;code&quot;: &quot;The field &quot;code&quot; must be an integer.&quot;
+             }
+         ],
+         &quot;request&quot;: {
+             &quot;code&quot;: &quot;123456&quot;,
+             &quot;mainEmail&quot;: &quot;email@email_company.com&quot;,
+         }
+     }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-auth-login-email-code" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-auth-login-email-code"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-auth-login-email-code"></code></pre>
+</span>
+<span id="execution-error-POSTapi-auth-login-email-code" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-auth-login-email-code"></code></pre>
+</span>
+<form id="form-POSTapi-auth-login-email-code" data-method="POST"
+      data-path="api/auth/login/email-code"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-login-email-code', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-auth-login-email-code"
+                    onclick="tryItOut('POSTapi-auth-login-email-code');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-auth-login-email-code"
+                    onclick="cancelTryOut('POSTapi-auth-login-email-code');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-auth-login-email-code" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/auth/login/email-code</code></b>
+        </p>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <p>
+            <b><code>mainEmail</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="mainEmail"
+               data-endpoint="POSTapi-auth-login-email-code"
+               data-component="body" required  hidden>
+    <br>
+<p>The main email of the user.</p>        </p>
+                <p>
+            <b><code>recoveryEmail</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="recoveryEmail"
+               data-endpoint="POSTapi-auth-login-email-code"
+               data-component="body"  hidden>
+    <br>
+<p>Is required only if the user has sent the security code to their recovery email.</p>        </p>
+                <p>
+            <b><code>code</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
+                <input type="number"
+               name="code"
+               data-endpoint="POSTapi-auth-login-email-code"
+               data-component="body" required  hidden>
+    <br>
+<p>Must be a 6 digits number.</p>        </p>
+    
+    </form>
+
+            <h2 id="login-POSTapi-auth-login-security-code">Login By Security Code</h2>
+
+<p>
+</p>
+
+<p>This is the only method that does not require 2-factor-authentication.</p>
+<aside class="notice">This method will return an array of Credentials, you can see the Credential interface on the README file.</aside>
+
+<span id="example-requests-POSTapi-auth-login-security-code">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request POST \
+    "https://pasunashi-backend.herokuapp.com/api/auth/login/security-code" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp" \
+    --data "{
+    \"mainEmail\": \"temporibus\",
+    \"recoveryEmail\": \"deserunt\",
+    \"antiFishingSecret\": \"nulla\",
+    \"securityCode\": \"dolor\"
+}"
+</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/auth/login/security-code"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+let body = {
+    "mainEmail": "temporibus",
+    "recoveryEmail": "deserunt",
+    "antiFishingSecret": "nulla",
+    "securityCode": "dolor"
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-POSTapi-auth-login-security-code">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 200,
+     &quot;message&quot;: &quot;success!&quot;,
+     &quot;data&quot;: {
+         &quot;user_data&quot;: {
+             &quot;id&quot;: 2,
+             &quot;name&quot;: &quot;user's name&quot;,
+             &quot;email&quot;: &quot;email@email_company.com&quot;,
+             &quot;recovery_email&quot;: &quot;second_email@email.company&quot;,
+             &quot;slots_available&quot;: 5,
+             &quot;invitation_code&quot;: &quot;AAAAAAAAAA&quot;,
+             &quot;role&quot;: &quot;free&quot;,
+             &quot;preferred_lang&quot;: &quot;jp&quot;,
+         },
+         &quot;user_credentials&quot;: [],
+         &quot;token&quot;: &quot;the auth token&quot;
+     }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401, validation failed):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 401,
+     &quot;message&quot;: &quot;error message&quot;,
+     &quot;data&quot;: {
+         &quot;errors&quot;: [
+             {
+                 &quot;securityCode&quot;: &quot;The field &quot;securityCode&quot; must have at least 10 characters.&quot;
+             }
+         ],
+         &quot;request&quot;: {
+             &quot;mainEmail&quot;: &quot;email@email_company.com&quot;,
+             &quot;recoveryEmail&quot;: &quot;second@email.com&quot;,
+             &quot;antiFishingSecret&quot;: &quot;secret&quot;,
+             &quot;securityCode&quot;: 123456,
+         }
+     }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-auth-login-security-code" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-auth-login-security-code"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-auth-login-security-code"></code></pre>
+</span>
+<span id="execution-error-POSTapi-auth-login-security-code" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-auth-login-security-code"></code></pre>
+</span>
+<form id="form-POSTapi-auth-login-security-code" data-method="POST"
+      data-path="api/auth/login/security-code"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-login-security-code', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-auth-login-security-code"
+                    onclick="tryItOut('POSTapi-auth-login-security-code');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-auth-login-security-code"
+                    onclick="cancelTryOut('POSTapi-auth-login-security-code');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-auth-login-security-code" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/auth/login/security-code</code></b>
+        </p>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <p>
+            <b><code>mainEmail</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="mainEmail"
+               data-endpoint="POSTapi-auth-login-security-code"
+               data-component="body" required  hidden>
+    <br>
+        </p>
+                <p>
+            <b><code>recoveryEmail</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="recoveryEmail"
+               data-endpoint="POSTapi-auth-login-security-code"
+               data-component="body" required  hidden>
+    <br>
+        </p>
+                <p>
+            <b><code>antiFishingSecret</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="antiFishingSecret"
+               data-endpoint="POSTapi-auth-login-security-code"
+               data-component="body" required  hidden>
+    <br>
+        </p>
+                <p>
+            <b><code>securityCode</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="securityCode"
+               data-endpoint="POSTapi-auth-login-security-code"
+               data-component="body" required  hidden>
+    <br>
+<p>All users have one 10-character recovery code for logging into ther account if they aren't able
+to use any 2-factor-authentication</p>        </p>
+    
+    </form>
+
+            <h2 id="login-GETapi-auth-logout">Logout</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>This method does not require anything, except for a valid authentication token.</p>
+
+<span id="example-requests-GETapi-auth-logout">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request GET \
+    --get "https://pasunashi-backend.herokuapp.com/api/auth/logout" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp"</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/auth/logout"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-GETapi-auth-logout">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;status&quot;: 200,
+    &quot;message&quot;: &quot;Succes!&quot;,
+    &quot;data&quot;: {}
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-auth-logout" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-auth-logout"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-auth-logout"></code></pre>
+</span>
+<span id="execution-error-GETapi-auth-logout" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-auth-logout"></code></pre>
+</span>
+<form id="form-GETapi-auth-logout" data-method="GET"
+      data-path="api/auth/logout"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-auth-logout', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-auth-logout"
+                    onclick="tryItOut('GETapi-auth-logout');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-auth-logout"
+                    onclick="cancelTryOut('GETapi-auth-logout');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-auth-logout" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/auth/logout</code></b>
+        </p>
+                <p>
+            <label id="auth-GETapi-auth-logout" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="GETapi-auth-logout"
+                                                                data-component="header"></label>
+        </p>
+                </form>
+
+        <h1 id="payments">Payments</h1>
+
+    
+
+            <h2 id="payments-POSTapi-verify-paypal-payment">Verify PayPal Payment</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>This method receives the transaction id of PayPal, and verifies that the purchase is fully confirmed</p>
+
+<span id="example-requests-POSTapi-verify-paypal-payment">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request POST \
+    "https://pasunashi-backend.herokuapp.com/api/verify-paypal-payment" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp" \
+    --data "{
+    \"code\": \"sit\"
+}"
+</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/verify-paypal-payment"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+let body = {
+    "code": "sit"
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-POSTapi-verify-paypal-payment">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;status&quot;: 200,
+    &quot;message&quot;: &quot;Succes!&quot;,
+    &quot;data&quot;: {}
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (404, validation failed):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;status&quot;: 404,
+    &quot;message&quot;: &quot;error message&quot;,
+    &quot;data&quot;: {
+        &quot;errors&quot;: [
+            {
+                &quot;code&quot;: &quot;the code doesn't exist in database&quot;
+            }
+        ],
+        &quot;request&quot;: {
+            &quot;code&quot;: &quot;AAAAA&quot;
+        }
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-verify-paypal-payment" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-verify-paypal-payment"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-verify-paypal-payment"></code></pre>
+</span>
+<span id="execution-error-POSTapi-verify-paypal-payment" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-verify-paypal-payment"></code></pre>
+</span>
+<form id="form-POSTapi-verify-paypal-payment" data-method="POST"
+      data-path="api/verify-paypal-payment"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-verify-paypal-payment', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-verify-paypal-payment"
+                    onclick="tryItOut('POSTapi-verify-paypal-payment');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-verify-paypal-payment"
+                    onclick="cancelTryOut('POSTapi-verify-paypal-payment');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-verify-paypal-payment" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/verify-paypal-payment</code></b>
+        </p>
+                <p>
+            <label id="auth-POSTapi-verify-paypal-payment" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="POSTapi-verify-paypal-payment"
+                                                                data-component="header"></label>
+        </p>
+                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <p>
+            <b><code>code</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="code"
+               data-endpoint="POSTapi-verify-paypal-payment"
+               data-component="body" required  hidden>
+    <br>
+<p>The id of the transaction in PayPal</p>        </p>
+    
+    </form>
+
+            <h2 id="payments-POSTapi-start-payment-instance">Start Payment Instance</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>This method will create an &quot;open payment instance&quot; in the database, so, when the payment is fully confirmed,
+the backend will know how much the user has paid, and what did they actually purchased.</p>
+
+<span id="example-requests-POSTapi-start-payment-instance">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request POST \
+    "https://pasunashi-backend.herokuapp.com/api/start-payment-instance" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp" \
+    --data "{
+    \"method\": \"quaerat\",
+    \"amount\": 19,
+    \"type\": \"quaerat\",
+    \"code\": \"explicabo\"
+}"
+</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/start-payment-instance"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+let body = {
+    "method": "quaerat",
+    "amount": 19,
+    "type": "quaerat",
+    "code": "explicabo"
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-POSTapi-start-payment-instance">
+            <blockquote>
+            <p>Example response (200, success):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 200,
+     &quot;message&quot;: &quot;Succes!&quot;,
+     &quot;data&quot;: {},
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (400, validation failed):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 400,
+     &quot;message&quot;: &quot;error message&quot;,
+     &quot;data&quot;: {
+         &quot;errors&quot;: [
+             {
+                 &quot;body&quot;: &quot;body must have at least 5 characters.&quot;
+             }
+         ],
+         &quot;request&quot;: {
+             &quot;method&quot;: &quot;PayPal&quot;,
+             &quot;amount&quot;: 100,
+             &quot;code&quot;: &quot;AAAAA&quot;
+             &quot;type&quot;: &quot;&quot;,
+         }
+     }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-start-payment-instance" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-start-payment-instance"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-start-payment-instance"></code></pre>
+</span>
+<span id="execution-error-POSTapi-start-payment-instance" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-start-payment-instance"></code></pre>
+</span>
+<form id="form-POSTapi-start-payment-instance" data-method="POST"
+      data-path="api/start-payment-instance"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-start-payment-instance', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-start-payment-instance"
+                    onclick="tryItOut('POSTapi-start-payment-instance');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-start-payment-instance"
+                    onclick="cancelTryOut('POSTapi-start-payment-instance');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-start-payment-instance" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/start-payment-instance</code></b>
+        </p>
+                <p>
+            <label id="auth-POSTapi-start-payment-instance" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="POSTapi-start-payment-instance"
+                                                                data-component="header"></label>
+        </p>
+                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <p>
+            <b><code>method</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="method"
+               data-endpoint="POSTapi-start-payment-instance"
+               data-component="body" required  hidden>
+    <br>
+<p>One of two options, either &quot;PayPal&quot; or &quot;Crypto&quot; (be careful, don't forget the capital letters).</p>        </p>
+                <p>
+            <b><code>amount</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
+                <input type="number"
+               name="amount"
+               data-endpoint="POSTapi-start-payment-instance"
+               data-component="body" required  hidden>
+    <br>
+<p>The amount (in USD) that the user is paying (min: 5 USD).</p>        </p>
+                <p>
+            <b><code>type</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="type"
+               data-endpoint="POSTapi-start-payment-instance"
+               data-component="body" required  hidden>
+    <br>
+<p>Either one of two options, &quot;premium&quot; if purchasing premium role, or &quot;slots&quot; if paying for more slots (without cap letters).</p>        </p>
+                <p>
+            <b><code>code</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="code"
+               data-endpoint="POSTapi-start-payment-instance"
+               data-component="body" required  hidden>
+    <br>
+<p>The id of the transaction in PayPal, or the code of the transaction in Coinbase.</p>        </p>
+    
+    </form>
+
+        <h1 id="register">Register</h1>
+
+    
+
+            <h2 id="register-POSTapi-auth-register-step-1">Register, Step One</h2>
+
+<p>
+</p>
+
+<p>The first step in order to register a new user. This method stores the user's accessing information, and dispatches an event to send security codes
+to both, the main and the recovery, emails.</p>
+
+<span id="example-requests-POSTapi-auth-register-step-1">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request POST \
+    "https://pasunashi-backend.herokuapp.com/api/auth/register/step-1" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp" \
+    --data "{
+    \"name\": \"iogvgrwkofferk\",
+    \"phoneNumber\": \"vtqd\",
+    \"mainEmail\": \"alemgpbjadqidrzkfxxocuntqapymzwhlzgxcjimvspneaybkbbviqb\",
+    \"recoveryEmail\": \"shvohrmchbmglttubxpkawbkqiq\",
+    \"secretAntiFishing\": \"zfabnjbcztelmwi\",
+    \"secretAntiFishing_confirmation\": \"hktjanbbgeulgilgtsubfoatklftqtvbvmjzymhoesuoqoguqpvragekvwqtmpjpdswdnfdjylnbbgtqmtjewjqfszsixiuihxeanazlppyosyvqtflzpwempfsntejygykmoadeksdorfwwcvtdzhocpqmvzzxs\",
+    \"invitationCode\": \"m\"
+}"
+</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/auth/register/step-1"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+let body = {
+    "name": "iogvgrwkofferk",
+    "phoneNumber": "vtqd",
+    "mainEmail": "alemgpbjadqidrzkfxxocuntqapymzwhlzgxcjimvspneaybkbbviqb",
+    "recoveryEmail": "shvohrmchbmglttubxpkawbkqiq",
+    "secretAntiFishing": "zfabnjbcztelmwi",
+    "secretAntiFishing_confirmation": "hktjanbbgeulgilgtsubfoatklftqtvbvmjzymhoesuoqoguqpvragekvwqtmpjpdswdnfdjylnbbgtqmtjewjqfszsixiuihxeanazlppyosyvqtflzpwempfsntejygykmoadeksdorfwwcvtdzhocpqmvzzxs",
+    "invitationCode": "m"
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-POSTapi-auth-register-step-1">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;status&quot;: 200,
+    &quot;message&quot;: &quot;success!&quot;,
+    &quot;data&quot;: {
+        &quot;registered_email&quot;: &quot;main_email@email_company.com&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401, validation failed):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 401,
+     &quot;message&quot;: &quot;error message&quot;,
+     &quot;data&quot;: {
+         &quot;errors&quot;: [
+             {
+                 &quot;mainEmail&quot;: &quot;The field &quot;mainEmail&quot; must be a valid email.&quot;
+             }
+         ],
+         &quot;request&quot;: {
+             &quot;name&quot;: &quot;user's name&quot;,
+             &quot;phoneNumber&quot;: &quot;+1 555-1234-5678&quot;,
+             &quot;mainEmail&quot;: &quot;fake_email.com&quot;,
+             &quot;recoveryEmail&quot;: &quot;fake_mail@email_company.com&quot;,
+             &quot;secretAntiFishing&quot;: &quot;secret&quot;,
+             &quot;secretAntiFishing_confirmation&quot;: &quot;secret&quot;,
+             &quot;invitationCode&quot;: &quot;AAAAAAAAAA&quot;
+         }
+     }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-auth-register-step-1" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-auth-register-step-1"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-auth-register-step-1"></code></pre>
+</span>
+<span id="execution-error-POSTapi-auth-register-step-1" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-auth-register-step-1"></code></pre>
+</span>
+<form id="form-POSTapi-auth-register-step-1" data-method="POST"
+      data-path="api/auth/register/step-1"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-register-step-1', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-auth-register-step-1"
+                    onclick="tryItOut('POSTapi-auth-register-step-1');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-auth-register-step-1"
+                    onclick="cancelTryOut('POSTapi-auth-register-step-1');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-auth-register-step-1" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/auth/register/step-1</code></b>
+        </p>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <p>
+            <b><code>name</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="name"
+               data-endpoint="POSTapi-auth-register-step-1"
+               data-component="body" required  hidden>
+    <br>
+<p>Must be at least 5 characters. Must not be greater than 100 characters.</p>        </p>
+                <p>
+            <b><code>phoneNumber</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="phoneNumber"
+               data-endpoint="POSTapi-auth-register-step-1"
+               data-component="body" required  hidden>
+    <br>
+<p>Must be at least 6 characters. Must not be greater than 20 characters.</p>        </p>
+                <p>
+            <b><code>mainEmail</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="mainEmail"
+               data-endpoint="POSTapi-auth-register-step-1"
+               data-component="body" required  hidden>
+    <br>
+<p>Must be a valid email address. Must be at least 5 characters. Must not be greater than 190 characters.</p>        </p>
+                <p>
+            <b><code>recoveryEmail</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="recoveryEmail"
+               data-endpoint="POSTapi-auth-register-step-1"
+               data-component="body" required  hidden>
+    <br>
+<p>Must be a valid email address. Must be at least 5 characters. Must not be greater than 190 characters.</p>        </p>
+                <p>
+            <b><code>secretAntiFishing</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="secretAntiFishing"
+               data-endpoint="POSTapi-auth-register-step-1"
+               data-component="body" required  hidden>
+    <br>
+<p>Must be at least 5 characters. Must not be greater than 190 characters.</p>        </p>
+                <p>
+            <b><code>secretAntiFishing_confirmation</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="secretAntiFishing_confirmation"
+               data-endpoint="POSTapi-auth-register-step-1"
+               data-component="body" required  hidden>
+    <br>
+<p>Must be at least 5 characters. Must not be greater than 190 characters.</p>        </p>
+                <p>
+            <b><code>invitationCode</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="invitationCode"
+               data-endpoint="POSTapi-auth-register-step-1"
+               data-component="body"  hidden>
+    <br>
+<p>Must be at least 10 characters. Must not be greater than 10 characters.</p>        </p>
+    
+    </form>
+
+            <h2 id="register-POSTapi-auth-register-step-2">Register, Step Two</h2>
+
+<p>
+</p>
+
+<p>This method will receive both of the security codes that were sent to the user on the previous step, and verify that both of them are correct.</p>
+
+<span id="example-requests-POSTapi-auth-register-step-2">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request POST \
+    "https://pasunashi-backend.herokuapp.com/api/auth/register/step-2" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp" \
+    --data "{
+    \"mainEmailCode\": 19,
+    \"recoveryEmailCode\": 16,
+    \"mainEmail\": \"ezbxvnydvddabxtndnvjdtuulipluoxpibmxlsoowakibmmculewzvusrcenixzgsmclrohzxys\",
+    \"MainEmail\": \"molestias\"
+}"
+</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/auth/register/step-2"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+let body = {
+    "mainEmailCode": 19,
+    "recoveryEmailCode": 16,
+    "mainEmail": "ezbxvnydvddabxtndnvjdtuulipluoxpibmxlsoowakibmmculewzvusrcenixzgsmclrohzxys",
+    "MainEmail": "molestias"
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-POSTapi-auth-register-step-2">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;status&quot;: 200,
+    &quot;message&quot;: &quot;success!&quot;,
+    &quot;data&quot;: {
+        &quot;token&quot;: &quot;the authorization token needed for the third step.&quot;
+    }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401, validation failed):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 401,
+     &quot;message&quot;: &quot;error message&quot;,
+     &quot;data&quot;: {
+         &quot;errors&quot;: [
+             {
+                 &quot;mainEmail&quot;: &quot;The field &quot;mainEmail&quot; must be a valid email.&quot;
+             }
+         ],
+         &quot;request&quot;: {
+             &quot;mainEmail&quot;: &quot;fake_email.com&quot;,
+             &quot;mainEmailCode&quot;: 123456,
+             &quot;recoveryEmailCode&quot;: 123456,
+         }
+     }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-auth-register-step-2" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-auth-register-step-2"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-auth-register-step-2"></code></pre>
+</span>
+<span id="execution-error-POSTapi-auth-register-step-2" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-auth-register-step-2"></code></pre>
+</span>
+<form id="form-POSTapi-auth-register-step-2" data-method="POST"
+      data-path="api/auth/register/step-2"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-register-step-2', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-auth-register-step-2"
+                    onclick="tryItOut('POSTapi-auth-register-step-2');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-auth-register-step-2"
+                    onclick="cancelTryOut('POSTapi-auth-register-step-2');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-auth-register-step-2" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/auth/register/step-2</code></b>
+        </p>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <p>
+            <b><code>mainEmailCode</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
+                <input type="number"
+               name="mainEmailCode"
+               data-endpoint="POSTapi-auth-register-step-2"
+               data-component="body" required  hidden>
+    <br>
+<p>Must be a number of 6 digits.</p>        </p>
+                <p>
+            <b><code>recoveryEmailCode</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
+                <input type="number"
+               name="recoveryEmailCode"
+               data-endpoint="POSTapi-auth-register-step-2"
+               data-component="body" required  hidden>
+    <br>
+<p>Must be a number of 6 digits.</p>        </p>
+                <p>
+            <b><code>mainEmail</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="mainEmail"
+               data-endpoint="POSTapi-auth-register-step-2"
+               data-component="body" required  hidden>
+    <br>
+<p>Must be a valid email address. Must be at least 4 characters. Must not be greater than 190 characters.</p>        </p>
+                <p>
+            <b><code>MainEmail</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="MainEmail"
+               data-endpoint="POSTapi-auth-register-step-2"
+               data-component="body" required  hidden>
+    <br>
+<p>The email must already exist on the database.</p>        </p>
+    
+    </form>
+
+            <h2 id="register-POSTapi-auth-register-step-3">Register, Step Three</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>This method will invalidate the auth token sent with the request.</p>
+<aside class="notice">This method is also used to verify the 2FA code if the user decides to renew it.</aside>
+
+<span id="example-requests-POSTapi-auth-register-step-3">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request POST \
+    "https://pasunashi-backend.herokuapp.com/api/auth/register/step-3" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp" \
+    --data "{
+    \"twoFactorCode\": 9
+}"
+</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/auth/register/step-3"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+let body = {
+    "twoFactorCode": 9
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-POSTapi-auth-register-step-3">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 200,
+     &quot;message&quot;: &quot;success!&quot;,
+     &quot;data&quot;: {
+         &quot;user_data&quot;: {
+             &quot;id&quot;: 2,
+             &quot;name&quot;: &quot;user's name&quot;,
+             &quot;email&quot;: &quot;email@email_company.com&quot;,
+             &quot;recovery_email&quot;: &quot;second_email@email.company&quot;,
+             &quot;slots_available&quot;: 5,
+             &quot;invitation_code&quot;: &quot;AAAAAAAAAA&quot;,
+             &quot;role&quot;: &quot;free&quot;,
+             &quot;preferred_lang&quot;: &quot;jp&quot;,
+         },
+         &quot;user_credentials&quot;: [],
+         &quot;token&quot;: &quot;the auth token renewed&quot;
+     }
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401, validation failed):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 401,
+     &quot;message&quot;: &quot;error message&quot;,
+     &quot;data&quot;: {
+         &quot;errors&quot;: [
+             {
+                 &quot;twoFactorCode&quot;: &quot;The field &quot;twoFactorCode&quot; must be an integer.&quot;
+             }
+         ],
+         &quot;request&quot;: {
+             &quot;twoFactorCode&quot;: &quot;123456&quot;,
+         }
+     }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-auth-register-step-3" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-auth-register-step-3"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-auth-register-step-3"></code></pre>
+</span>
+<span id="execution-error-POSTapi-auth-register-step-3" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-auth-register-step-3"></code></pre>
+</span>
+<form id="form-POSTapi-auth-register-step-3" data-method="POST"
+      data-path="api/auth/register/step-3"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-register-step-3', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-auth-register-step-3"
+                    onclick="tryItOut('POSTapi-auth-register-step-3');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-auth-register-step-3"
+                    onclick="cancelTryOut('POSTapi-auth-register-step-3');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-auth-register-step-3" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/auth/register/step-3</code></b>
+        </p>
+                <p>
+            <label id="auth-POSTapi-auth-register-step-3" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="POSTapi-auth-register-step-3"
+                                                                data-component="header"></label>
+        </p>
+                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <p>
+            <b><code>twoFactorCode</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
+                <input type="number"
+               name="twoFactorCode"
+               data-endpoint="POSTapi-auth-register-step-3"
+               data-component="body" required  hidden>
+    <br>
+<p>Must be a 6 digits number.</p>        </p>
+    
+    </form>
+
+        <h1 id="user">User</h1>
+
+    
+
+            <h2 id="user-PUTapi-user-update">Update</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>This method is used to edit the user's credentials for accessing their account in PasuNashi.</p>
+<aside class="notice">All of the parameters are required, even if nothing changed.</aside>
+
+<span id="example-requests-PUTapi-user-update">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request PUT \
+    "https://pasunashi-backend.herokuapp.com/api/user/update" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp" \
+    --data "{
+    \"name\": \"iure\",
+    \"phone_number\": \"sint\",
+    \"email\": \"exercitationem\",
+    \"recovery_email\": \"sint\",
+    \"anti_fishing_secret\": \"qui\"
+}"
+</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/user/update"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+let body = {
+    "name": "iure",
+    "phone_number": "sint",
+    "email": "exercitationem",
+    "recovery_email": "sint",
+    "anti_fishing_secret": "qui"
+}
+
+fetch(url, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-PUTapi-user-update">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;status&quot;: 200,
+    &quot;message&quot;: &quot;Succes!&quot;,
+    &quot;data&quot;: {}
+}</code>
+ </pre>
+            <blockquote>
+            <p>Example response (401, validation failed):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 401,
+     &quot;message&quot;: &quot;error message&quot;,
+     &quot;data&quot;: {
+         &quot;errors&quot;: [
+             {
+                 &quot;name&quot;: &quot;&quot;name&quot; must have at least 3 characters.&quot;
+             }
+         ],
+         &quot;request&quot;: {
+             &quot;neame&quot;: &quot;&quot;,
+             &quot;phone_number&quot;: &quot;+1 555-1234-1234&quot;,
+             &quot;email&quot;: &quot;fake@email.com&quot;,
+             &quot;recovery_email&quot;: &quot;fake_email@email_company.com&quot;
+             &quot;anti_fishing_secret&quot;: &quot;secret&quot;,
+     }
+ }</code>
+ </pre>
+    </span>
+<span id="execution-results-PUTapi-user-update" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PUTapi-user-update"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PUTapi-user-update"></code></pre>
+</span>
+<span id="execution-error-PUTapi-user-update" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PUTapi-user-update"></code></pre>
+</span>
+<form id="form-PUTapi-user-update" data-method="PUT"
+      data-path="api/user/update"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PUTapi-user-update', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PUTapi-user-update"
+                    onclick="tryItOut('PUTapi-user-update');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PUTapi-user-update"
+                    onclick="cancelTryOut('PUTapi-user-update');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PUTapi-user-update" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-darkblue">PUT</small>
+            <b><code>api/user/update</code></b>
+        </p>
+                <p>
+            <label id="auth-PUTapi-user-update" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="PUTapi-user-update"
+                                                                data-component="header"></label>
+        </p>
+                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <p>
+            <b><code>name</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="name"
+               data-endpoint="PUTapi-user-update"
+               data-component="body" required  hidden>
+    <br>
+<p>(min: 3, max: 190 char).</p>        </p>
+                <p>
+            <b><code>phone_number</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="phone_number"
+               data-endpoint="PUTapi-user-update"
+               data-component="body" required  hidden>
+    <br>
+<p>(min: 8, max: 16 char).</p>        </p>
+                <p>
+            <b><code>email</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="email"
+               data-endpoint="PUTapi-user-update"
+               data-component="body" required  hidden>
+    <br>
+<p>(max: 190 char).</p>        </p>
+                <p>
+            <b><code>recovery_email</code></b>&nbsp;&nbsp;<small>required</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="recovery_email"
+               data-endpoint="PUTapi-user-update"
+               data-component="body"  hidden>
+    <br>
+<p>(max: 190 char).</p>        </p>
+                <p>
+            <b><code>anti_fishing_secret</code></b>&nbsp;&nbsp;<small>required</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="anti_fishing_secret"
+               data-endpoint="PUTapi-user-update"
+               data-component="body"  hidden>
+    <br>
+<p>(min: 5, max: 190 char).</p>        </p>
+    
+    </form>
+
+            <h2 id="user-GETapi-user-stop-premium">Stop Premium</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>This method is for the times when some user may want to stop paying for the &quot;premium&quot; role, and go back to their previous role.</p>
+<aside class="notice">This method can only be used if the user making the request already has the "premium" role.</aside>
+
+<span id="example-requests-GETapi-user-stop-premium">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request GET \
+    --get "https://pasunashi-backend.herokuapp.com/api/user/stop-premium" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp"</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/user/stop-premium"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-GETapi-user-stop-premium">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;status&quot;: 200,
+    &quot;message&quot;: &quot;Succes!&quot;,
+    &quot;data&quot;: {}
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-user-stop-premium" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-user-stop-premium"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-user-stop-premium"></code></pre>
+</span>
+<span id="execution-error-GETapi-user-stop-premium" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-user-stop-premium"></code></pre>
+</span>
+<form id="form-GETapi-user-stop-premium" data-method="GET"
+      data-path="api/user/stop-premium"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-user-stop-premium', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-user-stop-premium"
+                    onclick="tryItOut('GETapi-user-stop-premium');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-user-stop-premium"
+                    onclick="cancelTryOut('GETapi-user-stop-premium');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-user-stop-premium" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/user/stop-premium</code></b>
+        </p>
+                <p>
+            <label id="auth-GETapi-user-stop-premium" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="GETapi-user-stop-premium"
+                                                                data-component="header"></label>
+        </p>
+                </form>
+
+            <h2 id="user-PUTapi-user-update-preferred-lang">Update Preferred Lang</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>It may be obvous at this point, but this is the method used for updating the user's preferred language.</p>
+
+<span id="example-requests-PUTapi-user-update-preferred-lang">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request PUT \
+    "https://pasunashi-backend.herokuapp.com/api/user/update-preferred-lang" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp" \
+    --data "{
+    \"preferredLang\": \"dolore\"
+}"
+</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/user/update-preferred-lang"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+let body = {
+    "preferredLang": "dolore"
+}
+
+fetch(url, {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-PUTapi-user-update-preferred-lang">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;status&quot;: 200,
+    &quot;message&quot;: &quot;Succes!&quot;,
+    &quot;data&quot;: {}
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-PUTapi-user-update-preferred-lang" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-PUTapi-user-update-preferred-lang"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-PUTapi-user-update-preferred-lang"></code></pre>
+</span>
+<span id="execution-error-PUTapi-user-update-preferred-lang" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-PUTapi-user-update-preferred-lang"></code></pre>
+</span>
+<form id="form-PUTapi-user-update-preferred-lang" data-method="PUT"
+      data-path="api/user/update-preferred-lang"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('PUTapi-user-update-preferred-lang', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-PUTapi-user-update-preferred-lang"
+                    onclick="tryItOut('PUTapi-user-update-preferred-lang');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-PUTapi-user-update-preferred-lang"
+                    onclick="cancelTryOut('PUTapi-user-update-preferred-lang');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-PUTapi-user-update-preferred-lang" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-darkblue">PUT</small>
+            <b><code>api/user/update-preferred-lang</code></b>
+        </p>
+                <p>
+            <label id="auth-PUTapi-user-update-preferred-lang" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="PUTapi-user-update-preferred-lang"
+                                                                data-component="header"></label>
+        </p>
+                        <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <p>
+            <b><code>preferredLang</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="preferredLang"
+               data-endpoint="PUTapi-user-update-preferred-lang"
+               data-component="body" required  hidden>
+    <br>
+<p>One of these (exact) three options: &quot;en&quot;, &quot;es&quot;, &quot;jp&quot;</p>        </p>
+    
+    </form>
+
+    
+
+        
+    </div>
+    <div class="dark-box">
+                    <div class="lang-selector">
+                                    <a href="#" data-language-name="bash">bash</a>
+                                    <a href="#" data-language-name="javascript">javascript</a>
+                            </div>
+            </div>
+</div>
+<script>
+    $(function () {
+        var exampleLanguages = ["bash","javascript"];
+        setupLanguages(exampleLanguages);
+    });
+</script>
+</body>
+</html>
