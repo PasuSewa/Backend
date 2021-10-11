@@ -80,7 +80,7 @@ paths:
                 email:
                   type: string
                   description: 'Must be a valid email address. Must be at least 5 characters. Must not be greater than 190 characters.'
-                  example: akdyjvjsjzpcvsyjaesvjssxbhmfkwgugnoagndaibpyvvbrhphhqanqxyfxmsvkngtnuhkcuaahkactsqnvh
+                  example: kpejchzvyplqxgekzifwwbaltrnvgmvxtdbzpgnqlynwmldmizddedkutbimyfzojbelltpbynsdaynhecnmamfekrrgksqruqiyltlvdoyyihazjnfdsrfmazsieiunptjxghuobs
                 isSecondary:
                   type: boolean
                   description: ''
@@ -89,42 +89,6 @@ paths:
                 - email
                 - isSecondary
       security: []
-  /api/auth/renew-security-code:
-    get:
-      summary: 'Renew Security Access Code'
-      description: "This method is used to generate a new security access code for the user. This code can be used to login in the case that the user has lost access to all\n2-factor-authentication methods."
-      parameters:
-        -
-          in: header
-          name: Content-Type
-          description: ''
-          example: application/json
-          schema:
-            type: string
-        -
-          in: header
-          name: Accept
-          description: ''
-          example: application/json
-          schema:
-            type: string
-        -
-          in: header
-          name: Accept-Language
-          description: ''
-          example: 'es | en | jp'
-          schema:
-            type: string
-      responses:
-        200:
-          description: ''
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: "{\n     \"status\": 200,\n     \"message\": \"Succes!\",\n     \"data\": {\n         \"renewed_code\": \"AAAAAAAAAA\",\n     },\n}"
-      tags:
-        - Auth
   /api/auth/refresh-2fa-secret:
     get:
       summary: 'Refresh 2-Factor-Authentication Secret'
@@ -214,28 +178,64 @@ paths:
                 accessTo:
                   type: string
                   description: 'Must be either one of these exact two options: "user-data" or "credential-data".'
-                  example: quibusdam
+                  example: impedit
                 credentialId:
                   type: integer
                   description: 'Its required, only if "accessTo" is equal to "credential-data".'
-                  example: 13
+                  example: 9
                 accessingDevice:
                   type: string
                   description: 'The user agent of the navigator, or the unique ID of the device. (min: 1, max: 190 char).'
-                  example: sit
+                  example: similique
                 accessingPlatform:
                   type: string
                   description: 'Must be one of <code>mobile</code>, <code>web</code>, or <code>desktop</code> Must be at least 3 characters. Must not be greater than 7 characters.'
-                  example: ''
+                  example: bmvk
                 accessingPlattform:
                   type: string
                   description: 'Must be one of these exact three options: "web", "desktop", "mobile".'
-                  example: voluptatibus
+                  example: eos
               required:
                 - accessTo
                 - accessingDevice
                 - accessingPlatform
                 - accessingPlattform
+  /api/auth/renew-security-code:
+    get:
+      summary: 'Renew Security Access Code'
+      description: "This method is used to generate a new security access code for the user. This code can be used to login in the case that the user has lost access to all\n2-factor-authentication methods."
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept-Language
+          description: ''
+          example: 'es | en | jp'
+          schema:
+            type: string
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": 200,\n     \"message\": \"Succes!\",\n     \"data\": {\n         \"renewed_code\": \"AAAAAAAAAA\",\n     },\n}"
+      tags:
+        - Auth
   /api/companies/index:
     get:
       summary: 'Get Companies'
@@ -369,65 +369,65 @@ paths:
                 company_name:
                   type: stribg
                   description: '(min: 1, max: 190 char).'
-                  example: dolor
+                  example: fugit
                 description:
                   type: string
                   description: '(min: 0, max: 500 char).'
-                  example: dolores
+                  example: eos
                 user_name:
                   type: string
                   description: '(min: 1, max: 190 char).'
-                  example: est
+                  example: architecto
                 email:
                   type: string
                   description: '(min:5, max: 190 char).'
-                  example: dolorem
+                  example: et
                 password:
                   type: string
                   description: '(min: 5, max: 190 char).'
-                  example: asperiores
+                  example: ipsam
                 username:
                   type: string
                   description: '(min:1, max: 190 char).'
-                  example: et
+                  example: eligendi
                 phone_number:
                   type: string
                   description: '(min: 8, max 190 char).'
-                  example: omnis
+                  example: vel
                 security_question:
                   type: string
                   description: '(min: 5, max: 190 char).'
-                  example: fugiat
+                  example: ut
                 security_answer:
                   type: string
                   description: 'Is required if security_question is not null (min: 5, max: 190 char).'
-                  example: ut
+                  example: et
                 unique_code:
                   type: string
                   description: '(min: 1, max: 190 char).'
-                  example: sint
+                  example: laudantium
                 multiple_codes:
                   type: array
                   description: 'Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.'
                   example:
-                    - voluptatum
+                    - corrupti
                   items:
                     type: string
                 crypto_codes:
                   type: array
                   description: 'Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.'
                   example:
-                    - molestiae
+                    - eligendi
                   items:
                     type: string
                 accessing_device:
                   type: string
                   description: 'The user agent of the navigator, or the unique ID of the device. (min: 1, max: 190 char).'
-                  example: nam
+                  example: molestiae
                 accessing_plattform:
                   type: string
                   description: 'Must be one of these exact three options: "web", "desktop", "mobile".'
-                  example: tenetur
+                  example: neque
               required:
                 - company_name
                 - accessing_device
@@ -516,7 +516,7 @@ paths:
         in: path
         name: credential_id
         description: 'The id of the credential to delete.'
-        example: 4
+        example: 10
         required: true
         schema:
           type: integer
@@ -580,61 +580,61 @@ paths:
                 description:
                   type: string
                   description: '(min: 0, max: 500 char).'
-                  example: molestiae
+                  example: maiores
                 user_name:
                   type: string
                   description: '(min: 1, max: 190 char).'
-                  example: blanditiis
+                  example: adipisci
                 email:
                   type: string
                   description: '(min:5, max: 190 char).'
-                  example: perspiciatis
+                  example: velit
                 password:
                   type: string
                   description: '(min: 5, max: 190 char).'
-                  example: neque
+                  example: corporis
                 username:
                   type: string
                   description: '(min:1, max: 190 char).'
-                  example: quibusdam
+                  example: nesciunt
                 phone_number:
                   type: string
                   description: '(min: 8, max 190 char).'
-                  example: debitis
+                  example: nihil
                 security_question:
                   type: string
                   description: '(min: 5, max: 190 char).'
-                  example: incidunt
+                  example: perferendis
                 security_answer:
                   type: string
                   description: 'Is required if security_question is not null (min: 5, max: 190 char).'
-                  example: ratione
+                  example: dolor
                 unique_code:
                   type: string
                   description: '(min: 1, max: 190 char).'
-                  example: molestiae
+                  example: omnis
                 multiple_codes:
                   type: array
                   description: 'Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.'
                   example:
-                    - quod
+                    - odit
                   items:
                     type: string
                 crypto_codes:
                   type: array
                   description: 'Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.'
                   example:
-                    - vitae
+                    - provident
                   items:
                     type: string
                 accessing_device:
                   type: string
                   description: 'The user agent of the navigator, or the unique ID of the device. (min: 1, max: 190 char).'
-                  example: ut
+                  example: dolores
                 accessing_plattform:
                   type: string
                   description: 'Must be one of these exact three options: "web", "desktop", "mobile".'
-                  example: vel
+                  example: dicta
               required:
                 - accessing_device
                 - accessing_plattform
@@ -643,7 +643,7 @@ paths:
         in: path
         name: credential_id
         description: 'The id of the credential to update.'
-        example: 11
+        example: 20
         required: true
         schema:
           type: integer
@@ -708,7 +708,7 @@ paths:
         in: path
         name: credential_id
         description: 'The id of the credential to delete.'
-        example: 3
+        example: 16
         required: true
         schema:
           type: integer
@@ -1058,11 +1058,11 @@ paths:
                 body:
                   type: string
                   description: 'The body of the suggestion/rating (min: 5 max: 190 char)'
-                  example: velit
+                  example: voluptatibus
                 rating:
                   type: integer
                   description: 'The points given as rating (required only if "type" is false) (min: 0, max: 10)'
-                  example: 12
+                  example: 7
                 type:
                   type: boolean
                   description: 'true = this is a suggestion, while false = this is a rating'
@@ -1124,11 +1124,11 @@ paths:
                 email:
                   type: string
                   description: 'The main email of the user.'
-                  example: odit
+                  example: occaecati
                 twoFactorCode:
                   type: integer
                   description: 'Must be a 6 digits number.'
-                  example: 15
+                  example: 2
               required:
                 - email
                 - twoFactorCode
@@ -1186,15 +1186,15 @@ paths:
                 mainEmail:
                   type: string
                   description: 'The main email of the user.'
-                  example: ut
+                  example: vero
                 recoveryEmail:
                   type: string
                   description: 'Is required only if the user has sent the security code to their recovery email.'
-                  example: culpa
+                  example: explicabo
                 code:
                   type: integer
                   description: 'Must be a 6 digits number.'
-                  example: 14
+                  example: 4
               required:
                 - mainEmail
                 - code
@@ -1252,19 +1252,19 @@ paths:
                 mainEmail:
                   type: string
                   description: ''
-                  example: temporibus
+                  example: nobis
                 recoveryEmail:
                   type: string
                   description: ''
-                  example: deserunt
+                  example: porro
                 antiFishingSecret:
                   type: string
                   description: ''
-                  example: nulla
+                  example: quod
                 securityCode:
                   type: string
                   description: "All users have one 10-character recovery code for logging into ther account if they aren't able\n to use any 2-factor-authentication"
-                  example: dolor
+                  example: maiores
               required:
                 - mainEmail
                 - recoveryEmail
@@ -1409,7 +1409,7 @@ paths:
                 code:
                   type: string
                   description: 'The id of the transaction in PayPal'
-                  example: sit
+                  example: quia
               required:
                 - code
   /api/start-payment-instance:
@@ -1465,19 +1465,19 @@ paths:
                 method:
                   type: string
                   description: 'One of two options, either "PayPal" or "Crypto" (be careful, don''t forget the capital letters).'
-                  example: quaerat
+                  example: rem
                 amount:
                   type: integer
                   description: 'The amount (in USD) that the user is paying (min: 5 USD).'
-                  example: 19
+                  example: 12
                 type:
                   type: string
                   description: 'Either one of two options, "premium" if purchasing premium role, or "slots" if paying for more slots (without cap letters).'
-                  example: quaerat
+                  example: labore
                 code:
                   type: string
                   description: 'The id of the transaction in PayPal, or the code of the transaction in Coinbase.'
-                  example: explicabo
+                  example: at
               required:
                 - method
                 - amount
@@ -1551,31 +1551,31 @@ paths:
                 name:
                   type: string
                   description: 'Must be at least 5 characters. Must not be greater than 100 characters.'
-                  example: iogvgrwkofferk
+                  example: movrqehfeswiablotoylzxxfdimhzxltbrqazjwaodtrqyfusyvcqkpkaulkqqer
                 phoneNumber:
                   type: string
                   description: 'Must be at least 6 characters. Must not be greater than 20 characters.'
-                  example: vtqd
+                  example: aiyzngrjvlczfkdsv
                 mainEmail:
                   type: string
                   description: 'Must be a valid email address. Must be at least 5 characters. Must not be greater than 190 characters.'
-                  example: alemgpbjadqidrzkfxxocuntqapymzwhlzgxcjimvspneaybkbbviqb
+                  example: smwvhenaqdxxlfklgbnhwpshuwpxnfqcpknhshmrrchwuveacollpfovipotucqvnkhwvhdntwrshndyymhwgpffdmeqaetebnzrxwrqjkxsvnaihtkmynptowzihixfzscoicdxmxpxjkzslplsysmcdwcyyjleid
                 recoveryEmail:
                   type: string
                   description: 'Must be a valid email address. Must be at least 5 characters. Must not be greater than 190 characters.'
-                  example: shvohrmchbmglttubxpkawbkqiq
+                  example: lharzeakwnuiuooyptijqsxwjzlcyyivuxucarumknmvioshqsuchfmguwybmnzruzbottuuoutjvaxbzmvokmhgkmgb
                 secretAntiFishing:
                   type: string
                   description: 'Must be at least 5 characters. Must not be greater than 190 characters.'
-                  example: zfabnjbcztelmwi
+                  example: qufvzgbbtkjqmoxsbtboaoevvzlvmqphafczwhbfvpmvkmynwcgbghjzqimxieyepyptphkhwrlidqtviavalfomukgzpzbqwcbwdkagvkmlhifympfuzpjjcmoqepcqwsqqlpfcbucnatvygyjqnok
                 secretAntiFishing_confirmation:
                   type: string
                   description: 'Must be at least 5 characters. Must not be greater than 190 characters.'
-                  example: hktjanbbgeulgilgtsubfoatklftqtvbvmjzymhoesuoqoguqpvragekvwqtmpjpdswdnfdjylnbbgtqmtjewjqfszsixiuihxeanazlppyosyvqtflzpwempfsntejygykmoadeksdorfwwcvtdzhocpqmvzzxs
+                  example: wlsykfgccyowzwzsgcwrvmxrsdnhhwjccxzjhuoxuhurdryjezyoikqbqqglvltwmxxkxtadhjmmodrwlaurwqctgrgqmbeljfjcplhbdlyvpmygisuqtnhgtaoh
                 invitationCode:
                   type: string
                   description: 'Must be at least 10 characters. Must not be greater than 10 characters.'
-                  example: m
+                  example: nfrnm
               required:
                 - name
                 - phoneNumber
@@ -1652,7 +1652,7 @@ paths:
                 mainEmailCode:
                   type: integer
                   description: 'Must be a number of 6 digits.'
-                  example: 19
+                  example: 17
                 recoveryEmailCode:
                   type: integer
                   description: 'Must be a number of 6 digits.'
@@ -1660,11 +1660,11 @@ paths:
                 mainEmail:
                   type: string
                   description: 'Must be a valid email address. Must be at least 4 characters. Must not be greater than 190 characters.'
-                  example: ezbxvnydvddabxtndnvjdtuulipluoxpibmxlsoowakibmmculewzvusrcenixzgsmclrohzxys
+                  example: ypbcihrjrgayvhepnbfnqzhfehztgqyssismkyntwdsjnkjostldyeifbjvxtsthsvlwffheohhlldfkevulvcmjcmbgni
                 MainEmail:
                   type: string
                   description: 'The email must already exist on the database.'
-                  example: molestias
+                  example: error
               required:
                 - mainEmailCode
                 - recoveryEmailCode
@@ -1724,7 +1724,7 @@ paths:
                 twoFactorCode:
                   type: integer
                   description: 'Must be a 6 digits number.'
-                  example: 9
+                  example: 10
               required:
                 - twoFactorCode
   /api/user/update:
@@ -1793,23 +1793,23 @@ paths:
                 name:
                   type: string
                   description: '(min: 3, max: 190 char).'
-                  example: iure
+                  example: voluptate
                 phone_number:
                   type: string
                   description: '(min: 8, max: 16 char).'
-                  example: sint
+                  example: vel
                 email:
                   type: string
                   description: '(max: 190 char).'
-                  example: exercitationem
+                  example: doloremque
                 recovery_email:
                   type: required
                   description: '(max: 190 char).'
-                  example: sint
+                  example: unde
                 anti_fishing_secret:
                   type: required
                   description: '(min: 5, max: 190 char).'
-                  example: qui
+                  example: eveniet
               required:
                 - name
                 - phone_number
@@ -1922,7 +1922,7 @@ paths:
                 preferredLang:
                   type: string
                   description: 'One of these (exact) three options: "en", "es", "jp"'
-                  example: dolore
+                  example: commodi
               required:
                 - preferredLang
 tags:
