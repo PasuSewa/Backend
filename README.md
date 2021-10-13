@@ -45,7 +45,9 @@ For example, someone that may have registered to a site using a 2-factor-authent
 
 A credential may have 2 states, an encrypted state, and an decrypted state.
 
-Properties of an ecrypted Credential:
+<br />
+
+## Properties of an Ecrypted Credential:
 
 ```
 {
@@ -116,7 +118,7 @@ last_seen Is the last date when that credential was accessed. By default its the
 accessing_device Is the user agent, or the unique id of the device.
 accessing_platform must be given by the frontend, and it must be one of those three options.
 
-char_count This property is the length of the name that the user registered with for that credential.
+char_count This property is the length of the name that the user registered with for that credential (in the decrypted version will be "user_name").
 
 You may have noticed that some inner properties, like "email" have an opening, ending and char_count. It was made like that, in order to show the user the beggining and the end of some things, without decrypting them. for example:
 
@@ -148,7 +150,35 @@ And for the last of the Credential's properties, the security question and the s
 <br/>
 <br/>
 
-## The Authentication System
+## The properties of a Decrypted Credential
+
+```
+{
+    id: integer,
+    user_id: integer,
+    company_id: null | integer,
+    company_name: null | string,
+    description: string,
+    user_name: null | string,
+    email: undefined | string,
+    password: undefined | string,
+    username: undefined | string,
+    phone_number: undefined | string,
+    security_question: undefined | string,
+    security_answer: undefined | string,
+    unique_code: undefined | string,
+    multiple_codes: undefined | string[],
+    crypto_codes: undefined | string[],
+    last_seen: string,
+    created_at: string,
+    updated_at: string
+}
+```
+
+<br />
+<br />
+
+# The Authentication System
 
 In order for this API to register users' sessions, I decided to use JWT.
 
