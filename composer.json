@@ -9,12 +9,10 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
-        "coinbase/coinbase-commerce": "^1.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "garygreen/pretty-routes": "^1.0",
         "guzzlehttp/guzzle": "^5.0",
-        "intervention/image": "^2.7",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
         "league/flysystem-aws-s3-v3": "^1.0",

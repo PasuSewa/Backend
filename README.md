@@ -1,62 +1,207 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Index
 
-## About Laravel
+-   [Getting Started](#getting-started)
+-   [The interface of a Credential](#the-interface-of-a-credential)
+-   [Authentication System](#authentication-system)
+-   [Running the tests](#running-the-tests)
+-   [The Documentation](#the-documentation)
+-   [Dependencies](#packages-used-for-this-project)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<br/>
+<br/>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# Getting Started
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Before you can start with this project, you need to first prepare all the environment variables, you will have to create the .env file on the root directory. You can use the .env.example file found on the root directory as a reference.
 
-## Learning Laravel
+In order to install all the required dependencies, execute:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+    composer install
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Once thats done, you'll have to generate a new key. You can do it by executing:
 
-## Laravel Sponsors
+    php artisan key:generate
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+About the database, I used a MySQL database. You can run the migrations and seeders by executing:
 
-### Premium Partners
+    php artisan migrate --seed
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/)**
-- **[OP.GG](https://op.gg)**
+At last, I decided to use JWT as the authentication system for the API. Before using the API you'll have to generate a JWT secret. You can do it by executing the following:
 
-## Contributing
+    php artisan jwt:secret
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Once all of that is done, you can fully start to work with this project.
 
-## Code of Conduct
+<br/>
+<br/>
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# The Interface of a Credential
 
-## Security Vulnerabilities
+Instead of thinking of "passwords" and "usernames" I decided to try a different thing, more like "accounts" one Credential may have multiple attributes, depending on the users' need.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+For example, someone that may have registered to a site using a 2-factor-authentication app, like google Authenticator. Usually when you register using this method, the app or service gives you a recovery key. Instead of writing it on a piece of paper, you can store in PasuNashi as a unique code inside of the Credential.
 
-## License
+A credential may have 2 states, an encrypted state, and an decrypted state.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Properties of an ecrypted Credential:
+
+```
+{
+    id: integer,
+    user_id: integer,
+    company_id: null | integer,
+    company: null | {
+        id: integer,
+        name: string,
+        url_logo: string,
+        created_at: string,
+        updated-at: string,
+    },
+    company_name: null | string,
+    last_seen: string,
+    accessing_device: string,
+    accessing_platform: "web" | "desktop" | "mobile",
+    char_count: integer,
+    description: string,
+    email: null | {
+        id: integer,
+        opening: string,
+        char_count: integer,
+        ending: string,
+    },
+    password: null | {
+        id: integer,
+        char_count: integer,
+    },
+    phone_number: null | {
+        id: integer,
+        opening: string,
+        char_count: integer,
+        ending: string,
+    },
+    security_codes: null | {
+        id: integer,
+        unique_code_length: null | integer,
+        multiple_codes_length: null | integer,
+        crypto_codes_length: null | integer
+    },
+    security_question_answer: null | {
+        id: integer,
+    }
+    created_at: string,
+    updated_at: string,
+}
+```
+
+## The properties:
+
+company_id, company, company_name are realetd to the associated company. Example:
+
+```
+{
+    company_id: 1,
+    company_name: "Google",
+    company: {
+        id: 1,
+        name: "Google",
+        url_logo: "https://google.com/logo.png"
+    }
+}
+```
+
+last_seen Is the last date when that credential was accessed. By default its the creation & update dates. Example: "2021-10-23 15:53:32".
+
+accessing_device Is the user agent, or the unique id of the device.
+accessing_platform must be given by the frontend, and it must be one of those three options.
+
+char_count This property is the length of the name that the user registered with for that credential.
+
+You may have noticed that some inner properties, like "email" have an opening, ending and char_count. It was made like that, in order to show the user the beggining and the end of some things, without decrypting them. for example:
+
+"fake@email.com"
+
+```
+{
+    id: 21,
+    opening: "fa",
+    char_count: 2,
+    ending: "@email.com"
+}
+```
+
+(The char_count counts all the characters between the opening and the ending). So this email can be shown in a way like this: "fa\*\*@email.com".
+
+<br/>
+
+## The security codes
+
+The decrypted unique_code will be a string, so the unique_code_lenght is the total characters of that string.
+
+The other two codes are an array of strings. So their length represents the amount of strings in both arrays
+
+<br/>
+
+And for the last of the Credential's properties, the security question and the security answer will be two separated strings. These two don't include a char_count for each one, beacuse just the length could be a hint of what they are.
+
+<br/>
+<br/>
+
+## The Authentication System
+
+In order for this API to register users' sessions, I decided to use JWT.
+
+To access routes that require authentication, you must send the JWT Token in the header of the request like this:
+
+    "Authorization": "Bearer paste-here-your-jwt-token"
+
+(remember to keep the space after "Bearer").
+
+<br/>
+
+# Running the Tests
+
+This app counts with automated Feature Tests. For executing them, you'll first have to set up the phpunit.xml file found in the root directory. Add a connection for the database, the queue system, and etc.
+
+## Important
+
+If you're using MacOS Big Sur or superior, you may need to install PHP 8, because the default php that MacOS has is broken and doesn't recon¡gnize the tests.
+
+To execute the tests you can run either one of these commands:
+
+    php artisan test
+
+To run them one after another, or:
+
+    php artisan test --parallel
+
+To run them in parallel.
+
+You can find all the tests in ./tests/Feature
+
+(If you have any problem running the tests, you may have to create a folder inside tests, that has "Unit" as the name).
+
+<br/>
+
+# The Documentation
+
+I generated all the API endpoints documentation using the package Scribe for Laravel. You can find it [Here](https://pasunashi-backend.herokuapp.com/docs).
+
+In adition to that, if you want to know a bit more of the routes, you can see all the information for all available routes [Here](https://pasunashi-backend.herokuapp.com/routes).
+
+<br/>
+
+# Dependencies
+
+This project makes use of the following packages:
+
+-   **garygreen/pretty-routes**: **^1.0** Used to show all the information about all available routes.
+
+-   **league/flysystem-aws-s3-v3**: **^1.0** To manage the storage for the logos of the companies available in the database.
+
+-   **pragmarx/google2fa**: **^8.0** For enabling the 2FA TOTP login (The login using Google Authenticator, or any other similar app that generates unique numbers each 30 seconds). I personally don't recommend using it, but I couldn't find any other similar to use here.
+
+-   **spatie/laravel-permission**: **^4.0** To manage roles and permissions.
+
+-   **tymon/jwt-auth**: **^1.0** To register users' sessiong on the API.
