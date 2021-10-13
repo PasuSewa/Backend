@@ -349,12 +349,13 @@ class AuthController extends Controller
      */
     public function verify_2fa(Request $request)
     {
-        $data = $request->only('twoFactorCode');
+        $data = $request->only('twoFactorCode', 'isForMobile');
 
         $user = $request->user();
 
         $validation = Validator::make($data, [
-            'twoFactorCode' => ['required', 'integer', 'min:000000', 'max:999999']
+            'twoFactorCode' => ['required', 'integer', 'min:000000', 'max:999999'],
+            'isForMobile' => ['nullable', 'boolean']
         ]);
 
         if ($validation->fails()) {
@@ -368,7 +369,9 @@ class AuthController extends Controller
             //in order to give the frontend another token
             auth('api')->invalidate();
 
-            return response()->user_was_authenticated(['user' => $user], '2fa_code_is_correct', true);
+            $mobile = isset($data['isForMobile']) && $data['isForMobile'];
+
+            return response()->user_was_authenticated(['user' => $user], '2fa_code_is_correct', true, false, $mobile);
         } else {
             return (new AuthService())->validation_error($request, null, 'api_messages.error.2fa_code_invalid');
         }
@@ -388,6 +391,8 @@ class AuthController extends Controller
      * 
      * @bodyParam email string required The main email of the user.
      * @bodyParam twoFactorCode int required Must be a 6 digits number.
+     * @bodyParam isForMobile boolean If you're sending a request from a desktop client or a mobile app, you should set this to "true" to get a JWT token 
+     * that won't have any expiration date.
      * 
      * @response {
      *      "status": 200,
@@ -426,11 +431,12 @@ class AuthController extends Controller
      */
     public function login_by_g2fa(Request $request)
     {
-        $data = $request->only('email', 'twoFactorCode');
+        $data = $request->only('email', 'twoFactorCode', 'isForMobile');
 
         $validation = Validator::make($data, [
             'email' => ['required', 'email', 'min:3', 'max:190', 'exists:users,email'],
-            'twoFactorCode' => ['required', 'integer', 'min:000000', 'max:999999']
+            'twoFactorCode' => ['required', 'integer', 'min:000000', 'max:999999'],
+            'isForMobile' => ['nullable', 'boolean'],
         ]);
 
         if ($validation->fails()) {
@@ -441,8 +447,10 @@ class AuthController extends Controller
 
         $is_valid = (new AuthService())->validate_2fa_code($user->two_factor_secret, $data['twoFactorCode']);
 
+        $mobile = isset($data['isForMobile']) && $data['isForMobile'];
+
         if ($is_valid) {
-            return response()->user_was_authenticated(['user' => $user], '2fa_code_is_correct', true, true);
+            return response()->user_was_authenticated(['user' => $user], '2fa_code_is_correct', true, true, $mobile);
         } else {
             return (new AuthService())->validation_error($request, null, 'api_messages.error.2fa_code_invalid');
         }
@@ -463,6 +471,8 @@ class AuthController extends Controller
      * @bodyParam mainEmail string required The main email of the user.
      * @bodyParam recoveryEmail string Is required only if the user has sent the security code to their recovery email.
      * @bodyParam code int required Must be a 6 digits number.
+     * @bodyParam isForMobile boolean If you're sending a request from a desktop client or a mobile app, you should set this to "true" to get a JWT token 
+     * that won't have any expiration date.
      * 
      * @response {
      *      "status": 200,
@@ -501,12 +511,13 @@ class AuthController extends Controller
      */
     public function login_by_email_code(Request $request)
     {
-        $data = $request->only('mainEmail', 'recoveryEmail', 'code');
+        $data = $request->only('mainEmail', 'recoveryEmail', 'code', 'isForMobile');
 
         $validation = Validator::make($data, [
             'mainEmail' => ['required', 'email', 'min:3', 'max:190', 'exists:users,email'],
             'recoveryEmail' => ['nullable', 'email', 'min:3', 'max:190', 'exists:users,recovery_email'],
-            'code' => ['required', 'integer', 'min:000000', 'max:999999']
+            'code' => ['required', 'integer', 'min:000000', 'max:999999'],
+            'isForMobile' => ['nullable', 'boolean']
         ]);
 
         if ($validation->fails()) {
@@ -520,7 +531,10 @@ class AuthController extends Controller
         $valid_email_code = $data['code'] === Crypt::decryptString($db_code);
 
         if ($valid_email_code) {
-            return response()->user_was_authenticated(['user' => $user], '2fa_code_is_correct', true, true);
+
+            $mobile = isset($data['isForMobile']) && $data['isForMobile'];
+
+            return response()->user_was_authenticated(['user' => $user], '2fa_code_is_correct', true, true, $mobile);
         } else {
             return (new AuthService())->validation_error($request);
         }
@@ -582,7 +596,7 @@ class AuthController extends Controller
      */
     public function login_by_security_code(Request $request)
     {
-        $data = $request->only('mainEmail', 'recoveryEmail', 'antiFishingSecret', 'securityCode');
+        $data = $request->only('mainEmail', 'recoveryEmail', 'antiFishingSecret', 'securityCode', 'isForMobile');
 
         $validation = Validator::make($data, [
             'mainEmail' => ['required', 'email', 'min:3', 'max:190', 'exists:users,email'],
@@ -611,7 +625,10 @@ class AuthController extends Controller
         $security_code_is_valid = $data['securityCode'] === Crypt::decryptString($user->recovery_code);
 
         if ($second_email_is_valid && $anti_fishing_is_valid && $security_code_is_valid) {
-            return response()->user_was_authenticated(['user' => $user], '2fa_code_is_correct', true, true);
+
+            $mobile = isset($data['isForMobile']) && $data['isForMobile'];
+
+            return response()->user_was_authenticated(['user' => $user], '2fa_code_is_correct', true, true, $mobile);
         } else {
             return (new AuthService())->validation_error($request);
         }
