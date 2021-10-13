@@ -93,7 +93,7 @@ You can switch the language used with the tabs at the top right (or from the nav
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"email\": \"akdyjvjsjzpcvsyjaesvjssxbhmfkwgugnoagndaibpyvvbrhphhqanqxyfxmsvkngtnuhkcuaahkactsqnvh\",
+    \"email\": \"kpejchzvyplqxgekzifwwbaltrnvgmvxtdbzpgnqlynwmldmizddedkutbimyfzojbelltpbynsdaynhecnmamfekrrgksqruqiyltlvdoyyihazjnfdsrfmazsieiunptjxghuobs\",
     \"isSecondary\": false
 }"
 </code></pre>
@@ -109,7 +109,7 @@ const headers = {
 };
 
 let body = {
-    "email": "akdyjvjsjzpcvsyjaesvjssxbhmfkwgugnoagndaibpyvvbrhphhqanqxyfxmsvkngtnuhkcuaahkactsqnvh",
+    "email": "kpejchzvyplqxgekzifwwbaltrnvgmvxtdbzpgnqlynwmldmizddedkutbimyfzojbelltpbynsdaynhecnmamfekrrgksqruqiyltlvdoyyihazjnfdsrfmazsieiunptjxghuobs",
     "isSecondary": false
 }
 
@@ -238,105 +238,6 @@ fetch(url, {
     
     </form>
 
-            <h2 id="auth-GETapi-auth-renew-security-code">Renew Security Access Code</h2>
-
-<p>
-<small class="badge badge-darkred">requires authentication</small>
-</p>
-
-<p>This method is used to generate a new security access code for the user. This code can be used to login in the case that the user has lost access to all
-2-factor-authentication methods.</p>
-
-<span id="example-requests-GETapi-auth-renew-security-code">
-<blockquote>Example request:</blockquote>
-
-
-<pre><code class="language-bash">curl --request GET \
-    --get "https://pasunashi-backend.herokuapp.com/api/auth/renew-security-code" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json" \
-    --header "Accept-Language: es | en | jp"</code></pre>
-
-<pre><code class="language-javascript">const url = new URL(
-    "https://pasunashi-backend.herokuapp.com/api/auth/renew-security-code"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Accept-Language": "es | en | jp",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-</span>
-
-<span id="example-responses-GETapi-auth-renew-security-code">
-            <blockquote>
-            <p>Example response (200):</p>
-        </blockquote>
-                <pre>
-
-<code class="language-json">{
-     &quot;status&quot;: 200,
-     &quot;message&quot;: &quot;Succes!&quot;,
-     &quot;data&quot;: {
-         &quot;renewed_code&quot;: &quot;AAAAAAAAAA&quot;,
-     },
-}</code>
- </pre>
-    </span>
-<span id="execution-results-GETapi-auth-renew-security-code" hidden>
-    <blockquote>Received response<span
-                id="execution-response-status-GETapi-auth-renew-security-code"></span>:
-    </blockquote>
-    <pre class="json"><code id="execution-response-content-GETapi-auth-renew-security-code"></code></pre>
-</span>
-<span id="execution-error-GETapi-auth-renew-security-code" hidden>
-    <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-GETapi-auth-renew-security-code"></code></pre>
-</span>
-<form id="form-GETapi-auth-renew-security-code" data-method="GET"
-      data-path="api/auth/renew-security-code"
-      data-authed="1"
-      data-hasfiles="0"
-      data-isarraybody="0"
-      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
-      autocomplete="off"
-      onsubmit="event.preventDefault(); executeTryOut('GETapi-auth-renew-security-code', this);">
-    <h3>
-        Request&nbsp;&nbsp;&nbsp;
-                    <button type="button"
-                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-tryout-GETapi-auth-renew-security-code"
-                    onclick="tryItOut('GETapi-auth-renew-security-code');">Try it out ⚡
-            </button>
-            <button type="button"
-                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-canceltryout-GETapi-auth-renew-security-code"
-                    onclick="cancelTryOut('GETapi-auth-renew-security-code');" hidden>Cancel
-            </button>&nbsp;&nbsp;
-            <button type="submit"
-                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
-                    id="btn-executetryout-GETapi-auth-renew-security-code" hidden>Send Request 💥
-            </button>
-            </h3>
-            <p>
-            <small class="badge badge-green">GET</small>
-            <b><code>api/auth/renew-security-code</code></b>
-        </p>
-                <p>
-            <label id="auth-GETapi-auth-renew-security-code" hidden>Authorization header:
-                <b><code>Bearer </code></b><input type="text"
-                                                                name="Authorization"
-                                                                data-prefix="Bearer "
-                                                                data-endpoint="GETapi-auth-renew-security-code"
-                                                                data-component="header"></label>
-        </p>
-                </form>
-
             <h2 id="auth-GETapi-auth-refresh-2fa-secret">Refresh 2-Factor-Authentication Secret</h2>
 
 <p>
@@ -458,11 +359,11 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"accessTo\": \"quibusdam\",
-    \"credentialId\": 13,
-    \"accessingDevice\": \"sit\",
-    \"accessingPlatform\": \"\",
-    \"accessingPlattform\": \"voluptatibus\"
+    \"accessTo\": \"impedit\",
+    \"credentialId\": 9,
+    \"accessingDevice\": \"similique\",
+    \"accessingPlatform\": \"bmvk\",
+    \"accessingPlattform\": \"eos\"
 }"
 </code></pre>
 
@@ -477,11 +378,11 @@ const headers = {
 };
 
 let body = {
-    "accessTo": "quibusdam",
-    "credentialId": 13,
-    "accessingDevice": "sit",
-    "accessingPlatform": "",
-    "accessingPlattform": "voluptatibus"
+    "accessTo": "impedit",
+    "credentialId": 9,
+    "accessingDevice": "similique",
+    "accessingPlatform": "bmvk",
+    "accessingPlattform": "eos"
 }
 
 fetch(url, {
@@ -645,6 +546,105 @@ fetch(url, {
     
     </form>
 
+            <h2 id="auth-GETapi-auth-renew-security-code">Renew Security Access Code</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>This method is used to generate a new security access code for the user. This code can be used to login in the case that the user has lost access to all
+2-factor-authentication methods.</p>
+
+<span id="example-requests-GETapi-auth-renew-security-code">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request GET \
+    --get "https://pasunashi-backend.herokuapp.com/api/auth/renew-security-code" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp"</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/auth/renew-security-code"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-GETapi-auth-renew-security-code">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 200,
+     &quot;message&quot;: &quot;Succes!&quot;,
+     &quot;data&quot;: {
+         &quot;renewed_code&quot;: &quot;AAAAAAAAAA&quot;,
+     },
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-auth-renew-security-code" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-auth-renew-security-code"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-auth-renew-security-code"></code></pre>
+</span>
+<span id="execution-error-GETapi-auth-renew-security-code" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-auth-renew-security-code"></code></pre>
+</span>
+<form id="form-GETapi-auth-renew-security-code" data-method="GET"
+      data-path="api/auth/renew-security-code"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-auth-renew-security-code', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-auth-renew-security-code"
+                    onclick="tryItOut('GETapi-auth-renew-security-code');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-auth-renew-security-code"
+                    onclick="cancelTryOut('GETapi-auth-renew-security-code');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-auth-renew-security-code" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/auth/renew-security-code</code></b>
+        </p>
+                <p>
+            <label id="auth-GETapi-auth-renew-security-code" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="GETapi-auth-renew-security-code"
+                                                                data-component="header"></label>
+        </p>
+                </form>
+
         <h1 id="companies">Companies</h1>
 
     
@@ -766,24 +766,24 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"company_name\": \"dolor\",
-    \"description\": \"dolores\",
-    \"user_name\": \"est\",
-    \"email\": \"dolorem\",
-    \"password\": \"asperiores\",
-    \"username\": \"et\",
-    \"phone_number\": \"omnis\",
-    \"security_question\": \"fugiat\",
-    \"security_answer\": \"ut\",
-    \"unique_code\": \"sint\",
+    \"company_name\": \"fugit\",
+    \"description\": \"eos\",
+    \"user_name\": \"architecto\",
+    \"email\": \"et\",
+    \"password\": \"ipsam\",
+    \"username\": \"eligendi\",
+    \"phone_number\": \"vel\",
+    \"security_question\": \"ut\",
+    \"security_answer\": \"et\",
+    \"unique_code\": \"laudantium\",
     \"multiple_codes\": [
-        \"voluptatum\"
+        \"corrupti\"
     ],
     \"crypto_codes\": [
-        \"molestiae\"
+        \"eligendi\"
     ],
-    \"accessing_device\": \"nam\",
-    \"accessing_plattform\": \"tenetur\"
+    \"accessing_device\": \"molestiae\",
+    \"accessing_plattform\": \"neque\"
 }"
 </code></pre>
 
@@ -798,24 +798,24 @@ const headers = {
 };
 
 let body = {
-    "company_name": "dolor",
-    "description": "dolores",
-    "user_name": "est",
-    "email": "dolorem",
-    "password": "asperiores",
-    "username": "et",
-    "phone_number": "omnis",
-    "security_question": "fugiat",
-    "security_answer": "ut",
-    "unique_code": "sint",
+    "company_name": "fugit",
+    "description": "eos",
+    "user_name": "architecto",
+    "email": "et",
+    "password": "ipsam",
+    "username": "eligendi",
+    "phone_number": "vel",
+    "security_question": "ut",
+    "security_answer": "et",
+    "unique_code": "laudantium",
     "multiple_codes": [
-        "voluptatum"
+        "corrupti"
     ],
     "crypto_codes": [
-        "molestiae"
+        "eligendi"
     ],
-    "accessing_device": "nam",
-    "accessing_plattform": "tenetur"
+    "accessing_device": "molestiae",
+    "accessing_plattform": "neque"
 }
 
 fetch(url, {
@@ -1178,13 +1178,13 @@ fetch(url, {
 
 
 <pre><code class="language-bash">curl --request GET \
-    --get "https://pasunashi-backend.herokuapp.com/api/credential/find/4" \
+    --get "https://pasunashi-backend.herokuapp.com/api/credential/find/10" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp"</code></pre>
 
 <pre><code class="language-javascript">const url = new URL(
-    "https://pasunashi-backend.herokuapp.com/api/credential/find/4"
+    "https://pasunashi-backend.herokuapp.com/api/credential/find/10"
 );
 
 const headers = {
@@ -1317,33 +1317,33 @@ fetch(url, {
 
 
 <pre><code class="language-bash">curl --request PUT \
-    "https://pasunashi-backend.herokuapp.com/api/credential/update/11" \
+    "https://pasunashi-backend.herokuapp.com/api/credential/update/20" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"description\": \"molestiae\",
-    \"user_name\": \"blanditiis\",
-    \"email\": \"perspiciatis\",
-    \"password\": \"neque\",
-    \"username\": \"quibusdam\",
-    \"phone_number\": \"debitis\",
-    \"security_question\": \"incidunt\",
-    \"security_answer\": \"ratione\",
-    \"unique_code\": \"molestiae\",
+    \"description\": \"maiores\",
+    \"user_name\": \"adipisci\",
+    \"email\": \"velit\",
+    \"password\": \"corporis\",
+    \"username\": \"nesciunt\",
+    \"phone_number\": \"nihil\",
+    \"security_question\": \"perferendis\",
+    \"security_answer\": \"dolor\",
+    \"unique_code\": \"omnis\",
     \"multiple_codes\": [
-        \"quod\"
+        \"odit\"
     ],
     \"crypto_codes\": [
-        \"vitae\"
+        \"provident\"
     ],
-    \"accessing_device\": \"ut\",
-    \"accessing_plattform\": \"vel\"
+    \"accessing_device\": \"dolores\",
+    \"accessing_plattform\": \"dicta\"
 }"
 </code></pre>
 
 <pre><code class="language-javascript">const url = new URL(
-    "https://pasunashi-backend.herokuapp.com/api/credential/update/11"
+    "https://pasunashi-backend.herokuapp.com/api/credential/update/20"
 );
 
 const headers = {
@@ -1353,23 +1353,23 @@ const headers = {
 };
 
 let body = {
-    "description": "molestiae",
-    "user_name": "blanditiis",
-    "email": "perspiciatis",
-    "password": "neque",
-    "username": "quibusdam",
-    "phone_number": "debitis",
-    "security_question": "incidunt",
-    "security_answer": "ratione",
-    "unique_code": "molestiae",
+    "description": "maiores",
+    "user_name": "adipisci",
+    "email": "velit",
+    "password": "corporis",
+    "username": "nesciunt",
+    "phone_number": "nihil",
+    "security_question": "perferendis",
+    "security_answer": "dolor",
+    "unique_code": "omnis",
     "multiple_codes": [
-        "quod"
+        "odit"
     ],
     "crypto_codes": [
-        "vitae"
+        "provident"
     ],
-    "accessing_device": "ut",
-    "accessing_plattform": "vel"
+    "accessing_device": "dolores",
+    "accessing_plattform": "dicta"
 }
 
 fetch(url, {
@@ -1633,13 +1633,13 @@ fetch(url, {
 
 
 <pre><code class="language-bash">curl --request DELETE \
-    "https://pasunashi-backend.herokuapp.com/api/credential/delete/3" \
+    "https://pasunashi-backend.herokuapp.com/api/credential/delete/16" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp"</code></pre>
 
 <pre><code class="language-javascript">const url = new URL(
-    "https://pasunashi-backend.herokuapp.com/api/credential/delete/3"
+    "https://pasunashi-backend.herokuapp.com/api/credential/delete/16"
 );
 
 const headers = {
@@ -2088,8 +2088,8 @@ vary: Origin
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"body\": \"velit\",
-    \"rating\": 12,
+    \"body\": \"voluptatibus\",
+    \"rating\": 7,
     \"type\": true
 }"
 </code></pre>
@@ -2104,8 +2104,8 @@ const headers = {
 };
 
 let body = {
-    "body": "velit",
-    "rating": 12,
+    "body": "voluptatibus",
+    "rating": 7,
     "type": true
 }
 
@@ -2257,8 +2257,8 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"email\": \"odit\",
-    \"twoFactorCode\": 15
+    \"email\": \"occaecati\",
+    \"twoFactorCode\": 2
 }"
 </code></pre>
 
@@ -2273,8 +2273,8 @@ const headers = {
 };
 
 let body = {
-    "email": "odit",
-    "twoFactorCode": 15
+    "email": "occaecati",
+    "twoFactorCode": 2
 }
 
 fetch(url, {
@@ -2409,9 +2409,9 @@ recovery email, they won't be able to login by this method, if they're using the
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"mainEmail\": \"ut\",
-    \"recoveryEmail\": \"culpa\",
-    \"code\": 14
+    \"mainEmail\": \"vero\",
+    \"recoveryEmail\": \"explicabo\",
+    \"code\": 4
 }"
 </code></pre>
 
@@ -2426,9 +2426,9 @@ const headers = {
 };
 
 let body = {
-    "mainEmail": "ut",
-    "recoveryEmail": "culpa",
-    "code": 14
+    "mainEmail": "vero",
+    "recoveryEmail": "explicabo",
+    "code": 4
 }
 
 fetch(url, {
@@ -2570,10 +2570,10 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"mainEmail\": \"temporibus\",
-    \"recoveryEmail\": \"deserunt\",
-    \"antiFishingSecret\": \"nulla\",
-    \"securityCode\": \"dolor\"
+    \"mainEmail\": \"nobis\",
+    \"recoveryEmail\": \"porro\",
+    \"antiFishingSecret\": \"quod\",
+    \"securityCode\": \"maiores\"
 }"
 </code></pre>
 
@@ -2588,10 +2588,10 @@ const headers = {
 };
 
 let body = {
-    "mainEmail": "temporibus",
-    "recoveryEmail": "deserunt",
-    "antiFishingSecret": "nulla",
-    "securityCode": "dolor"
+    "mainEmail": "nobis",
+    "recoveryEmail": "porro",
+    "antiFishingSecret": "quod",
+    "securityCode": "maiores"
 }
 
 fetch(url, {
@@ -2844,7 +2844,7 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"code\": \"sit\"
+    \"code\": \"quia\"
 }"
 </code></pre>
 
@@ -2859,7 +2859,7 @@ const headers = {
 };
 
 let body = {
-    "code": "sit"
+    "code": "quia"
 }
 
 fetch(url, {
@@ -2980,10 +2980,10 @@ the backend will know how much the user has paid, and what did they actually pur
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"method\": \"quaerat\",
-    \"amount\": 19,
-    \"type\": \"quaerat\",
-    \"code\": \"explicabo\"
+    \"method\": \"rem\",
+    \"amount\": 12,
+    \"type\": \"labore\",
+    \"code\": \"at\"
 }"
 </code></pre>
 
@@ -2998,10 +2998,10 @@ const headers = {
 };
 
 let body = {
-    "method": "quaerat",
-    "amount": 19,
-    "type": "quaerat",
-    "code": "explicabo"
+    "method": "rem",
+    "amount": 12,
+    "type": "labore",
+    "code": "at"
 }
 
 fetch(url, {
@@ -3152,13 +3152,13 @@ to both, the main and the recovery, emails.</p>
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"name\": \"iogvgrwkofferk\",
-    \"phoneNumber\": \"vtqd\",
-    \"mainEmail\": \"alemgpbjadqidrzkfxxocuntqapymzwhlzgxcjimvspneaybkbbviqb\",
-    \"recoveryEmail\": \"shvohrmchbmglttubxpkawbkqiq\",
-    \"secretAntiFishing\": \"zfabnjbcztelmwi\",
-    \"secretAntiFishing_confirmation\": \"hktjanbbgeulgilgtsubfoatklftqtvbvmjzymhoesuoqoguqpvragekvwqtmpjpdswdnfdjylnbbgtqmtjewjqfszsixiuihxeanazlppyosyvqtflzpwempfsntejygykmoadeksdorfwwcvtdzhocpqmvzzxs\",
-    \"invitationCode\": \"m\"
+    \"name\": \"movrqehfeswiablotoylzxxfdimhzxltbrqazjwaodtrqyfusyvcqkpkaulkqqer\",
+    \"phoneNumber\": \"aiyzngrjvlczfkdsv\",
+    \"mainEmail\": \"smwvhenaqdxxlfklgbnhwpshuwpxnfqcpknhshmrrchwuveacollpfovipotucqvnkhwvhdntwrshndyymhwgpffdmeqaetebnzrxwrqjkxsvnaihtkmynptowzihixfzscoicdxmxpxjkzslplsysmcdwcyyjleid\",
+    \"recoveryEmail\": \"lharzeakwnuiuooyptijqsxwjzlcyyivuxucarumknmvioshqsuchfmguwybmnzruzbottuuoutjvaxbzmvokmhgkmgb\",
+    \"secretAntiFishing\": \"qufvzgbbtkjqmoxsbtboaoevvzlvmqphafczwhbfvpmvkmynwcgbghjzqimxieyepyptphkhwrlidqtviavalfomukgzpzbqwcbwdkagvkmlhifympfuzpjjcmoqepcqwsqqlpfcbucnatvygyjqnok\",
+    \"secretAntiFishing_confirmation\": \"wlsykfgccyowzwzsgcwrvmxrsdnhhwjccxzjhuoxuhurdryjezyoikqbqqglvltwmxxkxtadhjmmodrwlaurwqctgrgqmbeljfjcplhbdlyvpmygisuqtnhgtaoh\",
+    \"invitationCode\": \"nfrnm\"
 }"
 </code></pre>
 
@@ -3173,13 +3173,13 @@ const headers = {
 };
 
 let body = {
-    "name": "iogvgrwkofferk",
-    "phoneNumber": "vtqd",
-    "mainEmail": "alemgpbjadqidrzkfxxocuntqapymzwhlzgxcjimvspneaybkbbviqb",
-    "recoveryEmail": "shvohrmchbmglttubxpkawbkqiq",
-    "secretAntiFishing": "zfabnjbcztelmwi",
-    "secretAntiFishing_confirmation": "hktjanbbgeulgilgtsubfoatklftqtvbvmjzymhoesuoqoguqpvragekvwqtmpjpdswdnfdjylnbbgtqmtjewjqfszsixiuihxeanazlppyosyvqtflzpwempfsntejygykmoadeksdorfwwcvtdzhocpqmvzzxs",
-    "invitationCode": "m"
+    "name": "movrqehfeswiablotoylzxxfdimhzxltbrqazjwaodtrqyfusyvcqkpkaulkqqer",
+    "phoneNumber": "aiyzngrjvlczfkdsv",
+    "mainEmail": "smwvhenaqdxxlfklgbnhwpshuwpxnfqcpknhshmrrchwuveacollpfovipotucqvnkhwvhdntwrshndyymhwgpffdmeqaetebnzrxwrqjkxsvnaihtkmynptowzihixfzscoicdxmxpxjkzslplsysmcdwcyyjleid",
+    "recoveryEmail": "lharzeakwnuiuooyptijqsxwjzlcyyivuxucarumknmvioshqsuchfmguwybmnzruzbottuuoutjvaxbzmvokmhgkmgb",
+    "secretAntiFishing": "qufvzgbbtkjqmoxsbtboaoevvzlvmqphafczwhbfvpmvkmynwcgbghjzqimxieyepyptphkhwrlidqtviavalfomukgzpzbqwcbwdkagvkmlhifympfuzpjjcmoqepcqwsqqlpfcbucnatvygyjqnok",
+    "secretAntiFishing_confirmation": "wlsykfgccyowzwzsgcwrvmxrsdnhhwjccxzjhuoxuhurdryjezyoikqbqqglvltwmxxkxtadhjmmodrwlaurwqctgrgqmbeljfjcplhbdlyvpmygisuqtnhgtaoh",
+    "invitationCode": "nfrnm"
 }
 
 fetch(url, {
@@ -3346,10 +3346,10 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"mainEmailCode\": 19,
+    \"mainEmailCode\": 17,
     \"recoveryEmailCode\": 16,
-    \"mainEmail\": \"ezbxvnydvddabxtndnvjdtuulipluoxpibmxlsoowakibmmculewzvusrcenixzgsmclrohzxys\",
-    \"MainEmail\": \"molestias\"
+    \"mainEmail\": \"ypbcihrjrgayvhepnbfnqzhfehztgqyssismkyntwdsjnkjostldyeifbjvxtsthsvlwffheohhlldfkevulvcmjcmbgni\",
+    \"MainEmail\": \"error\"
 }"
 </code></pre>
 
@@ -3364,10 +3364,10 @@ const headers = {
 };
 
 let body = {
-    "mainEmailCode": 19,
+    "mainEmailCode": 17,
     "recoveryEmailCode": 16,
-    "mainEmail": "ezbxvnydvddabxtndnvjdtuulipluoxpibmxlsoowakibmmculewzvusrcenixzgsmclrohzxys",
-    "MainEmail": "molestias"
+    "mainEmail": "ypbcihrjrgayvhepnbfnqzhfehztgqyssismkyntwdsjnkjostldyeifbjvxtsthsvlwffheohhlldfkevulvcmjcmbgni",
+    "MainEmail": "error"
 }
 
 fetch(url, {
@@ -3508,7 +3508,7 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"twoFactorCode\": 9
+    \"twoFactorCode\": 10
 }"
 </code></pre>
 
@@ -3523,7 +3523,7 @@ const headers = {
 };
 
 let body = {
-    "twoFactorCode": 9
+    "twoFactorCode": 10
 }
 
 fetch(url, {
@@ -3661,11 +3661,11 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"name\": \"iure\",
-    \"phone_number\": \"sint\",
-    \"email\": \"exercitationem\",
-    \"recovery_email\": \"sint\",
-    \"anti_fishing_secret\": \"qui\"
+    \"name\": \"voluptate\",
+    \"phone_number\": \"vel\",
+    \"email\": \"doloremque\",
+    \"recovery_email\": \"unde\",
+    \"anti_fishing_secret\": \"eveniet\"
 }"
 </code></pre>
 
@@ -3680,11 +3680,11 @@ const headers = {
 };
 
 let body = {
-    "name": "iure",
-    "phone_number": "sint",
-    "email": "exercitationem",
-    "recovery_email": "sint",
-    "anti_fishing_secret": "qui"
+    "name": "voluptate",
+    "phone_number": "vel",
+    "email": "doloremque",
+    "recovery_email": "unde",
+    "anti_fishing_secret": "eveniet"
 }
 
 fetch(url, {
@@ -3936,7 +3936,7 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"preferredLang\": \"dolore\"
+    \"preferredLang\": \"commodi\"
 }"
 </code></pre>
 
@@ -3951,7 +3951,7 @@ const headers = {
 };
 
 let body = {
-    "preferredLang": "dolore"
+    "preferredLang": "commodi"
 }
 
 fetch(url, {
