@@ -80,11 +80,11 @@ paths:
                 email:
                   type: string
                   description: 'Must be a valid email address. Must be at least 5 characters. Must not be greater than 190 characters.'
-                  example: kpejchzvyplqxgekzifwwbaltrnvgmvxtdbzpgnqlynwmldmizddedkutbimyfzojbelltpbynsdaynhecnmamfekrrgksqruqiyltlvdoyyihazjnfdsrfmazsieiunptjxghuobs
+                  example: nooowfrqmfflbaepyazdgmdrzpchienvgadrxaxgeguwwjjbfhnpkmoggezbhcwfjzgl
                 isSecondary:
                   type: boolean
                   description: ''
-                  example: false
+                  example: true
               required:
                 - email
                 - isSecondary
@@ -178,23 +178,23 @@ paths:
                 accessTo:
                   type: string
                   description: 'Must be either one of these exact two options: "user-data" or "credential-data".'
-                  example: impedit
+                  example: qui
                 credentialId:
                   type: integer
                   description: 'Its required, only if "accessTo" is equal to "credential-data".'
-                  example: 9
+                  example: 4
                 accessingDevice:
                   type: string
                   description: 'The user agent of the navigator, or the unique ID of the device. (min: 1, max: 190 char).'
-                  example: similique
+                  example: consequuntur
                 accessingPlatform:
                   type: string
                   description: 'Must be one of <code>mobile</code>, <code>web</code>, or <code>desktop</code> Must be at least 3 characters. Must not be greater than 7 characters.'
-                  example: bmvk
+                  example: zsgyg
                 accessingPlattform:
                   type: string
                   description: 'Must be one of these exact three options: "web", "desktop", "mobile".'
-                  example: eos
+                  example: inventore
               required:
                 - accessTo
                 - accessingDevice
@@ -369,65 +369,65 @@ paths:
                 company_name:
                   type: stribg
                   description: '(min: 1, max: 190 char).'
-                  example: fugit
+                  example: in
                 description:
                   type: string
                   description: '(min: 0, max: 500 char).'
-                  example: eos
+                  example: vero
                 user_name:
                   type: string
                   description: '(min: 1, max: 190 char).'
-                  example: architecto
+                  example: vero
                 email:
                   type: string
                   description: '(min:5, max: 190 char).'
-                  example: et
+                  example: deleniti
                 password:
                   type: string
                   description: '(min: 5, max: 190 char).'
-                  example: ipsam
+                  example: incidunt
                 username:
                   type: string
                   description: '(min:1, max: 190 char).'
-                  example: eligendi
+                  example: provident
                 phone_number:
                   type: string
                   description: '(min: 8, max 190 char).'
-                  example: vel
+                  example: voluptatem
                 security_question:
                   type: string
                   description: '(min: 5, max: 190 char).'
-                  example: ut
+                  example: cumque
                 security_answer:
                   type: string
                   description: 'Is required if security_question is not null (min: 5, max: 190 char).'
-                  example: et
+                  example: aut
                 unique_code:
                   type: string
                   description: '(min: 1, max: 190 char).'
-                  example: laudantium
+                  example: voluptate
                 multiple_codes:
                   type: array
                   description: 'Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.'
                   example:
-                    - corrupti
+                    - laudantium
                   items:
                     type: string
                 crypto_codes:
                   type: array
                   description: 'Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.'
                   example:
-                    - eligendi
+                    - voluptas
                   items:
                     type: string
                 accessing_device:
                   type: string
                   description: 'The user agent of the navigator, or the unique ID of the device. (min: 1, max: 190 char).'
-                  example: molestiae
+                  example: eveniet
                 accessing_plattform:
                   type: string
                   description: 'Must be one of these exact three options: "web", "desktop", "mobile".'
-                  example: neque
+                  example: ea
               required:
                 - company_name
                 - accessing_device
@@ -516,7 +516,7 @@ paths:
         in: path
         name: credential_id
         description: 'The id of the credential to delete.'
-        example: 10
+        example: 11
         required: true
         schema:
           type: integer
@@ -580,61 +580,61 @@ paths:
                 description:
                   type: string
                   description: '(min: 0, max: 500 char).'
-                  example: maiores
+                  example: autem
                 user_name:
                   type: string
                   description: '(min: 1, max: 190 char).'
-                  example: adipisci
+                  example: qui
                 email:
                   type: string
                   description: '(min:5, max: 190 char).'
-                  example: velit
+                  example: voluptatem
                 password:
                   type: string
                   description: '(min: 5, max: 190 char).'
-                  example: corporis
+                  example: aut
                 username:
                   type: string
                   description: '(min:1, max: 190 char).'
-                  example: nesciunt
+                  example: quia
                 phone_number:
                   type: string
                   description: '(min: 8, max 190 char).'
-                  example: nihil
+                  example: rerum
                 security_question:
                   type: string
                   description: '(min: 5, max: 190 char).'
-                  example: perferendis
+                  example: voluptatem
                 security_answer:
                   type: string
                   description: 'Is required if security_question is not null (min: 5, max: 190 char).'
-                  example: dolor
+                  example: ut
                 unique_code:
                   type: string
                   description: '(min: 1, max: 190 char).'
-                  example: omnis
+                  example: commodi
                 multiple_codes:
                   type: array
                   description: 'Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.'
                   example:
-                    - odit
+                    - odio
                   items:
                     type: string
                 crypto_codes:
                   type: array
                   description: 'Each string in the array must be different from the rest. Also each string must contain at least 1, and at max 25 characters.'
                   example:
-                    - provident
+                    - optio
                   items:
                     type: string
                 accessing_device:
                   type: string
                   description: 'The user agent of the navigator, or the unique ID of the device. (min: 1, max: 190 char).'
-                  example: dolores
+                  example: delectus
                 accessing_plattform:
                   type: string
                   description: 'Must be one of these exact three options: "web", "desktop", "mobile".'
-                  example: dicta
+                  example: laudantium
               required:
                 - accessing_device
                 - accessing_plattform
@@ -643,7 +643,7 @@ paths:
         in: path
         name: credential_id
         description: 'The id of the credential to update.'
-        example: 20
+        example: 6
         required: true
         schema:
           type: integer
@@ -708,7 +708,7 @@ paths:
         in: path
         name: credential_id
         description: 'The id of the credential to delete.'
-        example: 16
+        example: 12
         required: true
         schema:
           type: integer
@@ -804,95 +804,95 @@ paths:
                       suggestions:
                         -
                           id: 1
-                          user_name: 'Federico Torp'
-                          body: 'Id porro excepturi hic et saepe consequuntur possimus porro cumque.'
+                          user_name: 'Dr. Prince Mayer MD'
+                          body: 'Ipsa alias et maxime similique similique rerum consequatur ex quisquam.'
                           rating: null
                           type: 1
                           is_public: 1
-                          created_at: '2021-10-10T19:17:08.000000Z'
-                          updated_at: '2021-10-10T19:17:08.000000Z'
+                          created_at: '2021-10-13T20:41:53.000000Z'
+                          updated_at: '2021-10-13T20:41:53.000000Z'
                         -
                           id: 2
-                          user_name: 'Ms. Cassandre Funk DVM'
-                          body: 'Atque aperiam laboriosam asperiores voluptatum incidunt voluptas harum ut quae.'
+                          user_name: 'Miss Tamia Nolan'
+                          body: 'Rerum sed dolorem eos placeat iste enim sit illo cumque.'
                           rating: null
                           type: 1
                           is_public: 1
-                          created_at: '2021-10-10T19:17:08.000000Z'
-                          updated_at: '2021-10-10T19:17:08.000000Z'
+                          created_at: '2021-10-13T20:41:53.000000Z'
+                          updated_at: '2021-10-13T20:41:53.000000Z'
                         -
                           id: 3
-                          user_name: 'Lilla Spinka'
-                          body: 'Quas sint deserunt dolorem molestias impedit et minima omnis iste.'
+                          user_name: 'Prof. Luis Harber Jr.'
+                          body: 'Molestiae odio amet voluptatibus omnis dolores voluptas minus numquam rerum.'
                           rating: null
                           type: 1
                           is_public: 1
-                          created_at: '2021-10-10T19:17:08.000000Z'
-                          updated_at: '2021-10-10T19:17:08.000000Z'
+                          created_at: '2021-10-13T20:41:53.000000Z'
+                          updated_at: '2021-10-13T20:41:53.000000Z'
                         -
                           id: 4
-                          user_name: 'Jordon Lebsack'
-                          body: 'Consequatur aut et aut voluptatem eaque eos sed totam commodi.'
+                          user_name: 'Gerard Dooley'
+                          body: 'Ut ratione maiores commodi expedita voluptas dolore vitae itaque dicta.'
                           rating: null
                           type: 1
                           is_public: 1
-                          created_at: '2021-10-10T19:17:08.000000Z'
-                          updated_at: '2021-10-10T19:17:08.000000Z'
+                          created_at: '2021-10-13T20:41:53.000000Z'
+                          updated_at: '2021-10-13T20:41:53.000000Z'
                         -
                           id: 5
-                          user_name: 'Aliyah Cronin'
-                          body: 'Ab sit sunt sit rerum mollitia ullam architecto quis optio.'
+                          user_name: 'Mr. Brendan Crona III'
+                          body: 'Veritatis sit voluptates ipsam dolores et rerum aut assumenda assumenda.'
                           rating: null
                           type: 1
                           is_public: 1
-                          created_at: '2021-10-10T19:17:08.000000Z'
-                          updated_at: '2021-10-10T19:17:08.000000Z'
+                          created_at: '2021-10-13T20:41:53.000000Z'
+                          updated_at: '2021-10-13T20:41:53.000000Z'
                       ratings:
                         -
                           id: 6
-                          user_name: 'Prof. Jackeline Wisoky'
-                          body: 'Voluptatem veritatis nam odit incidunt quisquam ab ut alias aut.'
-                          rating: 2
+                          user_name: 'Dr. Dejon Feil'
+                          body: 'Quibusdam consectetur quis dolor alias eius officiis nihil asperiores et.'
+                          rating: 4
                           type: 0
                           is_public: 1
-                          created_at: '2021-10-10T19:17:08.000000Z'
-                          updated_at: '2021-10-10T19:17:08.000000Z'
+                          created_at: '2021-10-13T20:41:53.000000Z'
+                          updated_at: '2021-10-13T20:41:53.000000Z'
                         -
                           id: 7
-                          user_name: 'Bette Paucek'
-                          body: 'Neque aspernatur qui est nesciunt sequi quidem iure et perferendis.'
-                          rating: 8
+                          user_name: 'Dorthy Goyette'
+                          body: 'Nobis voluptatum architecto est illum voluptate nemo sed aliquid commodi.'
+                          rating: 3
                           type: 0
                           is_public: 1
-                          created_at: '2021-10-10T19:17:08.000000Z'
-                          updated_at: '2021-10-10T19:17:08.000000Z'
+                          created_at: '2021-10-13T20:41:53.000000Z'
+                          updated_at: '2021-10-13T20:41:53.000000Z'
                         -
                           id: 8
-                          user_name: 'Hallie Swift'
-                          body: 'Ad maxime eveniet et sit consequatur nihil ratione commodi corporis.'
-                          rating: 8
-                          type: 0
-                          is_public: 1
-                          created_at: '2021-10-10T19:17:09.000000Z'
-                          updated_at: '2021-10-10T19:17:09.000000Z'
-                        -
-                          id: 9
-                          user_name: 'Ms. Natalie Turcotte Sr.'
-                          body: 'Itaque saepe amet maiores eum hic excepturi iure quaerat placeat.'
+                          user_name: 'Dennis Kris'
+                          body: 'Et est asperiores quod voluptas animi fuga distinctio nisi a.'
                           rating: 5
                           type: 0
                           is_public: 1
-                          created_at: '2021-10-10T19:17:09.000000Z'
-                          updated_at: '2021-10-10T19:17:09.000000Z'
+                          created_at: '2021-10-13T20:41:53.000000Z'
+                          updated_at: '2021-10-13T20:41:53.000000Z'
                         -
-                          id: 10
-                          user_name: 'Eliza Moore'
-                          body: 'Nobis dolor ducimus laborum qui facere ipsum totam eos possimus.'
-                          rating: 9
+                          id: 9
+                          user_name: 'Marisa Moore MD'
+                          body: 'Voluptas qui non non sit sint dolorem sit corrupti molestias.'
+                          rating: 8
                           type: 0
                           is_public: 1
-                          created_at: '2021-10-10T19:17:09.000000Z'
-                          updated_at: '2021-10-10T19:17:09.000000Z'
+                          created_at: '2021-10-13T20:41:53.000000Z'
+                          updated_at: '2021-10-13T20:41:53.000000Z'
+                        -
+                          id: 10
+                          user_name: 'Prof. Pietro Hayes'
+                          body: 'Adipisci iure sed magni quo excepturi cumque earum sit cum.'
+                          rating: 8
+                          type: 0
+                          is_public: 1
+                          created_at: '2021-10-13T20:41:53.000000Z'
+                          updated_at: '2021-10-13T20:41:53.000000Z'
                 properties:
                   status:
                     type: integer
@@ -907,95 +907,95 @@ paths:
                         suggestions:
                           -
                             id: 1
-                            user_name: 'Federico Torp'
-                            body: 'Id porro excepturi hic et saepe consequuntur possimus porro cumque.'
+                            user_name: 'Dr. Prince Mayer MD'
+                            body: 'Ipsa alias et maxime similique similique rerum consequatur ex quisquam.'
                             rating: null
                             type: 1
                             is_public: 1
-                            created_at: '2021-10-10T19:17:08.000000Z'
-                            updated_at: '2021-10-10T19:17:08.000000Z'
+                            created_at: '2021-10-13T20:41:53.000000Z'
+                            updated_at: '2021-10-13T20:41:53.000000Z'
                           -
                             id: 2
-                            user_name: 'Ms. Cassandre Funk DVM'
-                            body: 'Atque aperiam laboriosam asperiores voluptatum incidunt voluptas harum ut quae.'
+                            user_name: 'Miss Tamia Nolan'
+                            body: 'Rerum sed dolorem eos placeat iste enim sit illo cumque.'
                             rating: null
                             type: 1
                             is_public: 1
-                            created_at: '2021-10-10T19:17:08.000000Z'
-                            updated_at: '2021-10-10T19:17:08.000000Z'
+                            created_at: '2021-10-13T20:41:53.000000Z'
+                            updated_at: '2021-10-13T20:41:53.000000Z'
                           -
                             id: 3
-                            user_name: 'Lilla Spinka'
-                            body: 'Quas sint deserunt dolorem molestias impedit et minima omnis iste.'
+                            user_name: 'Prof. Luis Harber Jr.'
+                            body: 'Molestiae odio amet voluptatibus omnis dolores voluptas minus numquam rerum.'
                             rating: null
                             type: 1
                             is_public: 1
-                            created_at: '2021-10-10T19:17:08.000000Z'
-                            updated_at: '2021-10-10T19:17:08.000000Z'
+                            created_at: '2021-10-13T20:41:53.000000Z'
+                            updated_at: '2021-10-13T20:41:53.000000Z'
                           -
                             id: 4
-                            user_name: 'Jordon Lebsack'
-                            body: 'Consequatur aut et aut voluptatem eaque eos sed totam commodi.'
+                            user_name: 'Gerard Dooley'
+                            body: 'Ut ratione maiores commodi expedita voluptas dolore vitae itaque dicta.'
                             rating: null
                             type: 1
                             is_public: 1
-                            created_at: '2021-10-10T19:17:08.000000Z'
-                            updated_at: '2021-10-10T19:17:08.000000Z'
+                            created_at: '2021-10-13T20:41:53.000000Z'
+                            updated_at: '2021-10-13T20:41:53.000000Z'
                           -
                             id: 5
-                            user_name: 'Aliyah Cronin'
-                            body: 'Ab sit sunt sit rerum mollitia ullam architecto quis optio.'
+                            user_name: 'Mr. Brendan Crona III'
+                            body: 'Veritatis sit voluptates ipsam dolores et rerum aut assumenda assumenda.'
                             rating: null
                             type: 1
                             is_public: 1
-                            created_at: '2021-10-10T19:17:08.000000Z'
-                            updated_at: '2021-10-10T19:17:08.000000Z'
+                            created_at: '2021-10-13T20:41:53.000000Z'
+                            updated_at: '2021-10-13T20:41:53.000000Z'
                         ratings:
                           -
                             id: 6
-                            user_name: 'Prof. Jackeline Wisoky'
-                            body: 'Voluptatem veritatis nam odit incidunt quisquam ab ut alias aut.'
-                            rating: 2
+                            user_name: 'Dr. Dejon Feil'
+                            body: 'Quibusdam consectetur quis dolor alias eius officiis nihil asperiores et.'
+                            rating: 4
                             type: 0
                             is_public: 1
-                            created_at: '2021-10-10T19:17:08.000000Z'
-                            updated_at: '2021-10-10T19:17:08.000000Z'
+                            created_at: '2021-10-13T20:41:53.000000Z'
+                            updated_at: '2021-10-13T20:41:53.000000Z'
                           -
                             id: 7
-                            user_name: 'Bette Paucek'
-                            body: 'Neque aspernatur qui est nesciunt sequi quidem iure et perferendis.'
-                            rating: 8
+                            user_name: 'Dorthy Goyette'
+                            body: 'Nobis voluptatum architecto est illum voluptate nemo sed aliquid commodi.'
+                            rating: 3
                             type: 0
                             is_public: 1
-                            created_at: '2021-10-10T19:17:08.000000Z'
-                            updated_at: '2021-10-10T19:17:08.000000Z'
+                            created_at: '2021-10-13T20:41:53.000000Z'
+                            updated_at: '2021-10-13T20:41:53.000000Z'
                           -
                             id: 8
-                            user_name: 'Hallie Swift'
-                            body: 'Ad maxime eveniet et sit consequatur nihil ratione commodi corporis.'
-                            rating: 8
-                            type: 0
-                            is_public: 1
-                            created_at: '2021-10-10T19:17:09.000000Z'
-                            updated_at: '2021-10-10T19:17:09.000000Z'
-                          -
-                            id: 9
-                            user_name: 'Ms. Natalie Turcotte Sr.'
-                            body: 'Itaque saepe amet maiores eum hic excepturi iure quaerat placeat.'
+                            user_name: 'Dennis Kris'
+                            body: 'Et est asperiores quod voluptas animi fuga distinctio nisi a.'
                             rating: 5
                             type: 0
                             is_public: 1
-                            created_at: '2021-10-10T19:17:09.000000Z'
-                            updated_at: '2021-10-10T19:17:09.000000Z'
+                            created_at: '2021-10-13T20:41:53.000000Z'
+                            updated_at: '2021-10-13T20:41:53.000000Z'
                           -
-                            id: 10
-                            user_name: 'Eliza Moore'
-                            body: 'Nobis dolor ducimus laborum qui facere ipsum totam eos possimus.'
-                            rating: 9
+                            id: 9
+                            user_name: 'Marisa Moore MD'
+                            body: 'Voluptas qui non non sit sint dolorem sit corrupti molestias.'
+                            rating: 8
                             type: 0
                             is_public: 1
-                            created_at: '2021-10-10T19:17:09.000000Z'
-                            updated_at: '2021-10-10T19:17:09.000000Z'
+                            created_at: '2021-10-13T20:41:53.000000Z'
+                            updated_at: '2021-10-13T20:41:53.000000Z'
+                          -
+                            id: 10
+                            user_name: 'Prof. Pietro Hayes'
+                            body: 'Adipisci iure sed magni quo excepturi cumque earum sit cum.'
+                            rating: 8
+                            type: 0
+                            is_public: 1
+                            created_at: '2021-10-13T20:41:53.000000Z'
+                            updated_at: '2021-10-13T20:41:53.000000Z'
       tags:
         - Feedback
       security: []
@@ -1058,15 +1058,15 @@ paths:
                 body:
                   type: string
                   description: 'The body of the suggestion/rating (min: 5 max: 190 char)'
-                  example: voluptatibus
+                  example: optio
                 rating:
                   type: integer
                   description: 'The points given as rating (required only if "type" is false) (min: 0, max: 10)'
-                  example: 7
+                  example: 20
                 type:
                   type: boolean
                   description: 'true = this is a suggestion, while false = this is a rating'
-                  example: true
+                  example: false
               required:
                 - body
                 - rating
@@ -1124,11 +1124,15 @@ paths:
                 email:
                   type: string
                   description: 'The main email of the user.'
-                  example: occaecati
+                  example: praesentium
                 twoFactorCode:
                   type: integer
                   description: 'Must be a 6 digits number.'
-                  example: 2
+                  example: 11
+                isForMobile:
+                  type: boolean
+                  description: "If you're sending a request from a desktop client or a mobile app, you should set this to \"true\" to get a JWT token\nthat won't have any expiration date."
+                  example: true
               required:
                 - email
                 - twoFactorCode
@@ -1186,15 +1190,19 @@ paths:
                 mainEmail:
                   type: string
                   description: 'The main email of the user.'
-                  example: vero
+                  example: illo
                 recoveryEmail:
                   type: string
                   description: 'Is required only if the user has sent the security code to their recovery email.'
-                  example: explicabo
+                  example: cumque
                 code:
                   type: integer
                   description: 'Must be a 6 digits number.'
                   example: 4
+                isForMobile:
+                  type: boolean
+                  description: "If you're sending a request from a desktop client or a mobile app, you should set this to \"true\" to get a JWT token\nthat won't have any expiration date."
+                  example: true
               required:
                 - mainEmail
                 - code
@@ -1252,19 +1260,19 @@ paths:
                 mainEmail:
                   type: string
                   description: ''
-                  example: nobis
+                  example: libero
                 recoveryEmail:
                   type: string
                   description: ''
-                  example: porro
+                  example: ea
                 antiFishingSecret:
                   type: string
                   description: ''
-                  example: quod
+                  example: ut
                 securityCode:
                   type: string
                   description: "All users have one 10-character recovery code for logging into ther account if they aren't able\n to use any 2-factor-authentication"
-                  example: maiores
+                  example: ea
               required:
                 - mainEmail
                 - recoveryEmail
@@ -1409,7 +1417,7 @@ paths:
                 code:
                   type: string
                   description: 'The id of the transaction in PayPal'
-                  example: quia
+                  example: voluptas
               required:
                 - code
   /api/start-payment-instance:
@@ -1465,19 +1473,19 @@ paths:
                 method:
                   type: string
                   description: 'One of two options, either "PayPal" or "Crypto" (be careful, don''t forget the capital letters).'
-                  example: rem
+                  example: reiciendis
                 amount:
                   type: integer
                   description: 'The amount (in USD) that the user is paying (min: 5 USD).'
-                  example: 12
+                  example: 18
                 type:
                   type: string
                   description: 'Either one of two options, "premium" if purchasing premium role, or "slots" if paying for more slots (without cap letters).'
-                  example: labore
+                  example: occaecati
                 code:
                   type: string
                   description: 'The id of the transaction in PayPal, or the code of the transaction in Coinbase.'
-                  example: at
+                  example: ex
               required:
                 - method
                 - amount
@@ -1551,31 +1559,31 @@ paths:
                 name:
                   type: string
                   description: 'Must be at least 5 characters. Must not be greater than 100 characters.'
-                  example: movrqehfeswiablotoylzxxfdimhzxltbrqazjwaodtrqyfusyvcqkpkaulkqqer
+                  example: xxdxtyespboxyiwcqwqzzjkoqaybeocnscphdkcvlgrjhohfejlnfylrrwuqnowinczcrgydoszebldyaoluzdgllbmzjbsjzcm
                 phoneNumber:
                   type: string
                   description: 'Must be at least 6 characters. Must not be greater than 20 characters.'
-                  example: aiyzngrjvlczfkdsv
+                  example: xpvqoxzzi
                 mainEmail:
                   type: string
                   description: 'Must be a valid email address. Must be at least 5 characters. Must not be greater than 190 characters.'
-                  example: smwvhenaqdxxlfklgbnhwpshuwpxnfqcpknhshmrrchwuveacollpfovipotucqvnkhwvhdntwrshndyymhwgpffdmeqaetebnzrxwrqjkxsvnaihtkmynptowzihixfzscoicdxmxpxjkzslplsysmcdwcyyjleid
+                  example: isrwfbzuzugtbdiakickrydsqfbajnjnhhmfryyywcgaftijhkabspmelgdhgahwvtjsbgxtupcumgwpixjolmgfwnebgqzvwkyetfsabfrhkieyafpqyoemyzxzkcyw
                 recoveryEmail:
                   type: string
                   description: 'Must be a valid email address. Must be at least 5 characters. Must not be greater than 190 characters.'
-                  example: lharzeakwnuiuooyptijqsxwjzlcyyivuxucarumknmvioshqsuchfmguwybmnzruzbottuuoutjvaxbzmvokmhgkmgb
+                  example: urbbdefeutyfiqdxtpdjxstyskqnjbeajwlqjnchftjcgggoey
                 secretAntiFishing:
                   type: string
                   description: 'Must be at least 5 characters. Must not be greater than 190 characters.'
-                  example: qufvzgbbtkjqmoxsbtboaoevvzlvmqphafczwhbfvpmvkmynwcgbghjzqimxieyepyptphkhwrlidqtviavalfomukgzpzbqwcbwdkagvkmlhifympfuzpjjcmoqepcqwsqqlpfcbucnatvygyjqnok
+                  example: xjwjmjahpvawmwfkhedxhjpzkezzqmeqbgctznzshyowzxdyovmffwtcwicokbxczozxhzlpeevoaochniyqzaazxfoonuqcsxdtaffbwykgngoepimtipronaoizqpesnlxmdhlsxqoqetddrelkpgcpakicjumjcyj
                 secretAntiFishing_confirmation:
                   type: string
                   description: 'Must be at least 5 characters. Must not be greater than 190 characters.'
-                  example: wlsykfgccyowzwzsgcwrvmxrsdnhhwjccxzjhuoxuhurdryjezyoikqbqqglvltwmxxkxtadhjmmodrwlaurwqctgrgqmbeljfjcplhbdlyvpmygisuqtnhgtaoh
+                  example: slqxqgniewclfuofultsavowxxkpjwxynhqnggscynofglnuaplxywsyvzfnclbzgyldkhmvcooqvzdibvsecbdejabxfca
                 invitationCode:
                   type: string
                   description: 'Must be at least 10 characters. Must not be greater than 10 characters.'
-                  example: nfrnm
+                  example: ''
               required:
                 - name
                 - phoneNumber
@@ -1652,19 +1660,19 @@ paths:
                 mainEmailCode:
                   type: integer
                   description: 'Must be a number of 6 digits.'
-                  example: 17
+                  example: 19
                 recoveryEmailCode:
                   type: integer
                   description: 'Must be a number of 6 digits.'
-                  example: 16
+                  example: 6
                 mainEmail:
                   type: string
                   description: 'Must be a valid email address. Must be at least 4 characters. Must not be greater than 190 characters.'
-                  example: ypbcihrjrgayvhepnbfnqzhfehztgqyssismkyntwdsjnkjostldyeifbjvxtsthsvlwffheohhlldfkevulvcmjcmbgni
+                  example: mhuapwnztaiiqpbifegkxmnavazcwprllnoqnyjlptxyzbfdutnpxdmsdhjctppirmxrhfmlyvqdssvmpshbhdoqjszqyfobofwigoxlxvcjnjnjxizwffrzoasqgceegadccasusswm
                 MainEmail:
                   type: string
                   description: 'The email must already exist on the database.'
-                  example: error
+                  example: vitae
               required:
                 - mainEmailCode
                 - recoveryEmailCode
@@ -1724,7 +1732,11 @@ paths:
                 twoFactorCode:
                   type: integer
                   description: 'Must be a 6 digits number.'
-                  example: 10
+                  example: 2
+                isForMobile:
+                  type: boolean
+                  description: ''
+                  example: false
               required:
                 - twoFactorCode
   /api/user/update:
@@ -1793,23 +1805,23 @@ paths:
                 name:
                   type: string
                   description: '(min: 3, max: 190 char).'
-                  example: voluptate
+                  example: reprehenderit
                 phone_number:
                   type: string
                   description: '(min: 8, max: 16 char).'
-                  example: vel
+                  example: est
                 email:
                   type: string
                   description: '(max: 190 char).'
-                  example: doloremque
+                  example: qui
                 recovery_email:
                   type: required
                   description: '(max: 190 char).'
-                  example: unde
+                  example: dolorum
                 anti_fishing_secret:
                   type: required
                   description: '(min: 5, max: 190 char).'
-                  example: eveniet
+                  example: eum
               required:
                 - name
                 - phone_number
@@ -1922,7 +1934,7 @@ paths:
                 preferredLang:
                   type: string
                   description: 'One of these (exact) three options: "en", "es", "jp"'
-                  example: commodi
+                  example: voluptatum
               required:
                 - preferredLang
 tags:

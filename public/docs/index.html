@@ -19,7 +19,7 @@
 
     <script src="//cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
     <script>
-        var baseUrl = "http://localhost:8000";
+        var baseUrl = "http://localhost";
         var useCsrf = Boolean();
         var csrfUrl = "/sanctum/csrf-cookie";
     </script>
@@ -53,7 +53,7 @@
                             <li><a href="http://github.com/knuckleswtf/scribe">Documentation powered by Scribe ✍</a></li>
                     </ul>
             <ul class="toc-footer" id="last-updated">
-            <li>Last updated: October 11 2021</li>
+            <li>Last updated: October 13 2021</li>
         </ul>
 </div>
 <div class="page-wrapper">
@@ -93,8 +93,8 @@ You can switch the language used with the tabs at the top right (or from the nav
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"email\": \"kpejchzvyplqxgekzifwwbaltrnvgmvxtdbzpgnqlynwmldmizddedkutbimyfzojbelltpbynsdaynhecnmamfekrrgksqruqiyltlvdoyyihazjnfdsrfmazsieiunptjxghuobs\",
-    \"isSecondary\": false
+    \"email\": \"nooowfrqmfflbaepyazdgmdrzpchienvgadrxaxgeguwwjjbfhnpkmoggezbhcwfjzgl\",
+    \"isSecondary\": true
 }"
 </code></pre>
 
@@ -109,8 +109,8 @@ const headers = {
 };
 
 let body = {
-    "email": "kpejchzvyplqxgekzifwwbaltrnvgmvxtdbzpgnqlynwmldmizddedkutbimyfzojbelltpbynsdaynhecnmamfekrrgksqruqiyltlvdoyyihazjnfdsrfmazsieiunptjxghuobs",
-    "isSecondary": false
+    "email": "nooowfrqmfflbaepyazdgmdrzpchienvgadrxaxgeguwwjjbfhnpkmoggezbhcwfjzgl",
+    "isSecondary": true
 }
 
 fetch(url, {
@@ -359,11 +359,11 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"accessTo\": \"impedit\",
-    \"credentialId\": 9,
-    \"accessingDevice\": \"similique\",
-    \"accessingPlatform\": \"bmvk\",
-    \"accessingPlattform\": \"eos\"
+    \"accessTo\": \"qui\",
+    \"credentialId\": 4,
+    \"accessingDevice\": \"consequuntur\",
+    \"accessingPlatform\": \"zsgyg\",
+    \"accessingPlattform\": \"inventore\"
 }"
 </code></pre>
 
@@ -378,11 +378,11 @@ const headers = {
 };
 
 let body = {
-    "accessTo": "impedit",
-    "credentialId": 9,
-    "accessingDevice": "similique",
-    "accessingPlatform": "bmvk",
-    "accessingPlattform": "eos"
+    "accessTo": "qui",
+    "credentialId": 4,
+    "accessingDevice": "consequuntur",
+    "accessingPlatform": "zsgyg",
+    "accessingPlattform": "inventore"
 }
 
 fetch(url, {
@@ -766,24 +766,24 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"company_name\": \"fugit\",
-    \"description\": \"eos\",
-    \"user_name\": \"architecto\",
-    \"email\": \"et\",
-    \"password\": \"ipsam\",
-    \"username\": \"eligendi\",
-    \"phone_number\": \"vel\",
-    \"security_question\": \"ut\",
-    \"security_answer\": \"et\",
-    \"unique_code\": \"laudantium\",
+    \"company_name\": \"in\",
+    \"description\": \"vero\",
+    \"user_name\": \"vero\",
+    \"email\": \"deleniti\",
+    \"password\": \"incidunt\",
+    \"username\": \"provident\",
+    \"phone_number\": \"voluptatem\",
+    \"security_question\": \"cumque\",
+    \"security_answer\": \"aut\",
+    \"unique_code\": \"voluptate\",
     \"multiple_codes\": [
-        \"corrupti\"
+        \"laudantium\"
     ],
     \"crypto_codes\": [
-        \"eligendi\"
+        \"voluptas\"
     ],
-    \"accessing_device\": \"molestiae\",
-    \"accessing_plattform\": \"neque\"
+    \"accessing_device\": \"eveniet\",
+    \"accessing_plattform\": \"ea\"
 }"
 </code></pre>
 
@@ -798,24 +798,24 @@ const headers = {
 };
 
 let body = {
-    "company_name": "fugit",
-    "description": "eos",
-    "user_name": "architecto",
-    "email": "et",
-    "password": "ipsam",
-    "username": "eligendi",
-    "phone_number": "vel",
-    "security_question": "ut",
-    "security_answer": "et",
-    "unique_code": "laudantium",
+    "company_name": "in",
+    "description": "vero",
+    "user_name": "vero",
+    "email": "deleniti",
+    "password": "incidunt",
+    "username": "provident",
+    "phone_number": "voluptatem",
+    "security_question": "cumque",
+    "security_answer": "aut",
+    "unique_code": "voluptate",
     "multiple_codes": [
-        "corrupti"
+        "laudantium"
     ],
     "crypto_codes": [
-        "eligendi"
+        "voluptas"
     ],
-    "accessing_device": "molestiae",
-    "accessing_plattform": "neque"
+    "accessing_device": "eveniet",
+    "accessing_plattform": "ea"
 }
 
 fetch(url, {
@@ -1178,13 +1178,13 @@ fetch(url, {
 
 
 <pre><code class="language-bash">curl --request GET \
-    --get "https://pasunashi-backend.herokuapp.com/api/credential/find/10" \
+    --get "https://pasunashi-backend.herokuapp.com/api/credential/find/11" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp"</code></pre>
 
 <pre><code class="language-javascript">const url = new URL(
-    "https://pasunashi-backend.herokuapp.com/api/credential/find/10"
+    "https://pasunashi-backend.herokuapp.com/api/credential/find/11"
 );
 
 const headers = {
@@ -1317,33 +1317,33 @@ fetch(url, {
 
 
 <pre><code class="language-bash">curl --request PUT \
-    "https://pasunashi-backend.herokuapp.com/api/credential/update/20" \
+    "https://pasunashi-backend.herokuapp.com/api/credential/update/6" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"description\": \"maiores\",
-    \"user_name\": \"adipisci\",
-    \"email\": \"velit\",
-    \"password\": \"corporis\",
-    \"username\": \"nesciunt\",
-    \"phone_number\": \"nihil\",
-    \"security_question\": \"perferendis\",
-    \"security_answer\": \"dolor\",
-    \"unique_code\": \"omnis\",
+    \"description\": \"autem\",
+    \"user_name\": \"qui\",
+    \"email\": \"voluptatem\",
+    \"password\": \"aut\",
+    \"username\": \"quia\",
+    \"phone_number\": \"rerum\",
+    \"security_question\": \"voluptatem\",
+    \"security_answer\": \"ut\",
+    \"unique_code\": \"commodi\",
     \"multiple_codes\": [
-        \"odit\"
+        \"odio\"
     ],
     \"crypto_codes\": [
-        \"provident\"
+        \"optio\"
     ],
-    \"accessing_device\": \"dolores\",
-    \"accessing_plattform\": \"dicta\"
+    \"accessing_device\": \"delectus\",
+    \"accessing_plattform\": \"laudantium\"
 }"
 </code></pre>
 
 <pre><code class="language-javascript">const url = new URL(
-    "https://pasunashi-backend.herokuapp.com/api/credential/update/20"
+    "https://pasunashi-backend.herokuapp.com/api/credential/update/6"
 );
 
 const headers = {
@@ -1353,23 +1353,23 @@ const headers = {
 };
 
 let body = {
-    "description": "maiores",
-    "user_name": "adipisci",
-    "email": "velit",
-    "password": "corporis",
-    "username": "nesciunt",
-    "phone_number": "nihil",
-    "security_question": "perferendis",
-    "security_answer": "dolor",
-    "unique_code": "omnis",
+    "description": "autem",
+    "user_name": "qui",
+    "email": "voluptatem",
+    "password": "aut",
+    "username": "quia",
+    "phone_number": "rerum",
+    "security_question": "voluptatem",
+    "security_answer": "ut",
+    "unique_code": "commodi",
     "multiple_codes": [
-        "odit"
+        "odio"
     ],
     "crypto_codes": [
-        "provident"
+        "optio"
     ],
-    "accessing_device": "dolores",
-    "accessing_plattform": "dicta"
+    "accessing_device": "delectus",
+    "accessing_plattform": "laudantium"
 }
 
 fetch(url, {
@@ -1633,13 +1633,13 @@ fetch(url, {
 
 
 <pre><code class="language-bash">curl --request DELETE \
-    "https://pasunashi-backend.herokuapp.com/api/credential/delete/16" \
+    "https://pasunashi-backend.herokuapp.com/api/credential/delete/12" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp"</code></pre>
 
 <pre><code class="language-javascript">const url = new URL(
-    "https://pasunashi-backend.herokuapp.com/api/credential/delete/16"
+    "https://pasunashi-backend.herokuapp.com/api/credential/delete/12"
 );
 
 const headers = {
@@ -1923,105 +1923,105 @@ vary: Origin
             &quot;suggestions&quot;: [
                 {
                     &quot;id&quot;: 1,
-                    &quot;user_name&quot;: &quot;Federico Torp&quot;,
-                    &quot;body&quot;: &quot;Id porro excepturi hic et saepe consequuntur possimus porro cumque.&quot;,
+                    &quot;user_name&quot;: &quot;Dr. Prince Mayer MD&quot;,
+                    &quot;body&quot;: &quot;Ipsa alias et maxime similique similique rerum consequatur ex quisquam.&quot;,
                     &quot;rating&quot;: null,
                     &quot;type&quot;: 1,
                     &quot;is_public&quot;: 1,
-                    &quot;created_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;
+                    &quot;created_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;
                 },
                 {
                     &quot;id&quot;: 2,
-                    &quot;user_name&quot;: &quot;Ms. Cassandre Funk DVM&quot;,
-                    &quot;body&quot;: &quot;Atque aperiam laboriosam asperiores voluptatum incidunt voluptas harum ut quae.&quot;,
+                    &quot;user_name&quot;: &quot;Miss Tamia Nolan&quot;,
+                    &quot;body&quot;: &quot;Rerum sed dolorem eos placeat iste enim sit illo cumque.&quot;,
                     &quot;rating&quot;: null,
                     &quot;type&quot;: 1,
                     &quot;is_public&quot;: 1,
-                    &quot;created_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;
+                    &quot;created_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;
                 },
                 {
                     &quot;id&quot;: 3,
-                    &quot;user_name&quot;: &quot;Lilla Spinka&quot;,
-                    &quot;body&quot;: &quot;Quas sint deserunt dolorem molestias impedit et minima omnis iste.&quot;,
+                    &quot;user_name&quot;: &quot;Prof. Luis Harber Jr.&quot;,
+                    &quot;body&quot;: &quot;Molestiae odio amet voluptatibus omnis dolores voluptas minus numquam rerum.&quot;,
                     &quot;rating&quot;: null,
                     &quot;type&quot;: 1,
                     &quot;is_public&quot;: 1,
-                    &quot;created_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;
+                    &quot;created_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;
                 },
                 {
                     &quot;id&quot;: 4,
-                    &quot;user_name&quot;: &quot;Jordon Lebsack&quot;,
-                    &quot;body&quot;: &quot;Consequatur aut et aut voluptatem eaque eos sed totam commodi.&quot;,
+                    &quot;user_name&quot;: &quot;Gerard Dooley&quot;,
+                    &quot;body&quot;: &quot;Ut ratione maiores commodi expedita voluptas dolore vitae itaque dicta.&quot;,
                     &quot;rating&quot;: null,
                     &quot;type&quot;: 1,
                     &quot;is_public&quot;: 1,
-                    &quot;created_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;
+                    &quot;created_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;
                 },
                 {
                     &quot;id&quot;: 5,
-                    &quot;user_name&quot;: &quot;Aliyah Cronin&quot;,
-                    &quot;body&quot;: &quot;Ab sit sunt sit rerum mollitia ullam architecto quis optio.&quot;,
+                    &quot;user_name&quot;: &quot;Mr. Brendan Crona III&quot;,
+                    &quot;body&quot;: &quot;Veritatis sit voluptates ipsam dolores et rerum aut assumenda assumenda.&quot;,
                     &quot;rating&quot;: null,
                     &quot;type&quot;: 1,
                     &quot;is_public&quot;: 1,
-                    &quot;created_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;
+                    &quot;created_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;
                 }
             ],
             &quot;ratings&quot;: [
                 {
                     &quot;id&quot;: 6,
-                    &quot;user_name&quot;: &quot;Prof. Jackeline Wisoky&quot;,
-                    &quot;body&quot;: &quot;Voluptatem veritatis nam odit incidunt quisquam ab ut alias aut.&quot;,
-                    &quot;rating&quot;: 2,
+                    &quot;user_name&quot;: &quot;Dr. Dejon Feil&quot;,
+                    &quot;body&quot;: &quot;Quibusdam consectetur quis dolor alias eius officiis nihil asperiores et.&quot;,
+                    &quot;rating&quot;: 4,
                     &quot;type&quot;: 0,
                     &quot;is_public&quot;: 1,
-                    &quot;created_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;
+                    &quot;created_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;
                 },
                 {
                     &quot;id&quot;: 7,
-                    &quot;user_name&quot;: &quot;Bette Paucek&quot;,
-                    &quot;body&quot;: &quot;Neque aspernatur qui est nesciunt sequi quidem iure et perferendis.&quot;,
-                    &quot;rating&quot;: 8,
+                    &quot;user_name&quot;: &quot;Dorthy Goyette&quot;,
+                    &quot;body&quot;: &quot;Nobis voluptatum architecto est illum voluptate nemo sed aliquid commodi.&quot;,
+                    &quot;rating&quot;: 3,
                     &quot;type&quot;: 0,
                     &quot;is_public&quot;: 1,
-                    &quot;created_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:08.000000Z&quot;
+                    &quot;created_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;
                 },
                 {
                     &quot;id&quot;: 8,
-                    &quot;user_name&quot;: &quot;Hallie Swift&quot;,
-                    &quot;body&quot;: &quot;Ad maxime eveniet et sit consequatur nihil ratione commodi corporis.&quot;,
-                    &quot;rating&quot;: 8,
-                    &quot;type&quot;: 0,
-                    &quot;is_public&quot;: 1,
-                    &quot;created_at&quot;: &quot;2021-10-10T19:17:09.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:09.000000Z&quot;
-                },
-                {
-                    &quot;id&quot;: 9,
-                    &quot;user_name&quot;: &quot;Ms. Natalie Turcotte Sr.&quot;,
-                    &quot;body&quot;: &quot;Itaque saepe amet maiores eum hic excepturi iure quaerat placeat.&quot;,
+                    &quot;user_name&quot;: &quot;Dennis Kris&quot;,
+                    &quot;body&quot;: &quot;Et est asperiores quod voluptas animi fuga distinctio nisi a.&quot;,
                     &quot;rating&quot;: 5,
                     &quot;type&quot;: 0,
                     &quot;is_public&quot;: 1,
-                    &quot;created_at&quot;: &quot;2021-10-10T19:17:09.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:09.000000Z&quot;
+                    &quot;created_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;
+                },
+                {
+                    &quot;id&quot;: 9,
+                    &quot;user_name&quot;: &quot;Marisa Moore MD&quot;,
+                    &quot;body&quot;: &quot;Voluptas qui non non sit sint dolorem sit corrupti molestias.&quot;,
+                    &quot;rating&quot;: 8,
+                    &quot;type&quot;: 0,
+                    &quot;is_public&quot;: 1,
+                    &quot;created_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;
                 },
                 {
                     &quot;id&quot;: 10,
-                    &quot;user_name&quot;: &quot;Eliza Moore&quot;,
-                    &quot;body&quot;: &quot;Nobis dolor ducimus laborum qui facere ipsum totam eos possimus.&quot;,
-                    &quot;rating&quot;: 9,
+                    &quot;user_name&quot;: &quot;Prof. Pietro Hayes&quot;,
+                    &quot;body&quot;: &quot;Adipisci iure sed magni quo excepturi cumque earum sit cum.&quot;,
+                    &quot;rating&quot;: 8,
                     &quot;type&quot;: 0,
                     &quot;is_public&quot;: 1,
-                    &quot;created_at&quot;: &quot;2021-10-10T19:17:09.000000Z&quot;,
-                    &quot;updated_at&quot;: &quot;2021-10-10T19:17:09.000000Z&quot;
+                    &quot;created_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-10-13T20:41:53.000000Z&quot;
                 }
             ]
         }
@@ -2088,9 +2088,9 @@ vary: Origin
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"body\": \"voluptatibus\",
-    \"rating\": 7,
-    \"type\": true
+    \"body\": \"optio\",
+    \"rating\": 20,
+    \"type\": false
 }"
 </code></pre>
 
@@ -2104,9 +2104,9 @@ const headers = {
 };
 
 let body = {
-    "body": "voluptatibus",
-    "rating": 7,
-    "type": true
+    "body": "optio",
+    "rating": 20,
+    "type": false
 }
 
 fetch(url, {
@@ -2257,8 +2257,9 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"email\": \"occaecati\",
-    \"twoFactorCode\": 2
+    \"email\": \"praesentium\",
+    \"twoFactorCode\": 11,
+    \"isForMobile\": true
 }"
 </code></pre>
 
@@ -2273,8 +2274,9 @@ const headers = {
 };
 
 let body = {
-    "email": "occaecati",
-    "twoFactorCode": 2
+    "email": "praesentium",
+    "twoFactorCode": 11,
+    "isForMobile": true
 }
 
 fetch(url, {
@@ -2387,6 +2389,25 @@ fetch(url, {
                data-component="body" required  hidden>
     <br>
 <p>Must be a 6 digits number.</p>        </p>
+                <p>
+            <b><code>isForMobile</code></b>&nbsp;&nbsp;<small>boolean</small>     <i>optional</i> &nbsp;
+                <label data-endpoint="POSTapi-auth-login-two-factor-code" hidden>
+            <input type="radio" name="isForMobile"
+                   value="true"
+                   data-endpoint="POSTapi-auth-login-two-factor-code"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="POSTapi-auth-login-two-factor-code" hidden>
+            <input type="radio" name="isForMobile"
+                   value="false"
+                   data-endpoint="POSTapi-auth-login-two-factor-code"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>If you're sending a request from a desktop client or a mobile app, you should set this to &quot;true&quot; to get a JWT token
+that won't have any expiration date.</p>        </p>
     
     </form>
 
@@ -2409,9 +2430,10 @@ recovery email, they won't be able to login by this method, if they're using the
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"mainEmail\": \"vero\",
-    \"recoveryEmail\": \"explicabo\",
-    \"code\": 4
+    \"mainEmail\": \"illo\",
+    \"recoveryEmail\": \"cumque\",
+    \"code\": 4,
+    \"isForMobile\": true
 }"
 </code></pre>
 
@@ -2426,9 +2448,10 @@ const headers = {
 };
 
 let body = {
-    "mainEmail": "vero",
-    "recoveryEmail": "explicabo",
-    "code": 4
+    "mainEmail": "illo",
+    "recoveryEmail": "cumque",
+    "code": 4,
+    "isForMobile": true
 }
 
 fetch(url, {
@@ -2549,6 +2572,25 @@ fetch(url, {
                data-component="body" required  hidden>
     <br>
 <p>Must be a 6 digits number.</p>        </p>
+                <p>
+            <b><code>isForMobile</code></b>&nbsp;&nbsp;<small>boolean</small>     <i>optional</i> &nbsp;
+                <label data-endpoint="POSTapi-auth-login-email-code" hidden>
+            <input type="radio" name="isForMobile"
+                   value="true"
+                   data-endpoint="POSTapi-auth-login-email-code"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="POSTapi-auth-login-email-code" hidden>
+            <input type="radio" name="isForMobile"
+                   value="false"
+                   data-endpoint="POSTapi-auth-login-email-code"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>If you're sending a request from a desktop client or a mobile app, you should set this to &quot;true&quot; to get a JWT token
+that won't have any expiration date.</p>        </p>
     
     </form>
 
@@ -2570,10 +2612,10 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"mainEmail\": \"nobis\",
-    \"recoveryEmail\": \"porro\",
-    \"antiFishingSecret\": \"quod\",
-    \"securityCode\": \"maiores\"
+    \"mainEmail\": \"libero\",
+    \"recoveryEmail\": \"ea\",
+    \"antiFishingSecret\": \"ut\",
+    \"securityCode\": \"ea\"
 }"
 </code></pre>
 
@@ -2588,10 +2630,10 @@ const headers = {
 };
 
 let body = {
-    "mainEmail": "nobis",
-    "recoveryEmail": "porro",
-    "antiFishingSecret": "quod",
-    "securityCode": "maiores"
+    "mainEmail": "libero",
+    "recoveryEmail": "ea",
+    "antiFishingSecret": "ut",
+    "securityCode": "ea"
 }
 
 fetch(url, {
@@ -2844,7 +2886,7 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"code\": \"quia\"
+    \"code\": \"voluptas\"
 }"
 </code></pre>
 
@@ -2859,7 +2901,7 @@ const headers = {
 };
 
 let body = {
-    "code": "quia"
+    "code": "voluptas"
 }
 
 fetch(url, {
@@ -2980,10 +3022,10 @@ the backend will know how much the user has paid, and what did they actually pur
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"method\": \"rem\",
-    \"amount\": 12,
-    \"type\": \"labore\",
-    \"code\": \"at\"
+    \"method\": \"reiciendis\",
+    \"amount\": 18,
+    \"type\": \"occaecati\",
+    \"code\": \"ex\"
 }"
 </code></pre>
 
@@ -2998,10 +3040,10 @@ const headers = {
 };
 
 let body = {
-    "method": "rem",
-    "amount": 12,
-    "type": "labore",
-    "code": "at"
+    "method": "reiciendis",
+    "amount": 18,
+    "type": "occaecati",
+    "code": "ex"
 }
 
 fetch(url, {
@@ -3152,13 +3194,13 @@ to both, the main and the recovery, emails.</p>
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"name\": \"movrqehfeswiablotoylzxxfdimhzxltbrqazjwaodtrqyfusyvcqkpkaulkqqer\",
-    \"phoneNumber\": \"aiyzngrjvlczfkdsv\",
-    \"mainEmail\": \"smwvhenaqdxxlfklgbnhwpshuwpxnfqcpknhshmrrchwuveacollpfovipotucqvnkhwvhdntwrshndyymhwgpffdmeqaetebnzrxwrqjkxsvnaihtkmynptowzihixfzscoicdxmxpxjkzslplsysmcdwcyyjleid\",
-    \"recoveryEmail\": \"lharzeakwnuiuooyptijqsxwjzlcyyivuxucarumknmvioshqsuchfmguwybmnzruzbottuuoutjvaxbzmvokmhgkmgb\",
-    \"secretAntiFishing\": \"qufvzgbbtkjqmoxsbtboaoevvzlvmqphafczwhbfvpmvkmynwcgbghjzqimxieyepyptphkhwrlidqtviavalfomukgzpzbqwcbwdkagvkmlhifympfuzpjjcmoqepcqwsqqlpfcbucnatvygyjqnok\",
-    \"secretAntiFishing_confirmation\": \"wlsykfgccyowzwzsgcwrvmxrsdnhhwjccxzjhuoxuhurdryjezyoikqbqqglvltwmxxkxtadhjmmodrwlaurwqctgrgqmbeljfjcplhbdlyvpmygisuqtnhgtaoh\",
-    \"invitationCode\": \"nfrnm\"
+    \"name\": \"xxdxtyespboxyiwcqwqzzjkoqaybeocnscphdkcvlgrjhohfejlnfylrrwuqnowinczcrgydoszebldyaoluzdgllbmzjbsjzcm\",
+    \"phoneNumber\": \"xpvqoxzzi\",
+    \"mainEmail\": \"isrwfbzuzugtbdiakickrydsqfbajnjnhhmfryyywcgaftijhkabspmelgdhgahwvtjsbgxtupcumgwpixjolmgfwnebgqzvwkyetfsabfrhkieyafpqyoemyzxzkcyw\",
+    \"recoveryEmail\": \"urbbdefeutyfiqdxtpdjxstyskqnjbeajwlqjnchftjcgggoey\",
+    \"secretAntiFishing\": \"xjwjmjahpvawmwfkhedxhjpzkezzqmeqbgctznzshyowzxdyovmffwtcwicokbxczozxhzlpeevoaochniyqzaazxfoonuqcsxdtaffbwykgngoepimtipronaoizqpesnlxmdhlsxqoqetddrelkpgcpakicjumjcyj\",
+    \"secretAntiFishing_confirmation\": \"slqxqgniewclfuofultsavowxxkpjwxynhqnggscynofglnuaplxywsyvzfnclbzgyldkhmvcooqvzdibvsecbdejabxfca\",
+    \"invitationCode\": \"\"
 }"
 </code></pre>
 
@@ -3173,13 +3215,13 @@ const headers = {
 };
 
 let body = {
-    "name": "movrqehfeswiablotoylzxxfdimhzxltbrqazjwaodtrqyfusyvcqkpkaulkqqer",
-    "phoneNumber": "aiyzngrjvlczfkdsv",
-    "mainEmail": "smwvhenaqdxxlfklgbnhwpshuwpxnfqcpknhshmrrchwuveacollpfovipotucqvnkhwvhdntwrshndyymhwgpffdmeqaetebnzrxwrqjkxsvnaihtkmynptowzihixfzscoicdxmxpxjkzslplsysmcdwcyyjleid",
-    "recoveryEmail": "lharzeakwnuiuooyptijqsxwjzlcyyivuxucarumknmvioshqsuchfmguwybmnzruzbottuuoutjvaxbzmvokmhgkmgb",
-    "secretAntiFishing": "qufvzgbbtkjqmoxsbtboaoevvzlvmqphafczwhbfvpmvkmynwcgbghjzqimxieyepyptphkhwrlidqtviavalfomukgzpzbqwcbwdkagvkmlhifympfuzpjjcmoqepcqwsqqlpfcbucnatvygyjqnok",
-    "secretAntiFishing_confirmation": "wlsykfgccyowzwzsgcwrvmxrsdnhhwjccxzjhuoxuhurdryjezyoikqbqqglvltwmxxkxtadhjmmodrwlaurwqctgrgqmbeljfjcplhbdlyvpmygisuqtnhgtaoh",
-    "invitationCode": "nfrnm"
+    "name": "xxdxtyespboxyiwcqwqzzjkoqaybeocnscphdkcvlgrjhohfejlnfylrrwuqnowinczcrgydoszebldyaoluzdgllbmzjbsjzcm",
+    "phoneNumber": "xpvqoxzzi",
+    "mainEmail": "isrwfbzuzugtbdiakickrydsqfbajnjnhhmfryyywcgaftijhkabspmelgdhgahwvtjsbgxtupcumgwpixjolmgfwnebgqzvwkyetfsabfrhkieyafpqyoemyzxzkcyw",
+    "recoveryEmail": "urbbdefeutyfiqdxtpdjxstyskqnjbeajwlqjnchftjcgggoey",
+    "secretAntiFishing": "xjwjmjahpvawmwfkhedxhjpzkezzqmeqbgctznzshyowzxdyovmffwtcwicokbxczozxhzlpeevoaochniyqzaazxfoonuqcsxdtaffbwykgngoepimtipronaoizqpesnlxmdhlsxqoqetddrelkpgcpakicjumjcyj",
+    "secretAntiFishing_confirmation": "slqxqgniewclfuofultsavowxxkpjwxynhqnggscynofglnuaplxywsyvzfnclbzgyldkhmvcooqvzdibvsecbdejabxfca",
+    "invitationCode": ""
 }
 
 fetch(url, {
@@ -3346,10 +3388,10 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"mainEmailCode\": 17,
-    \"recoveryEmailCode\": 16,
-    \"mainEmail\": \"ypbcihrjrgayvhepnbfnqzhfehztgqyssismkyntwdsjnkjostldyeifbjvxtsthsvlwffheohhlldfkevulvcmjcmbgni\",
-    \"MainEmail\": \"error\"
+    \"mainEmailCode\": 19,
+    \"recoveryEmailCode\": 6,
+    \"mainEmail\": \"mhuapwnztaiiqpbifegkxmnavazcwprllnoqnyjlptxyzbfdutnpxdmsdhjctppirmxrhfmlyvqdssvmpshbhdoqjszqyfobofwigoxlxvcjnjnjxizwffrzoasqgceegadccasusswm\",
+    \"MainEmail\": \"vitae\"
 }"
 </code></pre>
 
@@ -3364,10 +3406,10 @@ const headers = {
 };
 
 let body = {
-    "mainEmailCode": 17,
-    "recoveryEmailCode": 16,
-    "mainEmail": "ypbcihrjrgayvhepnbfnqzhfehztgqyssismkyntwdsjnkjostldyeifbjvxtsthsvlwffheohhlldfkevulvcmjcmbgni",
-    "MainEmail": "error"
+    "mainEmailCode": 19,
+    "recoveryEmailCode": 6,
+    "mainEmail": "mhuapwnztaiiqpbifegkxmnavazcwprllnoqnyjlptxyzbfdutnpxdmsdhjctppirmxrhfmlyvqdssvmpshbhdoqjszqyfobofwigoxlxvcjnjnjxizwffrzoasqgceegadccasusswm",
+    "MainEmail": "vitae"
 }
 
 fetch(url, {
@@ -3508,7 +3550,8 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"twoFactorCode\": 10
+    \"twoFactorCode\": 2,
+    \"isForMobile\": false
 }"
 </code></pre>
 
@@ -3523,7 +3566,8 @@ const headers = {
 };
 
 let body = {
-    "twoFactorCode": 10
+    "twoFactorCode": 2,
+    "isForMobile": false
 }
 
 fetch(url, {
@@ -3635,6 +3679,24 @@ fetch(url, {
                data-component="body" required  hidden>
     <br>
 <p>Must be a 6 digits number.</p>        </p>
+                <p>
+            <b><code>isForMobile</code></b>&nbsp;&nbsp;<small>boolean</small>     <i>optional</i> &nbsp;
+                <label data-endpoint="POSTapi-auth-register-step-3" hidden>
+            <input type="radio" name="isForMobile"
+                   value="true"
+                   data-endpoint="POSTapi-auth-register-step-3"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="POSTapi-auth-register-step-3" hidden>
+            <input type="radio" name="isForMobile"
+                   value="false"
+                   data-endpoint="POSTapi-auth-register-step-3"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+        </p>
     
     </form>
 
@@ -3661,11 +3723,11 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"name\": \"voluptate\",
-    \"phone_number\": \"vel\",
-    \"email\": \"doloremque\",
-    \"recovery_email\": \"unde\",
-    \"anti_fishing_secret\": \"eveniet\"
+    \"name\": \"reprehenderit\",
+    \"phone_number\": \"est\",
+    \"email\": \"qui\",
+    \"recovery_email\": \"dolorum\",
+    \"anti_fishing_secret\": \"eum\"
 }"
 </code></pre>
 
@@ -3680,11 +3742,11 @@ const headers = {
 };
 
 let body = {
-    "name": "voluptate",
-    "phone_number": "vel",
-    "email": "doloremque",
-    "recovery_email": "unde",
-    "anti_fishing_secret": "eveniet"
+    "name": "reprehenderit",
+    "phone_number": "est",
+    "email": "qui",
+    "recovery_email": "dolorum",
+    "anti_fishing_secret": "eum"
 }
 
 fetch(url, {
@@ -3936,7 +3998,7 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"preferredLang\": \"commodi\"
+    \"preferredLang\": \"voluptatum\"
 }"
 </code></pre>
 
@@ -3951,7 +4013,7 @@ const headers = {
 };
 
 let body = {
-    "preferredLang": "commodi"
+    "preferredLang": "voluptatum"
 }
 
 fetch(url, {

@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "API Documentation for PasuNashi Backend",
-        "_postman_id": "ce34ef66-5cde-4ed8-807e-7a02e5885f5d",
+        "_postman_id": "6b7d797d-34d1-4a54-98ed-958a3d8a5991",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -46,7 +46,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"kpejchzvyplqxgekzifwwbaltrnvgmvxtdbzpgnqlynwmldmizddedkutbimyfzojbelltpbynsdaynhecnmamfekrrgksqruqiyltlvdoyyihazjnfdsrfmazsieiunptjxghuobs\",\"isSecondary\":false}"
+                            "raw": "{\"email\":\"nooowfrqmfflbaepyazdgmdrzpchienvgadrxaxgeguwwjjbfhnpkmoggezbhcwfjzgl\",\"isSecondary\":true}"
                         },
                         "description": "This method will send the security code needed for the user to login by the \"login with email code\" method.\n\nRemember that the email parameter must exists either on the \"emails\" or in \"recovery_emails\" columns",
                         "auth": {
@@ -138,7 +138,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"accessTo\":\"impedit\",\"credentialId\":9,\"accessingDevice\":\"similique\",\"accessingPlatform\":\"bmvk\",\"accessingPlattform\":\"eos\"}"
+                            "raw": "{\"accessTo\":\"qui\",\"credentialId\":4,\"accessingDevice\":\"consequuntur\",\"accessingPlatform\":\"zsgyg\",\"accessingPlattform\":\"inventore\"}"
                         },
                         "description": "This method is used to access the encrypted data of a Credential, or the encrypted data of the user itself.\n\n<aside class=\"notice\">This method may return a decrypted Credential, you can see the Credential interface on the README file.<\/aside>"
                     },
@@ -275,7 +275,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"company_name\":\"fugit\",\"description\":\"eos\",\"user_name\":\"architecto\",\"email\":\"et\",\"password\":\"ipsam\",\"username\":\"eligendi\",\"phone_number\":\"vel\",\"security_question\":\"ut\",\"security_answer\":\"et\",\"unique_code\":\"laudantium\",\"multiple_codes\":[\"corrupti\"],\"crypto_codes\":[\"eligendi\"],\"accessing_device\":\"molestiae\",\"accessing_plattform\":\"neque\"}"
+                            "raw": "{\"company_name\":\"in\",\"description\":\"vero\",\"user_name\":\"vero\",\"email\":\"deleniti\",\"password\":\"incidunt\",\"username\":\"provident\",\"phone_number\":\"voluptatem\",\"security_question\":\"cumque\",\"security_answer\":\"aut\",\"unique_code\":\"voluptate\",\"multiple_codes\":[\"laudantium\"],\"crypto_codes\":[\"voluptas\"],\"accessing_device\":\"eveniet\",\"accessing_plattform\":\"ea\"}"
                         },
                         "description": "This is the method used to create a new credential.\n\n<aside class=\"notice\">This method will return the created Credential, you can see the Credential interface on the README file.<\/aside>"
                     },
@@ -344,7 +344,7 @@
                                 {
                                     "id": "credential_id",
                                     "key": "credential_id",
-                                    "value": "10",
+                                    "value": "11",
                                     "description": "The id of the credential to delete."
                                 }
                             ]
@@ -395,7 +395,7 @@
                                 {
                                     "id": "credential_id",
                                     "key": "credential_id",
-                                    "value": "20",
+                                    "value": "6",
                                     "description": "The id of the credential to update."
                                 }
                             ]
@@ -417,7 +417,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"description\":\"maiores\",\"user_name\":\"adipisci\",\"email\":\"velit\",\"password\":\"corporis\",\"username\":\"nesciunt\",\"phone_number\":\"nihil\",\"security_question\":\"perferendis\",\"security_answer\":\"dolor\",\"unique_code\":\"omnis\",\"multiple_codes\":[\"odit\"],\"crypto_codes\":[\"provident\"],\"accessing_device\":\"dolores\",\"accessing_plattform\":\"dicta\"}"
+                            "raw": "{\"description\":\"autem\",\"user_name\":\"qui\",\"email\":\"voluptatem\",\"password\":\"aut\",\"username\":\"quia\",\"phone_number\":\"rerum\",\"security_question\":\"voluptatem\",\"security_answer\":\"ut\",\"unique_code\":\"commodi\",\"multiple_codes\":[\"odio\"],\"crypto_codes\":[\"optio\"],\"accessing_device\":\"delectus\",\"accessing_plattform\":\"laudantium\"}"
                         },
                         "description": "This is the method used for updating a credential. If any field is absent, it will be updated to a null type, or deleted.\n\nThe company_name cannot be updated.\n\n<aside class=\"notice\">This method will return the updated Credential, you can see the Credential interface on the README file.<\/aside>"
                     },
@@ -455,7 +455,7 @@
                                 {
                                     "id": "credential_id",
                                     "key": "credential_id",
-                                    "value": "16",
+                                    "value": "12",
                                     "description": "The id of the credential to delete."
                                 }
                             ]
@@ -598,7 +598,7 @@
                                 }
                             ],
                             "code": 200,
-                            "body": "{\"status\":200,\"message\":\"Ratings and Suggestions obtained successfully.\",\"data\":{\"feedback\":{\"suggestions\":[{\"id\":1,\"user_name\":\"Federico Torp\",\"body\":\"Id porro excepturi hic et saepe consequuntur possimus porro cumque.\",\"rating\":null,\"type\":1,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:08.000000Z\",\"updated_at\":\"2021-10-10T19:17:08.000000Z\"},{\"id\":2,\"user_name\":\"Ms. Cassandre Funk DVM\",\"body\":\"Atque aperiam laboriosam asperiores voluptatum incidunt voluptas harum ut quae.\",\"rating\":null,\"type\":1,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:08.000000Z\",\"updated_at\":\"2021-10-10T19:17:08.000000Z\"},{\"id\":3,\"user_name\":\"Lilla Spinka\",\"body\":\"Quas sint deserunt dolorem molestias impedit et minima omnis iste.\",\"rating\":null,\"type\":1,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:08.000000Z\",\"updated_at\":\"2021-10-10T19:17:08.000000Z\"},{\"id\":4,\"user_name\":\"Jordon Lebsack\",\"body\":\"Consequatur aut et aut voluptatem eaque eos sed totam commodi.\",\"rating\":null,\"type\":1,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:08.000000Z\",\"updated_at\":\"2021-10-10T19:17:08.000000Z\"},{\"id\":5,\"user_name\":\"Aliyah Cronin\",\"body\":\"Ab sit sunt sit rerum mollitia ullam architecto quis optio.\",\"rating\":null,\"type\":1,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:08.000000Z\",\"updated_at\":\"2021-10-10T19:17:08.000000Z\"}],\"ratings\":[{\"id\":6,\"user_name\":\"Prof. Jackeline Wisoky\",\"body\":\"Voluptatem veritatis nam odit incidunt quisquam ab ut alias aut.\",\"rating\":2,\"type\":0,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:08.000000Z\",\"updated_at\":\"2021-10-10T19:17:08.000000Z\"},{\"id\":7,\"user_name\":\"Bette Paucek\",\"body\":\"Neque aspernatur qui est nesciunt sequi quidem iure et perferendis.\",\"rating\":8,\"type\":0,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:08.000000Z\",\"updated_at\":\"2021-10-10T19:17:08.000000Z\"},{\"id\":8,\"user_name\":\"Hallie Swift\",\"body\":\"Ad maxime eveniet et sit consequatur nihil ratione commodi corporis.\",\"rating\":8,\"type\":0,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:09.000000Z\",\"updated_at\":\"2021-10-10T19:17:09.000000Z\"},{\"id\":9,\"user_name\":\"Ms. Natalie Turcotte Sr.\",\"body\":\"Itaque saepe amet maiores eum hic excepturi iure quaerat placeat.\",\"rating\":5,\"type\":0,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:09.000000Z\",\"updated_at\":\"2021-10-10T19:17:09.000000Z\"},{\"id\":10,\"user_name\":\"Eliza Moore\",\"body\":\"Nobis dolor ducimus laborum qui facere ipsum totam eos possimus.\",\"rating\":9,\"type\":0,\"is_public\":1,\"created_at\":\"2021-10-10T19:17:09.000000Z\",\"updated_at\":\"2021-10-10T19:17:09.000000Z\"}]}}}",
+                            "body": "{\"status\":200,\"message\":\"Ratings and Suggestions obtained successfully.\",\"data\":{\"feedback\":{\"suggestions\":[{\"id\":1,\"user_name\":\"Dr. Prince Mayer MD\",\"body\":\"Ipsa alias et maxime similique similique rerum consequatur ex quisquam.\",\"rating\":null,\"type\":1,\"is_public\":1,\"created_at\":\"2021-10-13T20:41:53.000000Z\",\"updated_at\":\"2021-10-13T20:41:53.000000Z\"},{\"id\":2,\"user_name\":\"Miss Tamia Nolan\",\"body\":\"Rerum sed dolorem eos placeat iste enim sit illo cumque.\",\"rating\":null,\"type\":1,\"is_public\":1,\"created_at\":\"2021-10-13T20:41:53.000000Z\",\"updated_at\":\"2021-10-13T20:41:53.000000Z\"},{\"id\":3,\"user_name\":\"Prof. Luis Harber Jr.\",\"body\":\"Molestiae odio amet voluptatibus omnis dolores voluptas minus numquam rerum.\",\"rating\":null,\"type\":1,\"is_public\":1,\"created_at\":\"2021-10-13T20:41:53.000000Z\",\"updated_at\":\"2021-10-13T20:41:53.000000Z\"},{\"id\":4,\"user_name\":\"Gerard Dooley\",\"body\":\"Ut ratione maiores commodi expedita voluptas dolore vitae itaque dicta.\",\"rating\":null,\"type\":1,\"is_public\":1,\"created_at\":\"2021-10-13T20:41:53.000000Z\",\"updated_at\":\"2021-10-13T20:41:53.000000Z\"},{\"id\":5,\"user_name\":\"Mr. Brendan Crona III\",\"body\":\"Veritatis sit voluptates ipsam dolores et rerum aut assumenda assumenda.\",\"rating\":null,\"type\":1,\"is_public\":1,\"created_at\":\"2021-10-13T20:41:53.000000Z\",\"updated_at\":\"2021-10-13T20:41:53.000000Z\"}],\"ratings\":[{\"id\":6,\"user_name\":\"Dr. Dejon Feil\",\"body\":\"Quibusdam consectetur quis dolor alias eius officiis nihil asperiores et.\",\"rating\":4,\"type\":0,\"is_public\":1,\"created_at\":\"2021-10-13T20:41:53.000000Z\",\"updated_at\":\"2021-10-13T20:41:53.000000Z\"},{\"id\":7,\"user_name\":\"Dorthy Goyette\",\"body\":\"Nobis voluptatum architecto est illum voluptate nemo sed aliquid commodi.\",\"rating\":3,\"type\":0,\"is_public\":1,\"created_at\":\"2021-10-13T20:41:53.000000Z\",\"updated_at\":\"2021-10-13T20:41:53.000000Z\"},{\"id\":8,\"user_name\":\"Dennis Kris\",\"body\":\"Et est asperiores quod voluptas animi fuga distinctio nisi a.\",\"rating\":5,\"type\":0,\"is_public\":1,\"created_at\":\"2021-10-13T20:41:53.000000Z\",\"updated_at\":\"2021-10-13T20:41:53.000000Z\"},{\"id\":9,\"user_name\":\"Marisa Moore MD\",\"body\":\"Voluptas qui non non sit sint dolorem sit corrupti molestias.\",\"rating\":8,\"type\":0,\"is_public\":1,\"created_at\":\"2021-10-13T20:41:53.000000Z\",\"updated_at\":\"2021-10-13T20:41:53.000000Z\"},{\"id\":10,\"user_name\":\"Prof. Pietro Hayes\",\"body\":\"Adipisci iure sed magni quo excepturi cumque earum sit cum.\",\"rating\":8,\"type\":0,\"is_public\":1,\"created_at\":\"2021-10-13T20:41:53.000000Z\",\"updated_at\":\"2021-10-13T20:41:53.000000Z\"}]}}}",
                             "name": ""
                         }
                     ]
@@ -626,7 +626,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"body\":\"voluptatibus\",\"rating\":7,\"type\":true}"
+                            "raw": "{\"body\":\"optio\",\"rating\":20,\"type\":false}"
                         },
                         "description": "Store a suggestion and\/or rating in the database\n\n(Reuqires user role to be \"premium\")"
                     },
@@ -678,7 +678,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"occaecati\",\"twoFactorCode\":2}"
+                            "raw": "{\"email\":\"praesentium\",\"twoFactorCode\":11,\"isForMobile\":true}"
                         },
                         "description": "This is the method to login using the user's main email, and the time-based one-time-password (the code generated in apps like Google Authenticator).\n\n<aside class=\"notice\">This method will return an array of Credentials, you can see the Credential interface on the README file.<\/aside>",
                         "auth": {
@@ -727,7 +727,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"mainEmail\":\"vero\",\"recoveryEmail\":\"explicabo\",\"code\":4}"
+                            "raw": "{\"mainEmail\":\"illo\",\"recoveryEmail\":\"cumque\",\"code\":4,\"isForMobile\":true}"
                         },
                         "description": "In order for this method to work, the user must already have the correct security code in the database. If the user asked to send an email code to their\nrecovery email, they won't be able to login by this method, if they're using their main email on this request.\n\n<aside class=\"notice\">This method will return an array of Credentials, you can see the Credential interface on the README file.<\/aside>",
                         "auth": {
@@ -776,7 +776,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"mainEmail\":\"nobis\",\"recoveryEmail\":\"porro\",\"antiFishingSecret\":\"quod\",\"securityCode\":\"maiores\"}"
+                            "raw": "{\"mainEmail\":\"libero\",\"recoveryEmail\":\"ea\",\"antiFishingSecret\":\"ut\",\"securityCode\":\"ea\"}"
                         },
                         "description": "This is the only method that does not require 2-factor-authentication.\n\n<aside class=\"notice\">This method will return an array of Credentials, you can see the Credential interface on the README file.<\/aside>",
                         "auth": {
@@ -868,7 +868,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"code\":\"quia\"}"
+                            "raw": "{\"code\":\"voluptas\"}"
                         },
                         "description": "This method receives the transaction id of PayPal, and verifies that the purchase is fully confirmed"
                     },
@@ -914,7 +914,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"method\":\"rem\",\"amount\":12,\"type\":\"labore\",\"code\":\"at\"}"
+                            "raw": "{\"method\":\"reiciendis\",\"amount\":18,\"type\":\"occaecati\",\"code\":\"ex\"}"
                         },
                         "description": "This method will create an \"open payment instance\" in the database, so, when the payment is fully confirmed,\nthe backend will know how much the user has paid, and what did they actually purchased."
                     },
@@ -966,7 +966,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"movrqehfeswiablotoylzxxfdimhzxltbrqazjwaodtrqyfusyvcqkpkaulkqqer\",\"phoneNumber\":\"aiyzngrjvlczfkdsv\",\"mainEmail\":\"smwvhenaqdxxlfklgbnhwpshuwpxnfqcpknhshmrrchwuveacollpfovipotucqvnkhwvhdntwrshndyymhwgpffdmeqaetebnzrxwrqjkxsvnaihtkmynptowzihixfzscoicdxmxpxjkzslplsysmcdwcyyjleid\",\"recoveryEmail\":\"lharzeakwnuiuooyptijqsxwjzlcyyivuxucarumknmvioshqsuchfmguwybmnzruzbottuuoutjvaxbzmvokmhgkmgb\",\"secretAntiFishing\":\"qufvzgbbtkjqmoxsbtboaoevvzlvmqphafczwhbfvpmvkmynwcgbghjzqimxieyepyptphkhwrlidqtviavalfomukgzpzbqwcbwdkagvkmlhifympfuzpjjcmoqepcqwsqqlpfcbucnatvygyjqnok\",\"secretAntiFishing_confirmation\":\"wlsykfgccyowzwzsgcwrvmxrsdnhhwjccxzjhuoxuhurdryjezyoikqbqqglvltwmxxkxtadhjmmodrwlaurwqctgrgqmbeljfjcplhbdlyvpmygisuqtnhgtaoh\",\"invitationCode\":\"nfrnm\"}"
+                            "raw": "{\"name\":\"xxdxtyespboxyiwcqwqzzjkoqaybeocnscphdkcvlgrjhohfejlnfylrrwuqnowinczcrgydoszebldyaoluzdgllbmzjbsjzcm\",\"phoneNumber\":\"xpvqoxzzi\",\"mainEmail\":\"isrwfbzuzugtbdiakickrydsqfbajnjnhhmfryyywcgaftijhkabspmelgdhgahwvtjsbgxtupcumgwpixjolmgfwnebgqzvwkyetfsabfrhkieyafpqyoemyzxzkcyw\",\"recoveryEmail\":\"urbbdefeutyfiqdxtpdjxstyskqnjbeajwlqjnchftjcgggoey\",\"secretAntiFishing\":\"xjwjmjahpvawmwfkhedxhjpzkezzqmeqbgctznzshyowzxdyovmffwtcwicokbxczozxhzlpeevoaochniyqzaazxfoonuqcsxdtaffbwykgngoepimtipronaoizqpesnlxmdhlsxqoqetddrelkpgcpakicjumjcyj\",\"secretAntiFishing_confirmation\":\"slqxqgniewclfuofultsavowxxkpjwxynhqnggscynofglnuaplxywsyvzfnclbzgyldkhmvcooqvzdibvsecbdejabxfca\",\"invitationCode\":\"\"}"
                         },
                         "description": "The first step in order to register a new user. This method stores the user's accessing information, and dispatches an event to send security codes\nto both, the main and the recovery, emails.",
                         "auth": {
@@ -1015,7 +1015,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"mainEmailCode\":17,\"recoveryEmailCode\":16,\"mainEmail\":\"ypbcihrjrgayvhepnbfnqzhfehztgqyssismkyntwdsjnkjostldyeifbjvxtsthsvlwffheohhlldfkevulvcmjcmbgni\",\"MainEmail\":\"error\"}"
+                            "raw": "{\"mainEmailCode\":19,\"recoveryEmailCode\":6,\"mainEmail\":\"mhuapwnztaiiqpbifegkxmnavazcwprllnoqnyjlptxyzbfdutnpxdmsdhjctppirmxrhfmlyvqdssvmpshbhdoqjszqyfobofwigoxlxvcjnjnjxizwffrzoasqgceegadccasusswm\",\"MainEmail\":\"vitae\"}"
                         },
                         "description": "This method will receive both of the security codes that were sent to the user on the previous step, and verify that both of them are correct.",
                         "auth": {
@@ -1064,7 +1064,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"twoFactorCode\":10}"
+                            "raw": "{\"twoFactorCode\":2,\"isForMobile\":false}"
                         },
                         "description": "This method will invalidate the auth token sent with the request.\n\n<aside class=\"notice\">This method is also used to verify the 2FA code if the user decides to renew it.<\/aside>"
                     },
@@ -1116,7 +1116,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"voluptate\",\"phone_number\":\"vel\",\"email\":\"doloremque\",\"recovery_email\":\"unde\",\"anti_fishing_secret\":\"eveniet\"}"
+                            "raw": "{\"name\":\"reprehenderit\",\"phone_number\":\"est\",\"email\":\"qui\",\"recovery_email\":\"dolorum\",\"anti_fishing_secret\":\"eum\"}"
                         },
                         "description": "This method is used to edit the user's credentials for accessing their account in PasuNashi.\n\n<aside class=\"notice\">All of the parameters are required, even if nothing changed.<\/aside>"
                     },
@@ -1199,7 +1199,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"preferredLang\":\"commodi\"}"
+                            "raw": "{\"preferredLang\":\"voluptatum\"}"
                         },
                         "description": "It may be obvous at this point, but this is the method used for updating the user's preferred language."
                     },
