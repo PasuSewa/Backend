@@ -10,7 +10,6 @@
 -   [Dependencies](#packages-used-for-this-project)
 
 <br/>
-<br/>
 
 # Getting Started
 
@@ -34,7 +33,6 @@ At last, I decided to use JWT as the authentication system for the API. Before u
 
 Once all of that is done, you can fully start to work with this project.
 
-<br/>
 <br/>
 
 # The Interface of a Credential
@@ -97,7 +95,7 @@ A credential may have 2 states, an encrypted state, and an decrypted state.
 }
 ```
 
-## The properties:
+### The properties:
 
 company_id, company, company_name are realetd to the associated company. Example:
 
@@ -137,7 +135,7 @@ You may have noticed that some inner properties, like "email" have an opening, e
 
 <br/>
 
-## The security codes
+### The security codes
 
 The decrypted unique_code will be a string, so the unique_code_lenght is the total characters of that string.
 
@@ -147,7 +145,6 @@ The other two codes are an array of strings. So their length represents the amou
 
 And for the last of the Credential's properties, the security question and the security answer will be two separated strings. These two don't include a char_count for each one, beacuse just the length could be a hint of what they are.
 
-<br/>
 <br/>
 
 ## The properties of a Decrypted Credential
@@ -175,7 +172,6 @@ And for the last of the Credential's properties, the security question and the s
 }
 ```
 
-<br />
 <br />
 
 # The Authentication System
@@ -234,4 +230,4 @@ This project makes use of the following packages:
 
 -   **spatie/laravel-permission**: **^4.0** To manage roles and permissions.
 
--   **tymon/jwt-auth**: **^1.0** To register users' sessiong on the API.
+-   **tymon/jwt-auth**: **^1.0** To register users' session on the API.
