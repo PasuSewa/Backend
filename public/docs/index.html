@@ -53,7 +53,7 @@
                             <li><a href="http://github.com/knuckleswtf/scribe">Documentation powered by Scribe ✍</a></li>
                     </ul>
             <ul class="toc-footer" id="last-updated">
-            <li>Last updated: October 13 2021</li>
+            <li>Last updated: October 15 2021</li>
         </ul>
 </div>
 <div class="page-wrapper">
@@ -93,8 +93,8 @@ You can switch the language used with the tabs at the top right (or from the nav
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"email\": \"nooowfrqmfflbaepyazdgmdrzpchienvgadrxaxgeguwwjjbfhnpkmoggezbhcwfjzgl\",
-    \"isSecondary\": true
+    \"email\": \"gknqinkdkgnzveqxjsnyuhizsejatybodtaatgrsjygipoqoxoyaedexjuizhqxnqtdqrqttvacponjzilbtinwforudwhxkmxuqijdonteldpmjimoyurzvrnesgftocmbpkwroerbzjvbarxaywuxzazfaqajvypprmx\",
+    \"isSecondary\": false
 }"
 </code></pre>
 
@@ -109,8 +109,8 @@ const headers = {
 };
 
 let body = {
-    "email": "nooowfrqmfflbaepyazdgmdrzpchienvgadrxaxgeguwwjjbfhnpkmoggezbhcwfjzgl",
-    "isSecondary": true
+    "email": "gknqinkdkgnzveqxjsnyuhizsejatybodtaatgrsjygipoqoxoyaedexjuizhqxnqtdqrqttvacponjzilbtinwforudwhxkmxuqijdonteldpmjimoyurzvrnesgftocmbpkwroerbzjvbarxaywuxzazfaqajvypprmx",
+    "isSecondary": false
 }
 
 fetch(url, {
@@ -359,11 +359,11 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"accessTo\": \"qui\",
-    \"credentialId\": 4,
-    \"accessingDevice\": \"consequuntur\",
-    \"accessingPlatform\": \"zsgyg\",
-    \"accessingPlattform\": \"inventore\"
+    \"accessTo\": \"eligendi\",
+    \"credentialId\": 8,
+    \"accessingDevice\": \"non\",
+    \"accessingPlatform\": \"zvzlr\",
+    \"accessingPlattform\": \"ea\"
 }"
 </code></pre>
 
@@ -378,11 +378,11 @@ const headers = {
 };
 
 let body = {
-    "accessTo": "qui",
-    "credentialId": 4,
-    "accessingDevice": "consequuntur",
-    "accessingPlatform": "zsgyg",
-    "accessingPlattform": "inventore"
+    "accessTo": "eligendi",
+    "credentialId": 8,
+    "accessingDevice": "non",
+    "accessingPlatform": "zvzlr",
+    "accessingPlattform": "ea"
 }
 
 fetch(url, {
@@ -645,6 +645,103 @@ fetch(url, {
         </p>
                 </form>
 
+            <h2 id="auth-GETapi-auth-verify-token">Verify Auth Token</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Since this route requires authentication, there is no need to add any logic to this method.
+If the token isn't actually valid, the user won't be able to reach this point.</p>
+
+<span id="example-requests-GETapi-auth-verify-token">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request GET \
+    --get "https://pasunashi-backend.herokuapp.com/api/auth/verify-token" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Accept-Language: es | en | jp"</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "https://pasunashi-backend.herokuapp.com/api/auth/verify-token"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Accept-Language": "es | en | jp",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-GETapi-auth-verify-token">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+     &quot;status&quot;: 200,
+     &quot;message&quot;: &quot;Succes!&quot;,
+     &quot;data&quot;: {},
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-auth-verify-token" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-auth-verify-token"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-auth-verify-token"></code></pre>
+</span>
+<span id="execution-error-GETapi-auth-verify-token" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-auth-verify-token"></code></pre>
+</span>
+<form id="form-GETapi-auth-verify-token" data-method="GET"
+      data-path="api/auth/verify-token"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Accept-Language":"es | en | jp"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-auth-verify-token', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-auth-verify-token"
+                    onclick="tryItOut('GETapi-auth-verify-token');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-auth-verify-token"
+                    onclick="cancelTryOut('GETapi-auth-verify-token');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-auth-verify-token" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/auth/verify-token</code></b>
+        </p>
+                <p>
+            <label id="auth-GETapi-auth-verify-token" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="GETapi-auth-verify-token"
+                                                                data-component="header"></label>
+        </p>
+                </form>
+
         <h1 id="companies">Companies</h1>
 
     
@@ -766,24 +863,24 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"company_name\": \"in\",
-    \"description\": \"vero\",
-    \"user_name\": \"vero\",
-    \"email\": \"deleniti\",
-    \"password\": \"incidunt\",
-    \"username\": \"provident\",
-    \"phone_number\": \"voluptatem\",
-    \"security_question\": \"cumque\",
-    \"security_answer\": \"aut\",
-    \"unique_code\": \"voluptate\",
+    \"company_name\": \"ab\",
+    \"description\": \"qui\",
+    \"user_name\": \"omnis\",
+    \"email\": \"tempora\",
+    \"password\": \"nemo\",
+    \"username\": \"est\",
+    \"phone_number\": \"modi\",
+    \"security_question\": \"laudantium\",
+    \"security_answer\": \"ea\",
+    \"unique_code\": \"vel\",
     \"multiple_codes\": [
-        \"laudantium\"
+        \"sed\"
     ],
     \"crypto_codes\": [
-        \"voluptas\"
+        \"velit\"
     ],
-    \"accessing_device\": \"eveniet\",
-    \"accessing_plattform\": \"ea\"
+    \"accessing_device\": \"id\",
+    \"accessing_plattform\": \"velit\"
 }"
 </code></pre>
 
@@ -798,24 +895,24 @@ const headers = {
 };
 
 let body = {
-    "company_name": "in",
-    "description": "vero",
-    "user_name": "vero",
-    "email": "deleniti",
-    "password": "incidunt",
-    "username": "provident",
-    "phone_number": "voluptatem",
-    "security_question": "cumque",
-    "security_answer": "aut",
-    "unique_code": "voluptate",
+    "company_name": "ab",
+    "description": "qui",
+    "user_name": "omnis",
+    "email": "tempora",
+    "password": "nemo",
+    "username": "est",
+    "phone_number": "modi",
+    "security_question": "laudantium",
+    "security_answer": "ea",
+    "unique_code": "vel",
     "multiple_codes": [
-        "laudantium"
+        "sed"
     ],
     "crypto_codes": [
-        "voluptas"
+        "velit"
     ],
-    "accessing_device": "eveniet",
-    "accessing_plattform": "ea"
+    "accessing_device": "id",
+    "accessing_plattform": "velit"
 }
 
 fetch(url, {
@@ -1178,13 +1275,13 @@ fetch(url, {
 
 
 <pre><code class="language-bash">curl --request GET \
-    --get "https://pasunashi-backend.herokuapp.com/api/credential/find/11" \
+    --get "https://pasunashi-backend.herokuapp.com/api/credential/find/4" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp"</code></pre>
 
 <pre><code class="language-javascript">const url = new URL(
-    "https://pasunashi-backend.herokuapp.com/api/credential/find/11"
+    "https://pasunashi-backend.herokuapp.com/api/credential/find/4"
 );
 
 const headers = {
@@ -1317,33 +1414,33 @@ fetch(url, {
 
 
 <pre><code class="language-bash">curl --request PUT \
-    "https://pasunashi-backend.herokuapp.com/api/credential/update/6" \
+    "https://pasunashi-backend.herokuapp.com/api/credential/update/20" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"description\": \"autem\",
-    \"user_name\": \"qui\",
-    \"email\": \"voluptatem\",
-    \"password\": \"aut\",
-    \"username\": \"quia\",
-    \"phone_number\": \"rerum\",
-    \"security_question\": \"voluptatem\",
-    \"security_answer\": \"ut\",
-    \"unique_code\": \"commodi\",
+    \"description\": \"deserunt\",
+    \"user_name\": \"sed\",
+    \"email\": \"quisquam\",
+    \"password\": \"dolore\",
+    \"username\": \"sequi\",
+    \"phone_number\": \"eos\",
+    \"security_question\": \"voluptatibus\",
+    \"security_answer\": \"maxime\",
+    \"unique_code\": \"delectus\",
     \"multiple_codes\": [
-        \"odio\"
+        \"aut\"
     ],
     \"crypto_codes\": [
-        \"optio\"
+        \"et\"
     ],
-    \"accessing_device\": \"delectus\",
-    \"accessing_plattform\": \"laudantium\"
+    \"accessing_device\": \"qui\",
+    \"accessing_plattform\": \"velit\"
 }"
 </code></pre>
 
 <pre><code class="language-javascript">const url = new URL(
-    "https://pasunashi-backend.herokuapp.com/api/credential/update/6"
+    "https://pasunashi-backend.herokuapp.com/api/credential/update/20"
 );
 
 const headers = {
@@ -1353,23 +1450,23 @@ const headers = {
 };
 
 let body = {
-    "description": "autem",
-    "user_name": "qui",
-    "email": "voluptatem",
-    "password": "aut",
-    "username": "quia",
-    "phone_number": "rerum",
-    "security_question": "voluptatem",
-    "security_answer": "ut",
-    "unique_code": "commodi",
+    "description": "deserunt",
+    "user_name": "sed",
+    "email": "quisquam",
+    "password": "dolore",
+    "username": "sequi",
+    "phone_number": "eos",
+    "security_question": "voluptatibus",
+    "security_answer": "maxime",
+    "unique_code": "delectus",
     "multiple_codes": [
-        "odio"
+        "aut"
     ],
     "crypto_codes": [
-        "optio"
+        "et"
     ],
-    "accessing_device": "delectus",
-    "accessing_plattform": "laudantium"
+    "accessing_device": "qui",
+    "accessing_plattform": "velit"
 }
 
 fetch(url, {
@@ -1633,13 +1730,13 @@ fetch(url, {
 
 
 <pre><code class="language-bash">curl --request DELETE \
-    "https://pasunashi-backend.herokuapp.com/api/credential/delete/12" \
+    "https://pasunashi-backend.herokuapp.com/api/credential/delete/5" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp"</code></pre>
 
 <pre><code class="language-javascript">const url = new URL(
-    "https://pasunashi-backend.herokuapp.com/api/credential/delete/12"
+    "https://pasunashi-backend.herokuapp.com/api/credential/delete/5"
 );
 
 const headers = {
@@ -2088,9 +2185,9 @@ vary: Origin
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"body\": \"optio\",
-    \"rating\": 20,
-    \"type\": false
+    \"body\": \"magnam\",
+    \"rating\": 10,
+    \"type\": true
 }"
 </code></pre>
 
@@ -2104,9 +2201,9 @@ const headers = {
 };
 
 let body = {
-    "body": "optio",
-    "rating": 20,
-    "type": false
+    "body": "magnam",
+    "rating": 10,
+    "type": true
 }
 
 fetch(url, {
@@ -2257,8 +2354,8 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"email\": \"praesentium\",
-    \"twoFactorCode\": 11,
+    \"email\": \"molestiae\",
+    \"twoFactorCode\": 18,
     \"isForMobile\": true
 }"
 </code></pre>
@@ -2274,8 +2371,8 @@ const headers = {
 };
 
 let body = {
-    "email": "praesentium",
-    "twoFactorCode": 11,
+    "email": "molestiae",
+    "twoFactorCode": 18,
     "isForMobile": true
 }
 
@@ -2430,10 +2527,10 @@ recovery email, they won't be able to login by this method, if they're using the
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"mainEmail\": \"illo\",
-    \"recoveryEmail\": \"cumque\",
-    \"code\": 4,
-    \"isForMobile\": true
+    \"mainEmail\": \"molestiae\",
+    \"recoveryEmail\": \"quas\",
+    \"code\": 13,
+    \"isForMobile\": false
 }"
 </code></pre>
 
@@ -2448,10 +2545,10 @@ const headers = {
 };
 
 let body = {
-    "mainEmail": "illo",
-    "recoveryEmail": "cumque",
-    "code": 4,
-    "isForMobile": true
+    "mainEmail": "molestiae",
+    "recoveryEmail": "quas",
+    "code": 13,
+    "isForMobile": false
 }
 
 fetch(url, {
@@ -2612,10 +2709,10 @@ that won't have any expiration date.</p>        </p>
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"mainEmail\": \"libero\",
-    \"recoveryEmail\": \"ea\",
-    \"antiFishingSecret\": \"ut\",
-    \"securityCode\": \"ea\"
+    \"mainEmail\": \"quisquam\",
+    \"recoveryEmail\": \"fugit\",
+    \"antiFishingSecret\": \"occaecati\",
+    \"securityCode\": \"ut\"
 }"
 </code></pre>
 
@@ -2630,10 +2727,10 @@ const headers = {
 };
 
 let body = {
-    "mainEmail": "libero",
-    "recoveryEmail": "ea",
-    "antiFishingSecret": "ut",
-    "securityCode": "ea"
+    "mainEmail": "quisquam",
+    "recoveryEmail": "fugit",
+    "antiFishingSecret": "occaecati",
+    "securityCode": "ut"
 }
 
 fetch(url, {
@@ -2886,7 +2983,7 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"code\": \"voluptas\"
+    \"code\": \"et\"
 }"
 </code></pre>
 
@@ -2901,7 +2998,7 @@ const headers = {
 };
 
 let body = {
-    "code": "voluptas"
+    "code": "et"
 }
 
 fetch(url, {
@@ -3022,10 +3119,10 @@ the backend will know how much the user has paid, and what did they actually pur
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"method\": \"reiciendis\",
-    \"amount\": 18,
-    \"type\": \"occaecati\",
-    \"code\": \"ex\"
+    \"method\": \"consequatur\",
+    \"amount\": 5,
+    \"type\": \"voluptate\",
+    \"code\": \"doloribus\"
 }"
 </code></pre>
 
@@ -3040,10 +3137,10 @@ const headers = {
 };
 
 let body = {
-    "method": "reiciendis",
-    "amount": 18,
-    "type": "occaecati",
-    "code": "ex"
+    "method": "consequatur",
+    "amount": 5,
+    "type": "voluptate",
+    "code": "doloribus"
 }
 
 fetch(url, {
@@ -3194,13 +3291,13 @@ to both, the main and the recovery, emails.</p>
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"name\": \"xxdxtyespboxyiwcqwqzzjkoqaybeocnscphdkcvlgrjhohfejlnfylrrwuqnowinczcrgydoszebldyaoluzdgllbmzjbsjzcm\",
-    \"phoneNumber\": \"xpvqoxzzi\",
-    \"mainEmail\": \"isrwfbzuzugtbdiakickrydsqfbajnjnhhmfryyywcgaftijhkabspmelgdhgahwvtjsbgxtupcumgwpixjolmgfwnebgqzvwkyetfsabfrhkieyafpqyoemyzxzkcyw\",
-    \"recoveryEmail\": \"urbbdefeutyfiqdxtpdjxstyskqnjbeajwlqjnchftjcgggoey\",
-    \"secretAntiFishing\": \"xjwjmjahpvawmwfkhedxhjpzkezzqmeqbgctznzshyowzxdyovmffwtcwicokbxczozxhzlpeevoaochniyqzaazxfoonuqcsxdtaffbwykgngoepimtipronaoizqpesnlxmdhlsxqoqetddrelkpgcpakicjumjcyj\",
-    \"secretAntiFishing_confirmation\": \"slqxqgniewclfuofultsavowxxkpjwxynhqnggscynofglnuaplxywsyvzfnclbzgyldkhmvcooqvzdibvsecbdejabxfca\",
-    \"invitationCode\": \"\"
+    \"name\": \"nqnuodjeisrpiuexidipeozgeaxmseikduvfiax\",
+    \"phoneNumber\": \"bf\",
+    \"mainEmail\": \"ktjmqvgjiulnzyrpbzhopnmztjnjwfalcpbwpndjkzdnhpqzzaftjsfocdpnallgresacngkrezmadcoooaoufsbhahdhnaegpcyymwnndmydpqldtgitgnqiktyndlhy\",
+    \"recoveryEmail\": \"kdujqjuiclbzsrfuwpqzxdffwubmnwcmlxagxaqmefewtezlrmielbjkmaksqgildtkiwsyfohmtdjnmrxzgqreljwwubhhoczaobuhtialpdkbtybiwxhtcufewddxcbhfmuvfwg\",
+    \"secretAntiFishing\": \"kffgsjyaogkjqoreotiaibbuwdcqmimgljvigynduup\",
+    \"secretAntiFishing_confirmation\": \"wmjurxxbmuziyuzwtauzfuzec\",
+    \"invitationCode\": \"vhiqcyqv\"
 }"
 </code></pre>
 
@@ -3215,13 +3312,13 @@ const headers = {
 };
 
 let body = {
-    "name": "xxdxtyespboxyiwcqwqzzjkoqaybeocnscphdkcvlgrjhohfejlnfylrrwuqnowinczcrgydoszebldyaoluzdgllbmzjbsjzcm",
-    "phoneNumber": "xpvqoxzzi",
-    "mainEmail": "isrwfbzuzugtbdiakickrydsqfbajnjnhhmfryyywcgaftijhkabspmelgdhgahwvtjsbgxtupcumgwpixjolmgfwnebgqzvwkyetfsabfrhkieyafpqyoemyzxzkcyw",
-    "recoveryEmail": "urbbdefeutyfiqdxtpdjxstyskqnjbeajwlqjnchftjcgggoey",
-    "secretAntiFishing": "xjwjmjahpvawmwfkhedxhjpzkezzqmeqbgctznzshyowzxdyovmffwtcwicokbxczozxhzlpeevoaochniyqzaazxfoonuqcsxdtaffbwykgngoepimtipronaoizqpesnlxmdhlsxqoqetddrelkpgcpakicjumjcyj",
-    "secretAntiFishing_confirmation": "slqxqgniewclfuofultsavowxxkpjwxynhqnggscynofglnuaplxywsyvzfnclbzgyldkhmvcooqvzdibvsecbdejabxfca",
-    "invitationCode": ""
+    "name": "nqnuodjeisrpiuexidipeozgeaxmseikduvfiax",
+    "phoneNumber": "bf",
+    "mainEmail": "ktjmqvgjiulnzyrpbzhopnmztjnjwfalcpbwpndjkzdnhpqzzaftjsfocdpnallgresacngkrezmadcoooaoufsbhahdhnaegpcyymwnndmydpqldtgitgnqiktyndlhy",
+    "recoveryEmail": "kdujqjuiclbzsrfuwpqzxdffwubmnwcmlxagxaqmefewtezlrmielbjkmaksqgildtkiwsyfohmtdjnmrxzgqreljwwubhhoczaobuhtialpdkbtybiwxhtcufewddxcbhfmuvfwg",
+    "secretAntiFishing": "kffgsjyaogkjqoreotiaibbuwdcqmimgljvigynduup",
+    "secretAntiFishing_confirmation": "wmjurxxbmuziyuzwtauzfuzec",
+    "invitationCode": "vhiqcyqv"
 }
 
 fetch(url, {
@@ -3388,10 +3485,10 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"mainEmailCode\": 19,
-    \"recoveryEmailCode\": 6,
-    \"mainEmail\": \"mhuapwnztaiiqpbifegkxmnavazcwprllnoqnyjlptxyzbfdutnpxdmsdhjctppirmxrhfmlyvqdssvmpshbhdoqjszqyfobofwigoxlxvcjnjnjxizwffrzoasqgceegadccasusswm\",
-    \"MainEmail\": \"vitae\"
+    \"mainEmailCode\": 16,
+    \"recoveryEmailCode\": 19,
+    \"mainEmail\": \"aqmyhlwbcqbo\",
+    \"MainEmail\": \"pariatur\"
 }"
 </code></pre>
 
@@ -3406,10 +3503,10 @@ const headers = {
 };
 
 let body = {
-    "mainEmailCode": 19,
-    "recoveryEmailCode": 6,
-    "mainEmail": "mhuapwnztaiiqpbifegkxmnavazcwprllnoqnyjlptxyzbfdutnpxdmsdhjctppirmxrhfmlyvqdssvmpshbhdoqjszqyfobofwigoxlxvcjnjnjxizwffrzoasqgceegadccasusswm",
-    "MainEmail": "vitae"
+    "mainEmailCode": 16,
+    "recoveryEmailCode": 19,
+    "mainEmail": "aqmyhlwbcqbo",
+    "MainEmail": "pariatur"
 }
 
 fetch(url, {
@@ -3550,8 +3647,8 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"twoFactorCode\": 2,
-    \"isForMobile\": false
+    \"twoFactorCode\": 19,
+    \"isForMobile\": true
 }"
 </code></pre>
 
@@ -3566,8 +3663,8 @@ const headers = {
 };
 
 let body = {
-    "twoFactorCode": 2,
-    "isForMobile": false
+    "twoFactorCode": 19,
+    "isForMobile": true
 }
 
 fetch(url, {
@@ -3723,11 +3820,11 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"name\": \"reprehenderit\",
-    \"phone_number\": \"est\",
-    \"email\": \"qui\",
-    \"recovery_email\": \"dolorum\",
-    \"anti_fishing_secret\": \"eum\"
+    \"name\": \"cupiditate\",
+    \"phone_number\": \"harum\",
+    \"email\": \"similique\",
+    \"recovery_email\": \"dignissimos\",
+    \"anti_fishing_secret\": \"similique\"
 }"
 </code></pre>
 
@@ -3742,11 +3839,11 @@ const headers = {
 };
 
 let body = {
-    "name": "reprehenderit",
-    "phone_number": "est",
-    "email": "qui",
-    "recovery_email": "dolorum",
-    "anti_fishing_secret": "eum"
+    "name": "cupiditate",
+    "phone_number": "harum",
+    "email": "similique",
+    "recovery_email": "dignissimos",
+    "anti_fishing_secret": "similique"
 }
 
 fetch(url, {
@@ -3998,7 +4095,7 @@ fetch(url, {
     --header "Accept: application/json" \
     --header "Accept-Language: es | en | jp" \
     --data "{
-    \"preferredLang\": \"voluptatum\"
+    \"preferredLang\": \"earum\"
 }"
 </code></pre>
 
@@ -4013,7 +4110,7 @@ const headers = {
 };
 
 let body = {
-    "preferredLang": "voluptatum"
+    "preferredLang": "earum"
 }
 
 fetch(url, {

@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "API Documentation for PasuNashi Backend",
-        "_postman_id": "6b7d797d-34d1-4a54-98ed-958a3d8a5991",
+        "_postman_id": "1fe12c90-fa70-4436-a546-779b18f0d487",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -46,7 +46,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"nooowfrqmfflbaepyazdgmdrzpchienvgadrxaxgeguwwjjbfhnpkmoggezbhcwfjzgl\",\"isSecondary\":true}"
+                            "raw": "{\"email\":\"gknqinkdkgnzveqxjsnyuhizsejatybodtaatgrsjygipoqoxoyaedexjuizhqxnqtdqrqttvacponjzilbtinwforudwhxkmxuqijdonteldpmjimoyurzvrnesgftocmbpkwroerbzjvbarxaywuxzazfaqajvypprmx\",\"isSecondary\":false}"
                         },
                         "description": "This method will send the security code needed for the user to login by the \"login with email code\" method.\n\nRemember that the email parameter must exists either on the \"emails\" or in \"recovery_emails\" columns",
                         "auth": {
@@ -138,7 +138,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"accessTo\":\"qui\",\"credentialId\":4,\"accessingDevice\":\"consequuntur\",\"accessingPlatform\":\"zsgyg\",\"accessingPlattform\":\"inventore\"}"
+                            "raw": "{\"accessTo\":\"eligendi\",\"credentialId\":8,\"accessingDevice\":\"non\",\"accessingPlatform\":\"zvzlr\",\"accessingPlattform\":\"ea\"}"
                         },
                         "description": "This method is used to access the encrypted data of a Credential, or the encrypted data of the user itself.\n\n<aside class=\"notice\">This method may return a decrypted Credential, you can see the Credential interface on the README file.<\/aside>"
                     },
@@ -196,6 +196,43 @@
                             "header": [],
                             "code": 200,
                             "body": "{\n     \"status\": 200,\n     \"message\": \"Succes!\",\n     \"data\": {\n         \"renewed_code\": \"AAAAAAAAAA\",\n     },\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Verify Auth Token",
+                    "request": {
+                        "url": {
+                            "protocol": "https",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/verify-token",
+                            "query": [],
+                            "raw": "https:\/\/{{baseUrl}}\/api\/auth\/verify-token"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept-Language",
+                                "value": "es | en | jp"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Since this route requires authentication, there is no need to add any logic to this method.\nIf the token isn't actually valid, the user won't be able to reach this point."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n     \"status\": 200,\n     \"message\": \"Succes!\",\n     \"data\": {},\n}",
                             "name": ""
                         }
                     ]
@@ -275,7 +312,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"company_name\":\"in\",\"description\":\"vero\",\"user_name\":\"vero\",\"email\":\"deleniti\",\"password\":\"incidunt\",\"username\":\"provident\",\"phone_number\":\"voluptatem\",\"security_question\":\"cumque\",\"security_answer\":\"aut\",\"unique_code\":\"voluptate\",\"multiple_codes\":[\"laudantium\"],\"crypto_codes\":[\"voluptas\"],\"accessing_device\":\"eveniet\",\"accessing_plattform\":\"ea\"}"
+                            "raw": "{\"company_name\":\"ab\",\"description\":\"qui\",\"user_name\":\"omnis\",\"email\":\"tempora\",\"password\":\"nemo\",\"username\":\"est\",\"phone_number\":\"modi\",\"security_question\":\"laudantium\",\"security_answer\":\"ea\",\"unique_code\":\"vel\",\"multiple_codes\":[\"sed\"],\"crypto_codes\":[\"velit\"],\"accessing_device\":\"id\",\"accessing_plattform\":\"velit\"}"
                         },
                         "description": "This is the method used to create a new credential.\n\n<aside class=\"notice\">This method will return the created Credential, you can see the Credential interface on the README file.<\/aside>"
                     },
@@ -344,7 +381,7 @@
                                 {
                                     "id": "credential_id",
                                     "key": "credential_id",
-                                    "value": "11",
+                                    "value": "4",
                                     "description": "The id of the credential to delete."
                                 }
                             ]
@@ -395,7 +432,7 @@
                                 {
                                     "id": "credential_id",
                                     "key": "credential_id",
-                                    "value": "6",
+                                    "value": "20",
                                     "description": "The id of the credential to update."
                                 }
                             ]
@@ -417,7 +454,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"description\":\"autem\",\"user_name\":\"qui\",\"email\":\"voluptatem\",\"password\":\"aut\",\"username\":\"quia\",\"phone_number\":\"rerum\",\"security_question\":\"voluptatem\",\"security_answer\":\"ut\",\"unique_code\":\"commodi\",\"multiple_codes\":[\"odio\"],\"crypto_codes\":[\"optio\"],\"accessing_device\":\"delectus\",\"accessing_plattform\":\"laudantium\"}"
+                            "raw": "{\"description\":\"deserunt\",\"user_name\":\"sed\",\"email\":\"quisquam\",\"password\":\"dolore\",\"username\":\"sequi\",\"phone_number\":\"eos\",\"security_question\":\"voluptatibus\",\"security_answer\":\"maxime\",\"unique_code\":\"delectus\",\"multiple_codes\":[\"aut\"],\"crypto_codes\":[\"et\"],\"accessing_device\":\"qui\",\"accessing_plattform\":\"velit\"}"
                         },
                         "description": "This is the method used for updating a credential. If any field is absent, it will be updated to a null type, or deleted.\n\nThe company_name cannot be updated.\n\n<aside class=\"notice\">This method will return the updated Credential, you can see the Credential interface on the README file.<\/aside>"
                     },
@@ -455,7 +492,7 @@
                                 {
                                     "id": "credential_id",
                                     "key": "credential_id",
-                                    "value": "12",
+                                    "value": "5",
                                     "description": "The id of the credential to delete."
                                 }
                             ]
@@ -626,7 +663,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"body\":\"optio\",\"rating\":20,\"type\":false}"
+                            "raw": "{\"body\":\"magnam\",\"rating\":10,\"type\":true}"
                         },
                         "description": "Store a suggestion and\/or rating in the database\n\n(Reuqires user role to be \"premium\")"
                     },
@@ -678,7 +715,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"praesentium\",\"twoFactorCode\":11,\"isForMobile\":true}"
+                            "raw": "{\"email\":\"molestiae\",\"twoFactorCode\":18,\"isForMobile\":true}"
                         },
                         "description": "This is the method to login using the user's main email, and the time-based one-time-password (the code generated in apps like Google Authenticator).\n\n<aside class=\"notice\">This method will return an array of Credentials, you can see the Credential interface on the README file.<\/aside>",
                         "auth": {
@@ -727,7 +764,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"mainEmail\":\"illo\",\"recoveryEmail\":\"cumque\",\"code\":4,\"isForMobile\":true}"
+                            "raw": "{\"mainEmail\":\"molestiae\",\"recoveryEmail\":\"quas\",\"code\":13,\"isForMobile\":false}"
                         },
                         "description": "In order for this method to work, the user must already have the correct security code in the database. If the user asked to send an email code to their\nrecovery email, they won't be able to login by this method, if they're using their main email on this request.\n\n<aside class=\"notice\">This method will return an array of Credentials, you can see the Credential interface on the README file.<\/aside>",
                         "auth": {
@@ -776,7 +813,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"mainEmail\":\"libero\",\"recoveryEmail\":\"ea\",\"antiFishingSecret\":\"ut\",\"securityCode\":\"ea\"}"
+                            "raw": "{\"mainEmail\":\"quisquam\",\"recoveryEmail\":\"fugit\",\"antiFishingSecret\":\"occaecati\",\"securityCode\":\"ut\"}"
                         },
                         "description": "This is the only method that does not require 2-factor-authentication.\n\n<aside class=\"notice\">This method will return an array of Credentials, you can see the Credential interface on the README file.<\/aside>",
                         "auth": {
@@ -868,7 +905,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"code\":\"voluptas\"}"
+                            "raw": "{\"code\":\"et\"}"
                         },
                         "description": "This method receives the transaction id of PayPal, and verifies that the purchase is fully confirmed"
                     },
@@ -914,7 +951,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"method\":\"reiciendis\",\"amount\":18,\"type\":\"occaecati\",\"code\":\"ex\"}"
+                            "raw": "{\"method\":\"consequatur\",\"amount\":5,\"type\":\"voluptate\",\"code\":\"doloribus\"}"
                         },
                         "description": "This method will create an \"open payment instance\" in the database, so, when the payment is fully confirmed,\nthe backend will know how much the user has paid, and what did they actually purchased."
                     },
@@ -966,7 +1003,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"xxdxtyespboxyiwcqwqzzjkoqaybeocnscphdkcvlgrjhohfejlnfylrrwuqnowinczcrgydoszebldyaoluzdgllbmzjbsjzcm\",\"phoneNumber\":\"xpvqoxzzi\",\"mainEmail\":\"isrwfbzuzugtbdiakickrydsqfbajnjnhhmfryyywcgaftijhkabspmelgdhgahwvtjsbgxtupcumgwpixjolmgfwnebgqzvwkyetfsabfrhkieyafpqyoemyzxzkcyw\",\"recoveryEmail\":\"urbbdefeutyfiqdxtpdjxstyskqnjbeajwlqjnchftjcgggoey\",\"secretAntiFishing\":\"xjwjmjahpvawmwfkhedxhjpzkezzqmeqbgctznzshyowzxdyovmffwtcwicokbxczozxhzlpeevoaochniyqzaazxfoonuqcsxdtaffbwykgngoepimtipronaoizqpesnlxmdhlsxqoqetddrelkpgcpakicjumjcyj\",\"secretAntiFishing_confirmation\":\"slqxqgniewclfuofultsavowxxkpjwxynhqnggscynofglnuaplxywsyvzfnclbzgyldkhmvcooqvzdibvsecbdejabxfca\",\"invitationCode\":\"\"}"
+                            "raw": "{\"name\":\"nqnuodjeisrpiuexidipeozgeaxmseikduvfiax\",\"phoneNumber\":\"bf\",\"mainEmail\":\"ktjmqvgjiulnzyrpbzhopnmztjnjwfalcpbwpndjkzdnhpqzzaftjsfocdpnallgresacngkrezmadcoooaoufsbhahdhnaegpcyymwnndmydpqldtgitgnqiktyndlhy\",\"recoveryEmail\":\"kdujqjuiclbzsrfuwpqzxdffwubmnwcmlxagxaqmefewtezlrmielbjkmaksqgildtkiwsyfohmtdjnmrxzgqreljwwubhhoczaobuhtialpdkbtybiwxhtcufewddxcbhfmuvfwg\",\"secretAntiFishing\":\"kffgsjyaogkjqoreotiaibbuwdcqmimgljvigynduup\",\"secretAntiFishing_confirmation\":\"wmjurxxbmuziyuzwtauzfuzec\",\"invitationCode\":\"vhiqcyqv\"}"
                         },
                         "description": "The first step in order to register a new user. This method stores the user's accessing information, and dispatches an event to send security codes\nto both, the main and the recovery, emails.",
                         "auth": {
@@ -1015,7 +1052,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"mainEmailCode\":19,\"recoveryEmailCode\":6,\"mainEmail\":\"mhuapwnztaiiqpbifegkxmnavazcwprllnoqnyjlptxyzbfdutnpxdmsdhjctppirmxrhfmlyvqdssvmpshbhdoqjszqyfobofwigoxlxvcjnjnjxizwffrzoasqgceegadccasusswm\",\"MainEmail\":\"vitae\"}"
+                            "raw": "{\"mainEmailCode\":16,\"recoveryEmailCode\":19,\"mainEmail\":\"aqmyhlwbcqbo\",\"MainEmail\":\"pariatur\"}"
                         },
                         "description": "This method will receive both of the security codes that were sent to the user on the previous step, and verify that both of them are correct.",
                         "auth": {
@@ -1064,7 +1101,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"twoFactorCode\":2,\"isForMobile\":false}"
+                            "raw": "{\"twoFactorCode\":19,\"isForMobile\":true}"
                         },
                         "description": "This method will invalidate the auth token sent with the request.\n\n<aside class=\"notice\">This method is also used to verify the 2FA code if the user decides to renew it.<\/aside>"
                     },
@@ -1116,7 +1153,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"reprehenderit\",\"phone_number\":\"est\",\"email\":\"qui\",\"recovery_email\":\"dolorum\",\"anti_fishing_secret\":\"eum\"}"
+                            "raw": "{\"name\":\"cupiditate\",\"phone_number\":\"harum\",\"email\":\"similique\",\"recovery_email\":\"dignissimos\",\"anti_fishing_secret\":\"similique\"}"
                         },
                         "description": "This method is used to edit the user's credentials for accessing their account in PasuNashi.\n\n<aside class=\"notice\">All of the parameters are required, even if nothing changed.<\/aside>"
                     },
@@ -1199,7 +1236,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"preferredLang\":\"voluptatum\"}"
+                            "raw": "{\"preferredLang\":\"earum\"}"
                         },
                         "description": "It may be obvous at this point, but this is the method used for updating the user's preferred language."
                     },
