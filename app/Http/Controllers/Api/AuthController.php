@@ -845,7 +845,7 @@ class AuthController extends Controller
      *      "data": {},
      * }
      */
-    public function verify_token(Request $request)
+    public function verify_token()
     {
         return response()->success([], 'success');
     }
