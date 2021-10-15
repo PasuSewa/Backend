@@ -826,4 +826,27 @@ class AuthController extends Controller
 
         return response()->success(['renewed_code' => $renewed_code], 'success');
     }
+
+    /**
+     * Verify Auth Token
+     * 
+     * Since this route requires authentication, there is no need to add any logic to this method.
+     * If the token isn't actually valid, the user won't be able to reach this point.
+     * 
+     * @group Auth
+     * 
+     * @authenticated 
+     * 
+     * @header Accept-Language es | en | jp
+     * 
+     * @response {
+     *      "status": 200,
+     *      "message": "Succes!",
+     *      "data": {},
+     * }
+     */
+    public function verify_token(Request $request)
+    {
+        return response()->success([], 'success');
+    }
 }

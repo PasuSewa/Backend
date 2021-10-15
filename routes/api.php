@@ -72,6 +72,8 @@ Route::group(['middleware' => 'Localization'], function () {
             Route::post('/grant-access', [AuthController::class, 'grant_access']);
 
             Route::get('/renew-security-code', [AuthController::class, 'renew_security_code']);
+
+            Route::get('/verify-token', [AuthController::class, 'verify_token']);
         }); // *************************************************************** end of "/auth" routes
 
 
