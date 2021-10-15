@@ -247,4 +247,22 @@ class AuthTest extends TestCase
             ]
         ]);
     }
+
+    /** @test */
+    public function verifies_that_token_is_valid()
+    {
+        $user = User::find(1);
+
+        $token = JWTAuth::fromUser($user);
+
+        $response = $this->withHeaders((['Authorization' => 'Bearer ' . $token]))->json('GET', '/api/auth/verify-token');
+        $response->assertOk();
+    }
+
+    /** @test */
+    public function verifies_that_token_is_invalid()
+    {
+        $response = $this->withHeaders((['Authorization' => 'Bearer token']))->json('GET', '/api/auth/verify-token');
+        $response->assertStatus(401);
+    }
 }
