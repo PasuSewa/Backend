@@ -650,6 +650,7 @@ class CredentialController extends Controller
             'created_at',
             'updated_at'
         )
+            ->where('recently_seen', true)
             ->orderBy('last_seen', 'DESC')
             ->get();
 
