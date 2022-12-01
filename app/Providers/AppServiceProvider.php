@@ -10,7 +10,7 @@ use Illuminate\Pagination\Paginator;
 
 use App\Models\Slot;
 
-use Illuminate\Routing\UrlGenerator;
+// use Illuminate\Routing\UrlGenerator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,13 +29,15 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(UrlGenerator $url)
-    {
-        // URL::forceScheme('https');
 
-        if (env('APP_ENV') == 'production') {
-            $url->forceScheme('https');
-        }
+    // public function boot(UrlGenerator $url)
+    public function boot()
+    {
+        URL::forceScheme('https');
+
+        //if (env('APP_ENV') == 'production') {
+            //$url->forceScheme('https');
+        //}
 
         Paginator::useBootstrap();
 
